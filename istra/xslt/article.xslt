@@ -8,10 +8,12 @@
 	
 	<xsl:variable name="tocPath"><xsl:value-of select="/article/@contentFolder"/>/toc.xml</xsl:variable>
 	<xsl:variable name="menuPath"><xsl:value-of select="/article/@cacheFolder"/>/menu.xml</xsl:variable>
+	
+	<xsl:variable name="tocdoc" select="document($tocPath)"/>
+	<xsl:variable name="SiteTitle" select="$tocdoc/toc/@title"/>
 
 	<xsl:template match="/article">
 		
-		<xsl:variable name="tocdoc" select="document($tocPath)"/>
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
@@ -27,7 +29,7 @@
 				</xsl:choose>
 			</head>
 			<body>
-				<h1><xsl:value-of select="$tocdoc/toc/@title"/></h1>
+				<h1><xsl:value-of select="$SiteTitle"/></h1>
 				<table border="0" cellpadding="3" cellspacing="0">
 					<tr>
 						<td width="300" id="menuPnl" valign="top">
@@ -88,5 +90,8 @@
 	</xsl:template>
 	
 	<xsl:include href="tags.xslt"/>
+	
+	<xsl:include href="../../overrides/tags.xslt"/>
+	<xsl:include href="../../overrides/templates.xslt"/>
 	
 </xsl:stylesheet>

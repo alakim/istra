@@ -3,9 +3,9 @@
 	<xsl:output method="html" version="1.0" encoding="utf-8" indent="yes"/>
 	
 
-	<xsl:template match="p">
-		<p style="color:#640;"><xsl:apply-templates/></p>
-	</xsl:template>
+	<!--xsl:template match="p">
+		<p style="color:#f40;"><xsl:apply-templates/></p>
+	</xsl:template-->
 	
 	
 	
