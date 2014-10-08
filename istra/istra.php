@@ -19,12 +19,15 @@
 		$page = $file[0];
 	}
 	
+	$xsltSettings = array(
+		"contentFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["ContentFolder"],
+		"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"]
+	);
+		
 	function buildMenu(){
 		global $Settings;
-		$menu = xml2html($Settings["ContentFolder"]."/toc.xml", $Settings["XsltFolder"]."/menu.xslt", array(
-			"contentFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["ContentFolder"],
-			"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"]
-		));
+		global $xsltSettings;
+		$menu = xml2html($Settings["ContentFolder"]."/toc.xml", $Settings["XsltFolder"]."/menu.xslt", $xsltSettings);
 		file_put_contents($Settings["CacheFolder"]."/menu.xml", $menu);
 	}
 
@@ -56,10 +59,7 @@
 		buildMenu();
 
 	if($page){
-		echo(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", array(
-			"contentFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["ContentFolder"],
-			"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"]
-		)));
+		echo(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings));
 	}
 
 ?>
