@@ -4,7 +4,8 @@ $Settings = array(
 	"ThisFolder"=>"..", // путь к корню сайта из папки istra
 	"ContentFolder"=>"content",
 	"XsltFolder"=>"istra/xslt",
-	"CacheFolder"=>"cache"
+	"CacheFolder"=>"cache",
+	"OverridesFolder"=>"overrides"
 );
 
 include 'istra/istra.php';
