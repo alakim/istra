@@ -1,26 +1,26 @@
 ﻿<?php
-	
-	$clearCache = isset($_REQUEST['clearcache']);
-	
-	if(isset($_REQUEST['p'])){
-		$page = $_REQUEST["p"];
-	}
-	
-	if(isset($_REQUEST['debug'])){
-		$debugMode = true;
-	}
-	if(empty($page)){
-		$toc = new DOMDocument();
-		$toc->load($Settings["ContentFolder"]."/toc.xml");
-		$sect = $toc->getElementsByTagName('section')->item(0);
-		$file = explode(".", $sect->getAttribute("file"));
-		$page = $file[0];
-	}
+	echo('<h1>Publishing...</h1>');
 	
 	$xsltSettings = array(
 		"contentFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["ContentFolder"],
 		"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"]
 	);
+	
+	$tocdoc = new DOMDocument();
+	$tocdoc->load($Settings["ContentFolder"]."/toc.xml");
+	$xpath = new DOMXpath($tocdoc);
+	$sections = $xpath->query('//section[@file]');
+	
+	foreach($sections as $sect){
+		$file = $sect->getAttribute("file");
+		$outFile = preg_replace('/xml$/i', "html", $file);
+		$html = xml2html($Settings["ContentFolder"]."/pages/".$file, $Settings["XsltFolder"]."/article.xslt", $xsltSettings);
+		
+		file_put_contents($TargetFolder."/$outFile", $html);
+	}
+	
+	buildMenu();
+
 		
 	function buildMenu(){
 		global $Settings;
@@ -64,11 +64,6 @@
 		return $proc->transformToXML($xmlDoc);
 	}
 	
-	if($clearCache || !file_exists($Settings["CacheFolder"]."/menu.xml"))
-		buildMenu();
-
-	if($page){
-		echo(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings));
-	}
+	echo("<h2>DONE.</h2>");
 
 ?>
