@@ -19,8 +19,9 @@
 		<list>
 			<li name="ThisFolder">путь к корню сайта из папки <file>istra</file></li>
 			<li name="ContentFolder">путь к папке содержимого <file>content</file> от корня сайта</li>
-			<li name="DefsFolder">путь к папке XSLT-определений <file>defs</file> от корня сайта</li>
+			<li name="XsltFolder">путь к папке XSLT-определений <file>defs</file> от корня сайта</li>
 			<li name="CacheFolder">путь к папке кэша <file>cache</file> от корня сайта</li>
+			<li name="OverridesFolder">путь к папке переопределений <file>overrides</file> от корня сайта</li>
 		</list>
 	</section>
 	<section title="Кэширование">
