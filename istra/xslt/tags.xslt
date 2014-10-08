@@ -94,7 +94,8 @@
 	<xsl:template match="strong"><strong><xsl:apply-templates/></strong></xsl:template>
 	<xsl:template match="file"><span class="file"><xsl:apply-templates/></span></xsl:template>
 	<xsl:template match="code"><span class="code"><xsl:apply-templates/></span></xsl:template>
-
+	<xsl:template match="codesample"><div class="code"><pre><xsl:apply-templates/></pre></div></xsl:template>
+	
 	<xsl:template match="patch">
 		<xsl:variable name="patch" select="document(@file)"/>
 		<xsl:apply-templates select="$patch/patch/*"/>

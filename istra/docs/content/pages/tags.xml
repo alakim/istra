@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<article title="Предопределенные теги">
+	<section title="Разметка страницы">
+		<list>
+			<li name="p">абзац текста</li>
+			<li name="ref">ссылка на объект, задаваемый следующими атрибутами:
+				<list>
+					<li name="mail">адрес почты</li>
+					<li name="book">книгу, заданную в списке литературы тегом <code>book</code></li>
+					<li name="website">веб-сайт, заданный в списке литературы тегом <code>webArticle</code></li>
+					<li name="url">веб-сайт, заданный URL</li>
+					<li name="pict">иллюстрацию, заданную в реестре</li>
+					<li name="sect">раздел данного сайта</li>
+				</list>
+			</li>
+			<li name="attention">внимание</li>
+			<li name="comment">примечание</li>
+			<li name="pict">вставка иллюстрации, заданной в реестре</li>
+			<li name="img">вставка графики в строку</li>
+			<li name="list">список</li>
+			<li name="caption">заголовок списка</li>
+			<li name="li">элемент списка</li>
+			<li name="sel">выделение</li>
+			<li name="strong">акцент</li>
+			<li name="file">имя файла, директории, URL, и пр.</li>
+			<li name="code">фрагмент кода, вставляемый в строку</li>
+			<li name="codesample">фрагмент кода, вставляемый блоком</li>
+			<li name="patch">ссылка на фрагмент документа, вставляемый из другого файла</li>
+			<li name="todo">редакторское примечание "что сделать"</li>
+			<li name="book">описание книги как элемента списка литературы</li>
+			<li name="webArticle">описание веб-публикации как элемента списка литературы</li>
+		</list>
+	</section>
+</article>
