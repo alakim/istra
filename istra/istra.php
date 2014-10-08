@@ -33,6 +33,7 @@
 
 	function xml2html($xmlcontent, $xsl, $settings){
 		global $debugMode;
+		global $Settings;
 		
 		$xmlDoc = new DOMDocument();
 		$xmlDoc->load($xmlcontent);
@@ -49,6 +50,16 @@
 		
 		$xslDoc = new DOMDocument();
 		$xslDoc->load($xsl);
+		
+		// подменить пути overrides
+		$xpath = new DOMXpath($xslDoc);
+		$includes = $xpath->query("//xsl:include");
+		foreach($includes as $inc){
+			$ref = $inc->getAttribute("href");
+			$newRef = preg_replace('/overrides/i', '../'.$Settings["ThisFolder"].'/'.$Settings["OverridesFolder"], $ref);
+			$inc->setAttribute("href", $newRef);
+		}
+		
 
 		$proc = new XSLTProcessor();
 		$proc->importStylesheet($xslDoc);

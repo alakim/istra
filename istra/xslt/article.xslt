@@ -91,7 +91,7 @@
 	
 	<xsl:include href="tags.xslt"/>
 	
-	<xsl:include href="../../overrides/tags.xslt"/>
-	<xsl:include href="../../overrides/templates.xslt"/>
+	<xsl:include href="overrides/tags.xslt"/>
+	<xsl:include href="overrides/templates.xslt"/>
 	
 </xsl:stylesheet>
