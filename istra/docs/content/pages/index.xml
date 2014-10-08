@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<article title="Система управления сайтом Istra">
+	<section title="Общее описание">
+		<p>Система управления сайтом (CMS) Istra использует технологию XML/XSLT для хранения и отображения информации.</p>
+	</section>
+	<section title="Назначение директорий и файлов">
+		<list>
+			<li name="istra">системная папка</li>
+			<li name="istra/xslt">XSLT-шаблоны</li>
+			<li name="istra/docs">документация по данной CMS, выполненная на основе данной CMS</li>
+			<li name="cache">кэш</li>
+			<li name="content">содержимое сайта</li>
+			<li name="content/pages">страницы сайта в виде XML-документов</li>
+			<li name="overrides">пользовательские XSLT-шаблоны, переопределяющие стандартные</li>
+		</list>
+	</section>
+	<section title="Настройки">
+		<p>При создании корневой страницы сайта в массиве <code>$Settings</code> задаются следующие настройки:</p>
+		<list>
+			<li name="ThisFolder">путь к корню сайта из папки <file>istra</file></li>
+			<li name="ContentFolder">путь к папке содержимого <file>content</file> от корня сайта</li>
+			<li name="DefsFolder">путь к папке XSLT-определений <file>defs</file> от корня сайта</li>
+			<li name="CacheFolder">путь к папке кэша <file>cache</file> от корня сайта</li>
+		</list>
+	</section>
+	<section title="Кэширование">
+		<p>При формировании страниц производится кэширование меню (карты сайта). Меню формируется из разделов оглавления <file>toc.xml</file>, а также разделов страниц, включенных в него. Сформированное меню помещается в файл <file>cache/menu.xml</file>.</p>
+		<p>Для обновления кэша достаточно запустить страницу сайта с указанием ключа <code>clearcache</code> в адресной строке.</p>
+	</section>
+</article>
