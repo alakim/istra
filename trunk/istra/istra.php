@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 	
 	include 'doctype.php';
 	
@@ -70,7 +70,9 @@
 		buildMenu();
 
 	if($page){
-		echo(setDocType(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings)));
+		$html = xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings);
+		$html = setDocType($html);
+		// ob_start();
+		// ob_clean();
+		echo($html);
 	}
-
-?>

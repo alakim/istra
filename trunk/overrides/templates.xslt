@@ -12,6 +12,7 @@
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+				<title><xsl:value-of select="$SiteTitle"/></title>
 				<link rel="stylesheet" type="text/css" href="styles.css"/>
 				<script type="text/javascript" src="js/lib/html.js"></script>
 				<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
@@ -24,9 +25,10 @@
 				</xsl:choose>
 			</head>
 			<body>
-				
-				<h1><xsl:value-of select="$SiteTitle"/></h1>
-				<div style="width:{$menuWidth}px; min-height:{$minHeight}px; float:left; border-right:1px solid #ccc; padding:{$padding}px;">
+				<header>
+					<h1><xsl:value-of select="$SiteTitle"/></h1>
+				</header>
+				<div class="leftMenu" style="width:{$menuWidth}px; min-height:{$minHeight}px; padding:{$padding}px;">
 					<xsl:call-template name="menu"/>
 				</div>
 				<div style="margin-left:{$menuWidth+$padding*2}px; padding:{$padding*2}px;">
@@ -34,7 +36,7 @@
 					<xsl:apply-templates />
 				</div>
 				<div style="clear:left;"></div>
-				<footer style="text-align:center; border-top:1px solid #ccc; padding:10px;">Istra Team <xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text>2014</footer>
+				<footer>Istra Team <xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text>2014</footer>
 			</body>
 		</html>
 	</xsl:template>

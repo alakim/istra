@@ -1,5 +1,6 @@
 ﻿body{
 	font-family: Verdana, Arial, Sans-Serif;
+	margin: 0px;
 }
 
 #menuPnl{
@@ -38,4 +39,21 @@ span.selected{
 .debugInfo{
 	color:#f00;
 	background-color:#ff0;
+}
+
+.leftMenu{
+	float:left;
+	border-right:1px solid #ccc;
+}
+header{
+	background-color:#eef;
+	color:#008;
+	border-bottom:1px solid #ccc;
+	margin: 0px;
+	padding:25px;
+}
+footer{
+	text-align:center; 
+	border-top:1px solid #ccc; 
+	padding:10px;
 }

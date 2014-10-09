@@ -1,5 +1,4 @@
-﻿<?php
-
+<?php
 $Settings = array(
 	"ThisFolder"=>"..", // путь к корню сайта из папки istra
 	"ContentFolder"=>"content",
@@ -7,5 +6,3 @@ $Settings = array(
 	"CacheFolder"=>"cache",
 	"OverridesFolder"=>"overrides"
 );
-
-
