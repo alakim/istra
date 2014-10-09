@@ -1,5 +1,7 @@
 ﻿<?php
 	
+	include 'doctype.php';
+	
 	$clearCache = isset($_REQUEST['clearcache']);
 	
 	if(isset($_REQUEST['p'])){
@@ -68,7 +70,7 @@
 		buildMenu();
 
 	if($page){
-		echo(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings));
+		echo(setDocType(xml2html($Settings["ContentFolder"]."/pages/".$page.".xml", $Settings["XsltFolder"]."/article.xslt", $xsltSettings)));
 	}
 
 ?>

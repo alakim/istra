@@ -1,4 +1,7 @@
 ﻿<?php
+	
+	include 'doctype.php';
+
 	echo('<h1>Publishing...</h1>');
 	
 	$xsltSettings = array(
@@ -15,7 +18,7 @@
 		$file = $sect->getAttribute("file");
 		$outFile = preg_replace('/xml$/i', "html", $file);
 		$html = xml2html($Settings["ContentFolder"]."/pages/".$file, $Settings["XsltFolder"]."/article.xslt", $xsltSettings);
-		
+		$html = setDocType($html);
 		file_put_contents($TargetFolder."/$outFile", $html);
 	}
 	
