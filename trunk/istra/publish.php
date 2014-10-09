@@ -14,11 +14,22 @@
 	$xpath = new DOMXpath($tocdoc);
 	$sections = $xpath->query('//section[@file]');
 	
+	function createPath($outFile){
+		global $TargetFolder;
+		$path = preg_replace('/[^\/]+$/i', '', $outFile);
+		if(strlen($path)>0){
+			$path = $TargetFolder."/".$path;
+			if(!file_exists($path)) mkdir($path);
+			
+		}
+	}
+	
 	foreach($sections as $sect){
 		$file = $sect->getAttribute("file");
 		$outFile = preg_replace('/xml$/i', "html", $file);
 		$html = xml2html($Settings["ContentFolder"]."/pages/".$file, $Settings["XsltFolder"]."/article.xslt", $xsltSettings);
 		$html = setDocType($html);
+		createPath($outFile);
 		file_put_contents($TargetFolder."/$outFile", $html);
 	}
 	
