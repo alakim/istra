@@ -45,6 +45,9 @@ span.selected{
 	float:left;
 	border-right:1px solid #ccc;
 }
+.mainPanel{
+	border-left:1px solid #ccc;
+}
 header{
 	background-color:#eef;
 	color:#008;
