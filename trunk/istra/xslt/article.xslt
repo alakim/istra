@@ -49,8 +49,12 @@
 		
 		<xsl:variable name="doc" select="document($menuPath)"/>
 		<ul>
-			<xsl:apply-templates select="$doc/menu/section" mode="menu"/>
+			<xsl:apply-templates select="$doc/menu/*" mode="menu"/>
 		</ul>
+	</xsl:template>
+	
+	<xsl:template match="link" mode="menu">
+		<li><a href="{@url}"><xsl:value-of select="@title"/></a></li>
 	</xsl:template>
 	
 	<xsl:template match="section" mode="menu">

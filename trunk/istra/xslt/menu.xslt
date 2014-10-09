@@ -8,14 +8,17 @@
 
 	<xsl:template match="/toc">
 		<menu>
-			<xsl:apply-templates select="section"/>
+			<xsl:apply-templates/>
 			<xsl:if test="@debug='true'">
-				<xsl:apply-templates select="section" mode="debug"/>
+				<xsl:apply-templates mode="debug"/>
 			</xsl:if>
 		</menu>
 	</xsl:template>
 	
 	
+	<xsl:template match="link">
+		<link url="{@url}" title="{@title}"/>
+	</xsl:template>
 	
 	<xsl:template match="section[@title]">
 		<section title="{@title}">
