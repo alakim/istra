@@ -1,0 +1,41 @@
+﻿body{
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+#menuPnl{
+	/*border-right: 1px solid #eee;*/
+}
+
+#menuPnl li a.current{
+	background-color:#ffc;
+}
+
+div.attention{
+	margin:5px;
+	margin-left:15px;
+	padding-left:5px;
+	border-left:8px solid red;
+}
+
+div.comment{
+	font-style:italic;
+	background-color:#eee;
+	padding:5px;
+	margin:15px;
+}
+
+span.selected{
+	font-weight: bold;
+	font-style:italic;
+}
+
+.todo{
+	background-color:#ff0;
+	color:#f00;
+	font-weight:bold;
+	padding:3px;
+}
+.debugInfo{
+	color:#f00;
+	background-color:#ff0;
+}
