@@ -31,7 +31,7 @@
 				<div class="leftMenu" style="width:{$menuWidth}px; min-height:{$minHeight}px; padding:{$padding}px;">
 					<xsl:call-template name="menu"/>
 				</div>
-				<div style="margin-left:{$menuWidth+$padding*2}px; padding:{$padding*2}px;">
+				<div class="mainPanel" style="margin-left:{$menuWidth+$padding*2}px; padding:{$padding*2}px;">
 					<h2><xsl:value-of select="@title"/></h2>
 					<xsl:apply-templates />
 				</div>
