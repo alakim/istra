@@ -20,7 +20,8 @@
 	
 	$xsltSettings = array(
 		"contentFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["ContentFolder"],
-		"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"]
+		"cacheFolder"=>"../".$Settings["ThisFolder"]."/".$Settings["CacheFolder"],
+		"jsFolder"=>$Settings["JSFolder"]
 	);
 		
 	function buildMenu(){

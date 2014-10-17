@@ -8,6 +8,7 @@
 	
 	<xsl:variable name="tocPath"><xsl:value-of select="/article/@contentFolder"/>/toc.xml</xsl:variable>
 	<xsl:variable name="menuPath"><xsl:value-of select="/article/@cacheFolder"/>/menu.xml</xsl:variable>
+	<xsl:variable name="jsPath"><xsl:value-of select="/article/@jsFolder"/></xsl:variable>
 	
 	<xsl:variable name="tocdoc" select="document($tocPath)"/>
 	<xsl:variable name="SiteTitle" select="$tocdoc/toc/@title"/>
@@ -23,8 +24,9 @@
 				<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 				<title><xsl:value-of select="$SiteTitle"/></title>
 				<link rel="stylesheet" type="text/css" href="styles.css"/>
-				<script type="text/javascript" src="js/lib/html.js"></script>
-				<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
+				<script type="text/javascript" src="{$jsPath}/lib/html.js"></script>
+				<script type="text/javascript" src="{$jsPath}/lib/jquery-1.11.0.min.js"></script>
+				<script type="text/javascript" src="{$jsPath}/menu.js"></script>
 				<xsl:choose>
 					<xsl:when test="$debugMode='true'">
 						<script type="text/javascript" src="js/debugView.js"></script>
