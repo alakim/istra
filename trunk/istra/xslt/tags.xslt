@@ -44,7 +44,7 @@
 						<xsl:otherwise><xsl:value-of select="$pageID"/></xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<span style="background-color:#ffe; padding:3px;"><xsl:value-of select="string-length($pageID)"/></span>
+				
 				<a href="?p={$pageRef}#{$sectID}"><xsl:apply-templates/></a>
 			</xsl:when>
 			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
