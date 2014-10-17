@@ -67,8 +67,13 @@
 	
 	<xsl:template match="section" mode="toc">
 		<li>
-			<xsl:variable name="sNum" select="count(preceding::section)"/>
-			<a href="#s{$sNum}">
+			<xsl:variable name="sectRef">
+				<xsl:choose>
+					<xsl:when test="@id"><xsl:value-of select="@id"/></xsl:when>
+					<xsl:otherwise>s<xsl:value-of select="count(preceding::section)"/></xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<a href="#{$sectRef}">
 				<xsl:value-of select="@title"/>
 				<xsl:if test="section">
 					<ol><xsl:apply-templates select="section" mode="toc"/></ol>

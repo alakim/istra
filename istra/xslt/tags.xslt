@@ -38,7 +38,14 @@
 			<xsl:when test="@sect">
 				<xsl:variable name="pageID" select="substring-before(@sect, '#')"/>
 				<xsl:variable name="sectID" select="substring-after(@sect, '#')"/>
-				<a href="/?p={$pageID}#{$sectID}"><xsl:apply-templates/></a>
+				<xsl:variable name="pageRef">
+					<xsl:choose>
+						<xsl:when test="string-length($pageID)=0"><xsl:value-of select="/article/@page"/></xsl:when>
+						<xsl:otherwise><xsl:value-of select="$pageID"/></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<span style="background-color:#ffe; padding:3px;"><xsl:value-of select="string-length($pageID)"/></span>
+				<a href="?p={$pageRef}#{$sectID}"><xsl:apply-templates/></a>
 			</xsl:when>
 			<xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
 		</xsl:choose>
