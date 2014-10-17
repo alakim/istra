@@ -3,14 +3,13 @@
 	include 'doctype.php';
 	
 	$clearCache = isset($_REQUEST['clearcache']);
+	$printMode = isset($_REQUEST['print']);
+	$debugMode = isset($_REQUEST['debug']);
 	
 	if(isset($_REQUEST['p'])){
 		$page = $_REQUEST["p"];
 	}
 	
-	if(isset($_REQUEST['debug'])){
-		$debugMode = true;
-	}
 	if(empty($page)){
 		$toc = new DOMDocument();
 		$toc->load($Settings["ContentFolder"]."/toc.xml");
@@ -33,7 +32,9 @@
 
 	function xml2html($xmlcontent, $xsl, $settings){
 		global $debugMode;
+		global $printMode;
 		global $Settings;
+		global $page;
 		
 		$xmlDoc = new DOMDocument();
 		$xmlDoc->load($xmlcontent);
@@ -41,6 +42,13 @@
 			$root = $xmlDoc->documentElement;
 			$root->setAttribute("debug", "true");
 		}
+		if($printMode){
+			$root = $xmlDoc->documentElement;
+			$root->setAttribute("print", "true");
+		}
+		
+		$root = $xmlDoc->documentElement;
+		$root->setAttribute("page", $page);
 		
 		foreach(array_keys($settings) as $k){
 			$v = $settings[$k];

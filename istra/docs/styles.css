@@ -3,6 +3,19 @@
 	margin: 0px;
 }
 
+h2,h3,h4,h5,h6{
+	background-color:#444;
+	color:#fff;
+	padding:5px;
+}
+
+h1{padding-left:0px;}
+h2{padding:10px 0 10px 5px; margin:0 0 10px 0;}
+h3{padding-left:40px;}
+h4{padding-left:80px;}
+h5{padding-left:100px;}
+h6{padding-left:120px;}
+
 #menuPnl{
 	/*border-right: 1px solid #eee;*/
 }

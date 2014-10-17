@@ -13,10 +13,15 @@
 	<xsl:variable name="SiteTitle" select="$tocdoc/toc/@title"/>
 
 	<xsl:template match="/article">
+		<xsl:variable name="menuWidth">350</xsl:variable>
+		<xsl:variable name="padding">5</xsl:variable>
+		<xsl:variable name="minHeight">700</xsl:variable>
+		<xsl:variable name="currentPage" select="@page"/>
 		
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+				<title><xsl:value-of select="$SiteTitle"/></title>
 				<link rel="stylesheet" type="text/css" href="styles.css"/>
 				<script type="text/javascript" src="js/lib/html.js"></script>
 				<script type="text/javascript" src="js/lib/jquery-1.11.0.min.js"></script>
@@ -29,22 +34,49 @@
 				</xsl:choose>
 			</head>
 			<body>
-				<h1><xsl:value-of select="$SiteTitle"/></h1>
-				<table border="0" cellpadding="3" cellspacing="0">
-					<tr>
-						<td width="300" id="menuPnl" valign="top">
-							<xsl:call-template name="menu"/>
-						</td>
-						<td valign="top">
-							<h2><xsl:value-of select="@title"/></h2>
-							<xsl:apply-templates />
-						</td>
-					</tr>
-				</table>
+				<xsl:if test="not(/article/@print='true')">
+					<header>
+						<h1><xsl:value-of select="$SiteTitle"/></h1>
+					</header>
+				</xsl:if>
+				<xsl:if test="not(/article/@print='true')">
+					<div class="leftMenu" style="width:{$menuWidth}px; min-height:{$minHeight}px; padding:{$padding}px;">
+						<xsl:call-template name="menu"/>
+						<p><a href="?print&amp;p={$currentPage}">Версия для печати</a></p>
+					</div>
+				</xsl:if>
+				<xsl:variable name="contentMargin">
+					<xsl:choose>
+						<xsl:when test="not(/article/@print='true')"><xsl:value-of select="$menuWidth+$padding*2"/></xsl:when>
+						<xsl:otherwise>0</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<div class="mainPanel" style="margin-left:{$contentMargin}px; padding:{$padding*2}px;">
+					<h2><xsl:value-of select="@title"/></h2>
+					<ol><xsl:apply-templates select="section" mode="toc"/></ol>
+					<xsl:apply-templates />
+				</div>
+				<div style="clear:left;"></div>
+
+				<xsl:if test="not(/article/@print='true')">
+					<footer>Istra Team <xsl:text disable-output-escaping="yes">&amp;copy;</xsl:text>2014</footer>
+				</xsl:if>
 			</body>
 		</html>
 	</xsl:template>
 	
+	<xsl:template match="section" mode="toc">
+		<li>
+			<xsl:variable name="sNum" select="count(preceding::section)"/>
+			<a href="#s{$sNum}">
+				<xsl:value-of select="@title"/>
+				<xsl:if test="section">
+					<ol><xsl:apply-templates select="section" mode="toc"/></ol>
+				</xsl:if>
+			</a>
+		</li>
+	</xsl:template>
+		
 	<xsl:template name="menu">
 		
 		<xsl:variable name="doc" select="document($menuPath)"/>
