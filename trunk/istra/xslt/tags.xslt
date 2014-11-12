@@ -71,6 +71,18 @@
 		<img src="{$registry/pictures/@baseUrl}/{$img/@file}"/>
 	</xsl:template>
 	
+	<xsl:template match="menu">
+		<span class="menuName"><xsl:apply-templates/></span>
+	</xsl:template>
+	
+	<xsl:template match="button">
+		<span class="buttonName"><xsl:apply-templates/></span>
+	</xsl:template>
+	
+	<xsl:template match="key">
+		<span class="keyName"><xsl:apply-templates/></span>
+	</xsl:template>
+	
 	<xsl:template match="list">
 		<xsl:variable name="tag">
 			<xsl:choose>
