@@ -108,7 +108,7 @@
 				<xsl:when test="@file or @anchor">
 					<a href="?p={$file}#{@anchor}"><xsl:value-of select="@title"/></a>
 				</xsl:when>
-				<xsl:otherwise><xsl:value-of select="@title"/></xsl:otherwise>
+				<xsl:otherwise><span class="menuSection"><xsl:value-of select="@title"/></span></xsl:otherwise>
 			</xsl:choose>
 			
 			<xsl:if test="section">

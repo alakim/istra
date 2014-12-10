@@ -73,3 +73,26 @@ footer{
 	border-top:1px solid #ccc; 
 	padding:10px;
 }
+
+.file{
+	font-family: Courier New, Monospace;
+}
+.code{
+	font-family: Courier New, Monospace;
+}
+
+.menuName{font-style:italic;}
+.menuName::before{content:'"'}
+.menuName::after{content:'"'}
+
+.buttonName{font-style:italic;}
+.buttonName::before{content:'['}
+.buttonName::after{content:']'}
+
+.keyName{font-style:italic;}
+.keyName::before{content:'<'}
+.keyName::after{content:'>'}
+
+.menuSection{
+	cursor:pointer;
+}
