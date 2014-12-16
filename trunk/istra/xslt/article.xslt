@@ -127,8 +127,14 @@
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="level" select="count(ancestor::section)+3"/>
+		<xsl:variable name="sNum" select="count(preceding-sibling::section)+1"/>
 		<a name="{$sID}"></a>
-		<xsl:element name="h{$level}"><xsl:value-of select="@title"/></xsl:element>
+		<xsl:element name="h{$level}">
+			<xsl:for-each select="ancestor-or-self::section">
+				<xsl:value-of select="count(preceding-sibling::section)+1"/>.
+			</xsl:for-each>
+			<xsl:value-of select="@title"/>
+		</xsl:element>
 		<xsl:apply-templates/>
 	</xsl:template>
 	
