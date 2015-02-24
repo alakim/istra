@@ -142,5 +142,24 @@
 		</div>
 	</xsl:template>
 	
+	<xsl:template match="table">
+		<xsl:if test="caption"><p><xsl:value-of select="caption/text()"/></p></xsl:if>
+		<table border="1" cellpadding="3" cellspacing="0"><xsl:apply-templates/></table>
+	</xsl:template>
+	<xsl:template match="tr"><tr><xsl:apply-templates/></tr></xsl:template>
+	<xsl:template match="th">
+		<th>
+			<xsl:if test="@colspan"><xsl:attribute name="colspan"><xsl:value-of select="@colspan"/></xsl:attribute></xsl:if>
+			<xsl:if test="@rowspan"><xsl:attribute name="rowspan"><xsl:value-of select="@rowspan"/></xsl:attribute></xsl:if>
+			<xsl:apply-templates/>
+		</th>
+	</xsl:template>
+	<xsl:template match="td">
+		<td>
+			<xsl:if test="@colspan"><xsl:attribute name="colspan"><xsl:value-of select="@colspan"/></xsl:attribute></xsl:if>
+			<xsl:if test="@rowspan"><xsl:attribute name="rowspan"><xsl:value-of select="@rowspan"/></xsl:attribute></xsl:if>
+			<xsl:apply-templates/>
+		</td>
+	</xsl:template>
 	
 </xsl:stylesheet>

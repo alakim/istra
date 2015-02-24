@@ -18,7 +18,7 @@
 			<li name="pict">вставка иллюстрации, заданной в реестре</li>
 			<li name="img">вставка графики в строку</li>
 			<li name="list">список</li>
-			<li name="caption">заголовок списка</li>
+			<li name="caption">заголовок списка или таблицы</li>
 			<li name="li">элемент списка</li>
 			<li name="sel">выделение</li>
 			<li name="strong">акцент</li>
@@ -32,6 +32,9 @@
 			<li name="menu">название меню</li>
 			<li name="button">название кнопки</li>
 			<li name="key">название клавиши</li>
+			<li name="table">таблица, может иметь вложенный тег <code>caption</code></li>
+			<li name="tr">строка таблицы</li>
+			<li name="th, td">ячейки таблицы, могут иметь атрибуты <code>colspan</code> и <code>rowspan</code></li>
 		</list>
 	</section>
 	<section title="Карта сайта">
