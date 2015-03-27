@@ -56,7 +56,7 @@
 	</xsl:template>
 	
 	
-	<xsl:template match="section" mode="menu">
+	<!--xsl:template match="section" mode="menu">
 		<xsl:variable name="file">
 			<xsl:choose>
 				<xsl:when test="@file"><xsl:value-of select="@file"/></xsl:when>
@@ -77,7 +77,7 @@
 				</ul>
 			</xsl:if>
 		</li>
-	</xsl:template>
+	</xsl:template-->
 
 	
 </xsl:stylesheet>
