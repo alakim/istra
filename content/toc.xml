@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<toc title="CMS Istra">
-	<section file="intro.xml"/>
-	<link url="istra/docs/" title="Документация"/>
-	<link url="demo/" title="Демо-версия сайта"/>
+<toc title="ОАО ИВЦ &quot;Мосстрой&quot;">
+	<section file="about.xml"/>
+	<section file="services.xml"/>
+	<section file="news.xml"/>
+	<section file="updates.xml"/>
+	<section file="contacts.xml"/>
 </toc>

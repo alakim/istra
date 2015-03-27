@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<pictures baseUrl="content/img">
-	<img id="saveIcon" file="save2.png">Пиктограмма кнопки сохранения данных</img>
-	<img id="saveIcon" file="folder_icon.jpg">Пиктограмма папки</img>
-	<pict id="earthView" file="earth.jpg">Вид Земли из космоса</pict>
-	<pict id="iss" file="iss.jpg">Международная космическая станция</pict>
-</pictures>
