@@ -1,0 +1,169 @@
+﻿@font-face {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: url('http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-bold-webfont.eot');
+    src: url('http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-bold-webfont.eot?#iefix') format('embedded-opentype'),
+    url('http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-bold-webfont.woff') format('woff'),
+    url('http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-bold-webfont.ttf') format('truetype'),
+    url('http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-bold-webfont.svg#open_sansregular') format('svg');
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  src: url("http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-regular-webfont.eot?#iefix") format("embedded-opentype"), url("http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-regular-webfont.woff") format("woff"), url("http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-regular-webfont.ttf") format("truetype"), url("http://static.wix.com/services/third-party/fonts/user-site-fonts/fonts/open-source/opensans-regular-webfont.svg#open_sansregular") format("svg");
+}
+
+body{
+	font-family: Verdana, Arial, Sans-Serif;
+	margin: 0px;
+	background: #E3E3E3;
+}
+
+h2,h3,h4,h5,h6{
+	background-color:#444;
+	color:#fff;
+	padding:5px;
+}
+
+h1{padding-left:0px;}
+h2{padding:10px 0 10px 5px; margin:0 0 10px 0;}
+h3{padding-left:40px;}
+h4{padding-left:80px;}
+h5{padding-left:100px;}
+h6{padding-left:120px;}
+
+div.attention{
+	margin:5px;
+	margin-left:15px;
+	padding-left:5px;
+	border-left:8px solid red;
+}
+
+div.comment{
+	font-style:italic;
+	background-color:#eee;
+	padding:5px;
+	margin:15px;
+}
+
+span.selected{
+	font-weight: bold;
+	font-style:italic;
+}
+
+.todo{
+	background-color:#ff0;
+	color:#f00;
+	font-weight:bold;
+	padding:3px;
+}
+.debugInfo{
+	color:#f00;
+	background-color:#ff0;
+}
+nav{background:#fff;}
+.topMenu{
+	background: #fff;
+	margin:0;
+	padding:0;
+	font-family: 'Open sans', sans-serif;
+	font-size: 16px;
+	font-weight:700;
+}
+.topMenu ul{
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+.topMenu li{
+	float: left;
+	padding:15px 50px 15px 50px;
+}
+.topMenu li:hover{
+	background-color:#608AC0;
+	color:#fff;
+}
+.topMenu li:hover a{color:#fff;}
+.topMenu a:link{text-decoration: none; color:#004ABE;}
+.topMenu a:visited{text-decoration: none; color:#004ABE;}
+.topMenu a:hover{text-decoration: none; color:#fff;}
+
+.topMenu li:hover .subMenu a{color:#004ABE;}
+.topMenu li:hover .subMenu a:hover{color:#fff;}
+
+.topMenu .subMenu{
+	display:block;
+	position:absolute;
+	top:138px;
+}
+.topMenu .subMenu{
+	background:#fff;
+	color: #004ABE;
+	margin-left:-50px;
+}
+.topMenu .subMenu li{
+	float:none;
+	background:#E3E3E3;
+	color: #004ABE;
+	margin:1px;
+}
+.subMenu li:hover{
+	background-color:#608AC0;
+	color:#fff;
+}
+.subMenu li:hover a{color:#fff;}
+.subMenu a:link{text-decoration: none; color:#004ABE;}
+.subMenu a:visited{text-decoration: none; color:#004ABE;}
+.subMenu a:hover{text-decoration: none; color:#fff;}
+
+.mainPanel{
+	background: #fff;
+	padding: 15px 15px 25px 15px;
+	min-height: calc(100vh - 250px);
+}
+.pagewidth{
+	width: 960px;
+	margin: 0 auto 0 auto;
+}
+
+header{
+	background-color:#004AAB;
+	color:#008;
+	margin: 0px;
+	padding:0;
+	height: 86px;
+}
+header .logo{
+	float: left;
+	padding: 16px 0 0 0;
+}
+header .phones{
+	float:right;
+	font-family: 'Open sans', sans-serif;
+	font-size: 24px;
+	font-weight:700;
+	line-height: 31.2000007629395px;
+	text-align: right;
+	color:#FFFFFF;
+	padding: 10px 0 0 0;
+}
+header p{
+	margin:0;
+	padding:0;
+}
+footer{
+	height: 37px;
+	text-align:left; 
+	border-top:1px solid #ccc; 
+	padding:10px;
+	background: #004AAB;
+	color: #fff;
+	margin: 10px 0 0 0;
+	font-family: 'Open sans', sans-serif;
+	font-size: 12px;
+	font-weight:400;
+}
+footer .pagewidth{padding-top:8px;}
+
