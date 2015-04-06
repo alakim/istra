@@ -5,29 +5,29 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using System.Xml;
-using System.Xml.Xsl;
-using System.Configuration;
-using System.Collections.Specialized;
+//using System.Xml;
+//using System.Xml.Xsl;
+//using System.Configuration;
+//using System.Collections.Specialized;
 
 namespace Istra {
 	/// <summary>Веб-страница</summary>
 	public class WebPage : System.Web.UI.Page {
-		/// <summary>Директори приложения</summary>
-		private string rootDir;
-		/// <summary>Директория для размещения конетента</summary>
-		private string contentDir;
-		/// <summary>Директория для размещения кэша</summary>
-		private string cacheDir;
-		/// <summary>Директория для размещения XSLT-преобразований</summary>
-		private string xsltDir;
+		///// <summary>Директори приложения</summary>
+		//private string rootDir;
+		///// <summary>Директория для размещения конетента</summary>
+		//private string contentDir;
+		///// <summary>Директория для размещения кэша</summary>
+		//private string cacheDir;
+		///// <summary>Директория для размещения XSLT-преобразований</summary>
+		//private string xsltDir;
 
 		protected override void Render(System.Web.UI.HtmlTextWriter writer) {
-			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/XsltSettings");
-			rootDir = settings["rootDir"].ToString();
-			contentDir = settings["contentDir"].ToString();
-			cacheDir = settings["cacheDir"].ToString();
-			xsltDir = settings["xsltDir"].ToString();
+			// NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/XsltSettings");
+			// rootDir = settings["rootDir"].ToString();
+			// contentDir = settings["contentDir"].ToString();
+			// cacheDir = settings["cacheDir"].ToString();
+			// xsltDir = settings["xsltDir"].ToString();
 
 			BuildMenu();
 
@@ -40,15 +40,17 @@ namespace Istra {
 
 
 		public void BuildMenu() {
-			string filePath = rootDir + @"\" + cacheDir + @"\menu.xml";
-			File.Delete(filePath);
+			MenuDataSource menu = new MenuDataSource();
+			menu.Build();
+			//string filePath = rootDir + @"\" + cacheDir + @"\menu.xml";
+			//File.Delete(filePath);
 
-			Dictionary<string, string> settings = new Dictionary<string, string>();
-			settings["contentFolder"] = rootDir + @"\" + contentDir;
+			//Dictionary<string, string> settings = new Dictionary<string, string>();
+			//settings["contentFolder"] = rootDir + @"\" + contentDir;
 
-			StreamWriter wrt = new StreamWriter(filePath);
-			TransformDocument(@"\" + contentDir + @"\toc.xml", @"\" + xsltDir + @"\menu.xslt", settings, wrt);
-			wrt.Close();
+			//StreamWriter wrt = new StreamWriter(filePath);
+			//TransformDocument(@"\" + contentDir + @"\toc.xml", @"\" + xsltDir + @"\menu.xslt", settings, wrt);
+			//wrt.Close();
 		}
 
 		private static Regex reHeader = new Regex(@"<html[^>]*>", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -71,54 +73,20 @@ namespace Istra {
 		/// <param name="pageName">имя веб-страницы</param>
 		/// <param name="tWriter">компонент вывода данных</param>
 		private void BuildPage(string pageName, TextWriter tWriter) {
+			SiteSettings sSettings = new SiteSettings();
 			Dictionary<string, string> settings = new Dictionary<string, string>();
-			settings["contentFolder"] = rootDir + @"\" + contentDir;
-			settings["cacheFolder"] = rootDir + @"\" + cacheDir;
+			settings["contentFolder"] = sSettings.RootDir + @"\" + sSettings.ContentDir;
+			settings["cacheFolder"] = sSettings.RootDir + @"\" + sSettings.CacheDir;
 			settings["jsFolder"] = "/js";
 			settings["cssFolder"] = "/";
 
-			TransformDocument(
-				@"\" + contentDir + @"\pages\" + pageName + ".xml",
-				@"\" + xsltDir + @"\article.xslt",
+			XsltProcessor xslt = new XsltProcessor();
+			xslt.TransformDocument(
+				@"\" + sSettings.ContentDir + @"\pages\" + pageName + ".xml",
+				@"\" + sSettings.XsltDir + @"\article.xslt",
 				settings,
 				tWriter
 			);
-		}
-
-		/// <summary>Преобразует XML-документ</summary>
-		/// <param name="srcPath">исходный документ</param>
-		/// <param name="xsltPath">XSLT-преобразование</param>
-		/// <param name="tWriter">компонен вывода данных</param>
-		private void TransformDocument(string srcPath, string xsltPath, TextWriter tWriter) {
-			TransformDocument(srcPath, xsltPath, null, tWriter);
-		}
-
-		/// <summary>Преобразует XML-документ</summary>
-		/// <param name="srcPath">исходный документ</param>
-		/// <param name="xsltPath">XSLT-преобразование</param>
-		/// <param name="settings">дополнительные настройки преобразования</param>
-		/// <param name="tWriter">компонент вывода данных</param>
-		private void TransformDocument(string srcPath, string xsltPath, Dictionary<string, string> settings, TextWriter tWriter) {
-			XsltSettings xSettings = new XsltSettings();
-			xSettings.EnableDocumentFunction = true;
-
-			XmlDocument xmlDoc = new XmlDocument();
-			xmlDoc.Load(rootDir + srcPath);
-
-			XmlElement root = xmlDoc.DocumentElement;
-
-			if (settings != null) {
-				foreach (string k in settings.Keys) {
-					root.SetAttribute(k, settings[k]);
-				}
-			}
-
-			XslCompiledTransform xslt = new XslCompiledTransform();
-			xslt.Load(rootDir + xsltPath, xSettings, new XmlUrlResolver());
-
-			XsltArgumentList xArg = new XsltArgumentList();
-			XmlWriter xwrt = XmlWriter.Create(tWriter);
-			xslt.Transform(xmlDoc, xArg, tWriter /*xwrt, new UrlResolver()*/);
 		}
 
 	}
