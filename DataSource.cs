@@ -15,8 +15,15 @@ namespace Istra {
 		protected string cachedFile;
 
 		/// <summary>Формирует кэшированный файл данных</summary>
-		public virtual void Build() {
+		public virtual bool Build() {
+			DateTime time = File.GetCreationTime(FilePath);
+			TimeSpan diff = DateTime.Now - time;
+			double sec = diff.TotalSeconds;
+			if (sec < SiteSettings.Current.CacheTime)
+				return false;
+			
 			ClearCache();
+			return true;
 		}
 
 		public static void RefreshSources() {
@@ -34,8 +41,6 @@ namespace Istra {
 
 		/// <summary>Удаляет кэшированные данные</summary>
 		protected void ClearCache() {
-			//SiteSettings sSettings = new SiteSettings();
-			//string filePath = sSettings.RootDir + @"\" + sSettings.CacheDir + @"\"+cachedFile;
 			File.Delete(FilePath);
 		}
 
