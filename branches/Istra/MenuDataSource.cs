@@ -12,8 +12,8 @@ namespace Istra {
 		}
 
 		/// <summary>Формирует кэшированный файл данных</summary>
-		public override void Build() {
-			base.Build();
+		public override bool Build() {
+			if (!base.Build()) return false;
 
 			Dictionary<string, string> trSettings = new Dictionary<string, string>();
 
@@ -23,6 +23,7 @@ namespace Istra {
 				XsltProcessor xslt = new XsltProcessor();
 				xslt.TransformDocument(@"\" + SiteSettings.Current.ContentDir + @"\toc.xml", @"\" + SiteSettings.Current.XsltDir + @"\menu.xslt", trSettings, wrt);
 			}
+			return true;
 		}
 
 	}
