@@ -24,12 +24,11 @@ namespace Istra {
 		/// <param name="settings">дополнительные настройки преобразования</param>
 		/// <param name="tWriter">компонент вывода данных</param>
 		public void TransformDocument(string srcPath, string xsltPath, Dictionary<string, string> settings, TextWriter tWriter) {
-			SiteSettings sSettings = new SiteSettings();
 			XsltSettings xSettings = new XsltSettings();
 			xSettings.EnableDocumentFunction = true;
 
 			XmlDocument xmlDoc = new XmlDocument();
-			xmlDoc.Load(sSettings.RootDir + srcPath);
+			xmlDoc.Load(SiteSettings.Current.RootDir + srcPath);
 
 			XmlElement root = xmlDoc.DocumentElement;
 
@@ -40,7 +39,7 @@ namespace Istra {
 			}
 
 			XslCompiledTransform xslt = new XslCompiledTransform();
-			xslt.Load(sSettings.RootDir + xsltPath, xSettings, new XmlUrlResolver());
+			xslt.Load(SiteSettings.Current.RootDir + xsltPath, xSettings, new XmlUrlResolver());
 
 			XsltArgumentList xArg = new XsltArgumentList();
 			XmlWriter xwrt = XmlWriter.Create(tWriter);
