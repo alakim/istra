@@ -8,6 +8,15 @@ namespace Istra {
 	/// <summary>Настройки сайта</summary>
 	class SiteSettings {
 
+		/// <summary>Возвращает текущие настройки</summary>
+		public static SiteSettings Current {
+			get {
+				if (instance == null)
+					instance = new SiteSettings();
+				return instance;
+			}
+		}
+
 		/// <summary>Директори приложения</summary>
 		public string RootDir{get{return rootDir;}}
 		/// <summary>Директория для размещения конетента</summary>
@@ -16,14 +25,22 @@ namespace Istra {
 		public string CacheDir { get { return cacheDir; } }
 		/// <summary>Директория для размещения XSLT-преобразований</summary>
 		public string XsltDir { get { return xsltDir; } }
+		/// <summary>Интервал кэширования по умолчанию (сек)</summary>
+		public int CacheTime { get { return cacheTime; } }
+		/// <summary>Настройки источников данных</summary>
+		public DataSourceDefinition[] Sources { get { return sources; } }
 
-		/// <summary>Конструктор</summary>
-		public SiteSettings() {
+		/// <summary>Закрытый конструктор</summary>
+		private SiteSettings() {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/XsltSettings");
 			rootDir = settings["rootDir"].ToString();
 			contentDir = settings["contentDir"].ToString();
 			cacheDir = settings["cacheDir"].ToString();
 			xsltDir = settings["xsltDir"].ToString();
+			cacheTime = Int32.Parse(settings["cacheTime"]);
+
+			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
+
 
 		}
 
@@ -35,6 +52,13 @@ namespace Istra {
 		private string cacheDir;
 		/// <summary>Директория для размещения XSLT-преобразований</summary>
 		private string xsltDir;
+		/// <summary>Интервал кэширования по умолчанию (сек)</summary>
+		private int cacheTime;
+		/// <summary>Настройки источников данных</summary>
+		private DataSourceDefinition[] sources;
+
+		/// <summary>Текущие настройки</summary>
+		private static SiteSettings instance;
 
 	}
 }

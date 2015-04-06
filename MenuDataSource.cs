@@ -6,19 +6,23 @@ using System.IO;
 namespace Istra {
 	/// <summary>Меню сайта</summary>
 	class MenuDataSource : DataSource {
+		/// <summary>Конструктор</summary>
+		public MenuDataSource() {
+			cachedFile = "menu.xml";
+		}
 
-		public void Build() {
-			SiteSettings sSettings = new SiteSettings();
-			string filePath = sSettings.RootDir + @"\" + sSettings.CacheDir + @"\menu.xml";
-			File.Delete(filePath);
+		/// <summary>Формирует кэшированный файл данных</summary>
+		public override void Build() {
+			base.Build();
 
 			Dictionary<string, string> trSettings = new Dictionary<string, string>();
-			trSettings["contentFolder"] = sSettings.RootDir + @"\" + sSettings.ContentDir;
 
-			StreamWriter wrt = new StreamWriter(filePath);
-			XsltProcessor xslt = new XsltProcessor();
-			xslt.TransformDocument(@"\" + sSettings.ContentDir + @"\toc.xml", @"\" + sSettings.XsltDir + @"\menu.xslt", trSettings, wrt);
-			wrt.Close();
+			trSettings["contentFolder"] = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir;
+
+			using (StreamWriter wrt = OpenFileStream()) {
+				XsltProcessor xslt = new XsltProcessor();
+				xslt.TransformDocument(@"\" + SiteSettings.Current.ContentDir + @"\toc.xml", @"\" + SiteSettings.Current.XsltDir + @"\menu.xslt", trSettings, wrt);
+			}
 		}
 
 	}
