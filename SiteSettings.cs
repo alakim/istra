@@ -27,6 +27,8 @@ namespace Istra {
 		public string XsltDir { get { return xsltDir; } }
 		/// <summary>Интервал кэширования по умолчанию (сек)</summary>
 		public int CacheTime { get { return cacheTime; } }
+		/// <summary>Страница по умолчанию</summary>
+		public string DefaultPage { get { return defaultPage; } }
 		/// <summary>Настройки источников данных</summary>
 		public DataSourceDefinition[] Sources { get { return sources; } }
 
@@ -38,6 +40,7 @@ namespace Istra {
 			cacheDir = settings["cacheDir"].ToString();
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
+			defaultPage = settings["defaultPage"].ToString();
 
 			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
 
@@ -54,6 +57,8 @@ namespace Istra {
 		private string xsltDir;
 		/// <summary>Интервал кэширования по умолчанию (сек)</summary>
 		private int cacheTime;
+		/// <summary>Страница по умолчанию</summary>
+		private string defaultPage;
 		/// <summary>Настройки источников данных</summary>
 		private DataSourceDefinition[] sources;
 
