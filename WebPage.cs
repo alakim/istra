@@ -10,7 +10,7 @@ namespace Istra {
 	public class WebPage : System.Web.UI.Page {
 
 		protected override void Render(System.Web.UI.HtmlTextWriter writer) {
-			DataSource.RefreshSources();
+			DataSource.RefreshSources(Context);
 
 			string pageNm = Request["p"];
 			if (pageNm == null || pageNm.Length < 1) pageNm = "about";
