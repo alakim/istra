@@ -13,7 +13,7 @@ namespace Istra {
 			DataSource.RefreshSources(Context);
 
 			string pageNm = Request["p"];
-			if (pageNm == null || pageNm.Length < 1) pageNm = "about";
+			if (pageNm == null || pageNm.Length < 1) pageNm = SiteSettings.Current.DefaultPage;
 
 			string html = BuildPage(pageNm);
 			writer.Write(html);
