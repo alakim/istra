@@ -10,6 +10,6 @@ namespace Istra {
 		/// <summary>Добавляет результат запроса к заданному документу</summary>
 		/// <param name="doc">целевой документ</param>
 		/// <param name="context">контекст веб-приложения</param>
-		void Apply(XmlDocument doc, HttpContext context);
+		void Apply(XmlDocument doc, XmlElement xQuery, HttpContext context);
 	}
 }

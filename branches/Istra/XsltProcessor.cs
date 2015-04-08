@@ -47,7 +47,7 @@ namespace Istra {
 				Type t = Type.GetType(queryType);
 				ConstructorInfo cInf = t.GetConstructor(new Type[0]);
 				IQuery query = (IQuery)cInf.Invoke(new object[0]);
-				query.Apply(xmlDoc, null);
+				query.Apply(xmlDoc, xQ, null);
 			}
 
 			XslCompiledTransform xslt = new XslCompiledTransform();
