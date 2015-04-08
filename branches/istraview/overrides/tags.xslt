@@ -9,4 +9,18 @@
 	
 	
 	
+	
+	<xsl:template match="news">
+		<h3>NEWS LIST</h3>
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="message">
+		<p>
+			<xsl:value-of select="@date"/>: 
+			<xsl:value-of select="@title"/>
+		</p>
+	</xsl:template>
+	
+	
 </xsl:stylesheet>
