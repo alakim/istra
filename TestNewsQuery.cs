@@ -8,9 +8,10 @@ namespace istraview {
 		/// <summary>Добавляет результат запроса к заданному документу</summary>
 		/// <param name="doc">целевой документ</param>
 		/// <param name="context">контекст веб-приложения</param>
-		public void Apply(XmlDocument doc, HttpContext context) {
+		public void Apply(XmlDocument doc, XmlElement xQuery, HttpContext context) {
 			XmlElement newsRoot = doc.CreateElement("news");
-			doc.DocumentElement.AppendChild(newsRoot);
+			doc.DocumentElement.InsertAfter(newsRoot, xQuery);
+			doc.DocumentElement.RemoveChild(xQuery);
 
 			for (int i = 0; i < 5; i++) {
 				XmlElement msg = doc.CreateElement("message");
