@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSource.cs" />
+    <Compile Include="IQuery.cs" />
     <Compile Include="XmlFileDataSource.cs" />
     <Compile Include="SiteSettings.cs" />
     <Compile Include="WebPage.cs">

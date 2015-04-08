@@ -5,6 +5,7 @@ using System.IO;
 
 using System.Xml;
 using System.Xml.Xsl;
+using System.Reflection;
 
 namespace Istra {
 	/// <summary>Выполняет XSLT-преобразование</summary>
@@ -36,6 +37,17 @@ namespace Istra {
 				foreach (string k in settings.Keys) {
 					root.SetAttribute(k, settings[k]);
 				}
+			}
+
+			XmlNamespaceManager nsmng = new XmlNamespaceManager(xmlDoc.NameTable);
+			nsmng.AddNamespace("istra", "http://www.istra.com/cms");
+			XmlNodeList queries = xmlDoc.SelectNodes("//istra:query", nsmng);
+			foreach (XmlElement xQ in queries) {
+				string queryType = xQ.Attributes.GetNamedItem("type").Value;
+				Type t = Type.GetType(queryType);
+				ConstructorInfo cInf = t.GetConstructor(new Type[0]);
+				IQuery query = (IQuery)cInf.Invoke(new object[0]);
+				query.Apply(xmlDoc, null);
 			}
 
 			XslCompiledTransform xslt = new XslCompiledTransform();
