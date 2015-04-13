@@ -34,4 +34,24 @@
 	</xsl:template>
 	
 	
+	<xsl:template match="AuthDialog">
+		<form action="{@target}" method="post">
+			<div style="border:1px solid #ccc; padding:5px; margin:5px; width:290px; height:100px;">
+				<div>Логин: <input type="text" name="login"/></div>
+				<div>Пароль: <input type="password" name="password"/></div>
+				<div><input type="submit" value="Ввод"/></div>
+			</div>
+		</form>
+	</xsl:template>
+	
+	
+	
+	<xsl:template match="error">
+		<div style="border:1px solid #f00; padding:5px; margin:5px; width:800px; background-color:#ffe; color:#f00;">
+			<p style="font-weight:bold;">Ошибка приложения</p>
+			<xsl:apply-templates/>
+		</div>
+	</xsl:template>
+	
+	
 </xsl:stylesheet>
