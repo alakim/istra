@@ -23,4 +23,15 @@
 	</xsl:template>
 	
 	
+	<xsl:template match="session">
+		<ul>
+			<xsl:apply-templates mode="sessionView"/>
+		</ul>
+		<p>Всего <xsl:value-of select="count(*)"/> параметров.</p>
+	</xsl:template>
+	<xsl:template match="param" mode="sessionView">
+		<li><xsl:value-of select="@name"/>: <xsl:value-of select="@value"/></li>
+	</xsl:template>
+	
+	
 </xsl:stylesheet>

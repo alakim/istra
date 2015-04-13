@@ -2,4 +2,6 @@
 <article title="Новости" xmlns:istra="http://www.istra.com/cms">
 	<istra:query type="istraview.TestNewsQuery,istraview"/>
 	<p>Это все</p>
+	<h2>Состояние сессии</h2>
+	<istra:query type="Istra.SessionQuery"/>
 </article>

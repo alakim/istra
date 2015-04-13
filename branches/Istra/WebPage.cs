@@ -46,7 +46,7 @@ namespace Istra {
 			settings["jsFolder"] = "/js";
 			settings["cssFolder"] = "/";
 
-			XsltProcessor xslt = new XsltProcessor();
+			XsltProcessor xslt = new XsltProcessor(Context);
 			xslt.TransformDocument(
 				@"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml",
 				@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",

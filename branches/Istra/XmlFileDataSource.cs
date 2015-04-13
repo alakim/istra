@@ -25,7 +25,7 @@ namespace Istra {
 			trSettings["contentFolder"] = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir;
 
 			using (StreamWriter wrt = OpenFileStream()) {
-				XsltProcessor xslt = new XsltProcessor();
+				XsltProcessor xslt = new XsltProcessor(context);
 				xslt.TransformDocument(@"\" + SiteSettings.Current.ContentDir + @"\"+fileName, @"\" + SiteSettings.Current.XsltDir + @"\"+xsltName, trSettings, wrt);
 			}
 			return true;
