@@ -15,19 +15,14 @@ namespace istraview {
 
 			for (int i = 0; i < 5; i++) {
 				XmlElement msg = doc.CreateElement("message");
-				AddAttribute(doc, msg, "date", "2015.03."+(10+i));
-				AddAttribute(doc, msg, "title", "Новость №"+(i+1));
+				Istra.XmlUtility.AddAttribute(doc, msg, "date", "2015.03." + (10 + i));
+				Istra.XmlUtility.AddAttribute(doc, msg, "title", "Новость №" + (i + 1));
 				newsRoot.AppendChild(msg);
 			}
 		}
 
 
 
-		private void AddAttribute(XmlDocument doc, XmlElement node, string name, string val) {
-			XmlAttribute att = doc.CreateAttribute(name);
-			att.Value = val;
-			node.Attributes.Append(att);
-		}
 
 	}
 }
