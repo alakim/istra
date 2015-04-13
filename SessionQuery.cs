@@ -12,8 +12,8 @@ namespace Istra {
 		/// <param name="context">контекст веб-приложения</param>
 		public void Apply(XmlDocument doc, XmlElement xQuery, HttpContext context) {
 			XmlElement sessionRoot = doc.CreateElement("session");
-			doc.DocumentElement.InsertAfter(sessionRoot, xQuery);
-			doc.DocumentElement.RemoveChild(xQuery);
+			xQuery.ParentNode.InsertAfter(sessionRoot, xQuery);
+			xQuery.ParentNode.RemoveChild(xQuery);
 
 			foreach (string key in context.Session.Keys) {
 				XmlElement param = doc.CreateElement("param");
