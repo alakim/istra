@@ -10,8 +10,8 @@ namespace istraview {
 		/// <param name="context">контекст веб-приложения</param>
 		public void Apply(XmlDocument doc, XmlElement xQuery, HttpContext context) {
 			XmlElement newsRoot = doc.CreateElement("news");
-			doc.DocumentElement.InsertAfter(newsRoot, xQuery);
-			doc.DocumentElement.RemoveChild(xQuery);
+			xQuery.ParentNode.InsertAfter(newsRoot, xQuery);
+			xQuery.ParentNode.RemoveChild(xQuery);
 
 			for (int i = 0; i < 5; i++) {
 				XmlElement msg = doc.CreateElement("message");
