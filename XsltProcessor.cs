@@ -6,10 +6,17 @@ using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
 using System.Reflection;
+using System.Web;
 
 namespace Istra {
 	/// <summary>Выполняет XSLT-преобразование</summary>
 	class XsltProcessor {
+
+		/// <summary>Конструктор</summary>
+		/// <param name="context">контекст веб-приложения</param>
+		public XsltProcessor(HttpContext context) {
+			this.context = context;
+		}
 
 		/// <summary>Преобразует XML-документ</summary>
 		/// <param name="srcPath">исходный документ</param>
@@ -47,7 +54,7 @@ namespace Istra {
 				Type t = Type.GetType(queryType);
 				ConstructorInfo cInf = t.GetConstructor(new Type[0]);
 				IQuery query = (IQuery)cInf.Invoke(new object[0]);
-				query.Apply(xmlDoc, xQ, null);
+				query.Apply(xmlDoc, xQ, context);
 			}
 
 			XslCompiledTransform xslt = new XslCompiledTransform();
@@ -58,5 +65,8 @@ namespace Istra {
 			xslt.Transform(xmlDoc, xArg, tWriter /*xwrt, new UrlResolver()*/);
 		}
 
+
+		/// <summary>Контекст веб-приложения</summary>
+		private HttpContext context;
 	}
 }
