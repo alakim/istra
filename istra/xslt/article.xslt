@@ -144,4 +144,16 @@
 	<xsl:include href="../../overrides/tags.xslt"/>
 	<xsl:include href="../../overrides/templates.xslt"/>
 	
+	<xsl:template match="*">
+		<div style="border:1px solid #f00; padding:3px; background-color:#ffe; color:#f00;">
+			<p>Unknown Tag '<xsl:value-of select="name()"/>'</p>
+			<p>Attributes:</p>
+			<ul>
+				<xsl:for-each select="@*">
+					<li><xsl:value-of select="name()"/> = '<xsl:value-of select="."/>'</li>
+				</xsl:for-each>
+			</ul>
+		</div>
+	</xsl:template>
+	
 </xsl:stylesheet>
