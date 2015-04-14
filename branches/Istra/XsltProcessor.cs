@@ -52,6 +52,7 @@ namespace Istra {
 			foreach (XmlElement xQ in queries) {
 				string queryType = xQ.Attributes.GetNamedItem("type").Value;
 				Type t = Type.GetType(queryType);
+				if(t==null) throw new ApplicationException("Class '"+queryType+"' is not defined.");
 				ConstructorInfo cInf = t.GetConstructor(new Type[0]);
 				IQuery query = (IQuery)cInf.Invoke(new object[0]);
 				query.Apply(xmlDoc, xQ, context);
