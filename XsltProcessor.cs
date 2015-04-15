@@ -32,11 +32,20 @@ namespace Istra {
 		/// <param name="settings">дополнительные настройки преобразования</param>
 		/// <param name="tWriter">компонент вывода данных</param>
 		public void TransformDocument(string srcPath, string xsltPath, Dictionary<string, string> settings, TextWriter tWriter) {
-			XsltSettings xSettings = new XsltSettings();
-			xSettings.EnableDocumentFunction = true;
 
 			XmlDocument xmlDoc = new XmlDocument();
 			xmlDoc.Load(SiteSettings.Current.RootDir + srcPath);
+			TransformDocument(xmlDoc, xsltPath, settings, tWriter);
+		}
+
+		/// <summary>Преобразует XML-документ</summary>
+		/// <param name="xmlDoc">исходный документ</param>
+		/// <param name="xsltPath">XSLT-преобразование</param>
+		/// <param name="settings">дополнительные настройки преобразования</param>
+		/// <param name="tWriter">компонент вывода данных</param>
+		public void TransformDocument(XmlDocument xmlDoc, string xsltPath, Dictionary<string, string> settings, TextWriter tWriter) {
+			XsltSettings xSettings = new XsltSettings();
+			xSettings.EnableDocumentFunction = true;
 
 			XmlElement root = xmlDoc.DocumentElement;
 

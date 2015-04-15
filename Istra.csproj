@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSource.cs" />
+    <Compile Include="DirectoryDataSource.cs" />
     <Compile Include="HttpRequestQuery.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="SessionQuery.cs" />

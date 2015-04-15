@@ -42,6 +42,7 @@ namespace Istra {
 
 		/// <summary>Удаляет кэшированные данные</summary>
 		protected void ClearCache() {
+			if (!File.Exists(FilePath)) return;
 			File.Delete(FilePath);
 		}
 
