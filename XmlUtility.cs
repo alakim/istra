@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using System.Collections.Specialized;
 
 namespace Istra {
 	/// <summary>Утилита для работы с XML-документами</summary>
@@ -17,6 +18,31 @@ namespace Istra {
 			node.Attributes.Append(att);
 		}
 
+
+		/// <summary>Возвращает таблицу атрибутов заданного XML-элемента</summary>
+		/// <param name="el">XML-элемент</param>
+		public static StringDictionary GetAttributes(XmlElement el) {
+			return GetAttributes(el, null);
+		}
+
+		/// <summary>Возвращает таблицу атрибутов заданного XML-элемента</summary>
+		/// <param name="el">XML-элемент</param>
+		/// <param name="exclusions">имена атрибутов, исключаемых из коллекции (перечисляются через запятую)</param>
+		public static StringDictionary GetAttributes(XmlElement el, string exclusions) {
+			Dictionary<string, bool> dExclusions = new Dictionary<string, bool>();
+			if (exclusions != null) {
+				foreach(string k in exclusions.Split(",".ToCharArray())){
+					dExclusions[k] = true;
+				}
+			}
+			StringDictionary res = new StringDictionary();
+			foreach (XmlNode att in el.Attributes) {
+				if(!dExclusions.ContainsKey(att.Name))
+					res[att.Name] = att.Value;
+			}
+			return res;
+		}
+
 		/// <summary>Добавляет к документу сообщение об ошибке</summary>
 		/// <param name="doc">XML-документ</param>
 		/// <param name="message">сообщение об ошибке</param>
@@ -25,5 +51,8 @@ namespace Istra {
 			doc.DocumentElement.AppendChild(err);
 			err.InnerText = message;
 		}
+
+		/// <summary>Пространство имен для XML-элементов</summary>
+		public const string IstraNamespace = "http://www.istra.com/cms";
 	}
 }

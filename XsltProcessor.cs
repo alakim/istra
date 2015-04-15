@@ -47,7 +47,7 @@ namespace Istra {
 			}
 
 			XmlNamespaceManager nsmng = new XmlNamespaceManager(xmlDoc.NameTable);
-			nsmng.AddNamespace("istra", "http://www.istra.com/cms");
+			nsmng.AddNamespace("istra", XmlUtility.IstraNamespace);
 			XmlNodeList queries = xmlDoc.SelectNodes("//istra:query", nsmng);
 			foreach (XmlElement xQ in queries) {
 				string queryType = xQ.Attributes.GetNamedItem("type").Value;
