@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dir name="news" xmlns:istra="http://www.istra.com/cms">
-  <file name="n1.xml" />
-  <file name="n2.xml" />
-  <dir name="standards">
-    <file name="n3.xml" />
-  </dir>
-</dir>
+<directory name="news">
+  <file name="n1.xml">
+    <newsArticle title="Новая версия CMS Istra">
+      <p>Выпущена новая версия CMS Istra v.1.01. </p>
+    </newsArticle>
+  </file>
+  <file name="n2.xml">
+    <newsArticle title="Новая версия CMS Istra">
+      <p>Выпущена новая версия CMS Istra v.1.02. </p>
+    </newsArticle>
+  </file>
+  <directory name="standards">
+    <file name="n3.xml">
+      <newsArticle title="Конференция по стандартам веб-разработки">
+        <p>Скоро пройдет очередная конференция, посвященная использованию стандартов в веб-разработке.</p>
+      </newsArticle>
+    </file>
+  </directory>
+</directory>
