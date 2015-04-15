@@ -68,4 +68,16 @@
 			</ul>
 		</div>
 	</xsl:template>
+	
+	<xsl:template match="session" mode="sample">
+		<div style="border:1px solid #ccc; margin:5px; padding:5px;">
+			<p>Данные сессии:</p>
+			<ul>
+				<xsl:for-each select="@*">
+					<li><b><xsl:value-of select="name()"/>: </b> <xsl:value-of select="."/></li>
+				</xsl:for-each>
+			</ul>
+			<xsl:apply-templates mode="sample"/>
+		</div>
+	</xsl:template>
 </xsl:stylesheet>

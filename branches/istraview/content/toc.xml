@@ -2,7 +2,7 @@
 <toc title="CMS Istra">
 	<section file="about.xml"/>
 	<section title="Примеры">
-		<section file="queries.xml"/>
-		<section file="datasources.xml"/>
+		<section file="queries.xml" topLevelOnly="true"/>
+		<section file="datasources.xml" topLevelOnly="true"/>
 	</section>
 </toc>
