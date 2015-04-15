@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dir name="news" xmlns:istra="http://www.istra.com/cms">
+  <file name="n1.xml" />
+  <file name="n2.xml" />
+  <dir name="standards">
+    <file name="n3.xml" />
+  </dir>
+</dir>

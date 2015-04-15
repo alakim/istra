@@ -1,4 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<article title="Источники данных">
+<article title="Источники данных" xmlns:istra="http://www.istra.com/cms">
 	<p>Источники данных представляют собой XML-элементы, связанные с классами, наследуемыми от <code>Istra.DataSource</code>, при обработке которых происходит вставка контента, сохраненного в кэшированных файлах. Обновление кэша происходит периодически, в соответствии с заданным интервалом кэширования.</p>
+	<section title="XmlFileDataSource">
+	</section>
+	<section title="DirectoryDataSource">
+		<p>Источник <code>DirectoryDataSource</code> предназначен для получения данных из файлов, расположенных в заданной директории.</p>
+		<section title="Пример использования">
+			
+		</section>
+	</section>
 </article>
