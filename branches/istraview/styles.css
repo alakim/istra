@@ -168,3 +168,21 @@ footer .pagewidth{padding-top:8px;}
 .code{
 	font-family: Courier New, Monospace;
 }
+
+.newsList{
+	border: 1px solid #ccc;
+}
+.newsList h2{
+	background-color: #fff;
+	color: #444;
+}
+.newsList h3{
+	background-color: #fff;
+	color: #444;
+}
+.newsList .article{
+	border: 1px solid #ccc;
+	margin:3px;
+	padding:5px;
+}
+
