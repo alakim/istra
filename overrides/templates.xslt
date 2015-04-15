@@ -26,13 +26,8 @@
 			</head>
 			<body>
 				<header>
-					<div class="pagewidth">
-						<div class="logo"><a href="/"><img width="169" src="/content/images/ivclogo.jpg" border="0"/></a></div>
-						<div class="header phones">
-							<p>+7 495 465-26-00</p>
-							<p>+7 495 788-05-00</p>
-						</div>
-						<!--h1><xsl:value-of select="$SiteTitle"/></h1-->
+					<div class="header pagewidth">
+						<h1><xsl:value-of select="$SiteTitle"/></h1>
 					</div>
 				</header>
 				<nav>
