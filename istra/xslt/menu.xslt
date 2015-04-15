@@ -32,7 +32,11 @@
 		<xsl:variable name="id" select="substring-before(@file, '.')"/>
 		<xsl:variable name="title" select="$doc/article/@title"/>
 		<section file="{$id}" title="{$title}">
-			<xsl:apply-templates select="$doc/article/section" mode="sub"/>
+			<xsl:if test="@hidden"><xsl:attribute name="hidden"><xsl:value-of select="@hidden"/></xsl:attribute></xsl:if>
+			<xsl:if test="not(@topLevelOnly='true')">
+				<xsl:apply-templates select="$doc/article/section" mode="sub"/>
+			</xsl:if>
+			<xsl:apply-templates/>
 		</section>
 	</xsl:template>
 		

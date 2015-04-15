@@ -15,4 +15,17 @@
 			</querySample>
 		</section>
 	</section>
+	<section title="Примеры использования запроса SessionQuery">
+		<istra:query type="istraview.SampleSessionData,istraview"/>
+		<section title="Без мэппинга">
+			<querySample>
+				<istra:query type="Istra.SessionQuery,Istra"/>
+			</querySample>
+		</section>
+		<section title="С мэппингом">
+			<querySample>
+				<istra:query type="Istra.SessionQuery,Istra" param1="firstParameter"/>
+			</querySample>
+		</section>
+	</section>
 </article>
