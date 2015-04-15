@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <directory name="news">
   <file name="n1.xml">
-    <newsArticle title="Новая версия CMS Istra">
+    <newsArticle date="2014-11-22" title="Новая версия CMS Istra">
       <p>Выпущена новая версия CMS Istra v.1.01. </p>
     </newsArticle>
   </file>
   <file name="n2.xml">
-    <newsArticle title="Новая версия CMS Istra">
+    <newsArticle date="2014-12-14" title="Новая версия CMS Istra">
       <p>Выпущена новая версия CMS Istra v.1.02. </p>
     </newsArticle>
   </file>
   <directory name="standards">
     <file name="n3.xml">
-      <newsArticle title="Конференция по стандартам веб-разработки">
+      <newsArticle date="2015-02-02" title="Конференция по стандартам веб-разработки">
         <p>Скоро пройдет очередная конференция, посвященная использованию стандартов в веб-разработке.</p>
       </newsArticle>
     </file>

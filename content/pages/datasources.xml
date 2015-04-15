@@ -6,7 +6,7 @@
 	<section title="DirectoryDataSource">
 		<p>Источник <code>DirectoryDataSource</code> предназначен для получения данных из файлов, расположенных в заданной директории.</p>
 		<section title="Пример использования">
-			
+			<newsSample/>
 		</section>
 	</section>
 </article>

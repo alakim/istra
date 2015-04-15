@@ -80,4 +80,20 @@
 			<xsl:apply-templates mode="sample"/>
 		</div>
 	</xsl:template>
+	
+	<xsl:template match="newsSample">
+		<xsl:variable name="newsDoc" select="document('../cache/news.xml')"/>
+		<div class="newsList">
+			<h2>NEWS SAMPLE</h2>
+			<xsl:for-each select="$newsDoc//newsArticle">
+				<div class="article">
+					<h3><xsl:value-of select="@date"/>: <xsl:value-of select="@title"/></h3>
+					<xsl:apply-templates/>
+				</div>
+			</xsl:for-each>
+		</div>
+	</xsl:template>
+	
+	
+	
 </xsl:stylesheet>
