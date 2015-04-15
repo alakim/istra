@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<toc title="ОАО ИВЦ &quot;Мосстрой&quot;">
+<toc title="CMS Istra">
 	<section file="about.xml"/>
-	<section file="services.xml"/>
-	<section file="news.xml"/>
-	<section file="updates.xml"/>
-	<section file="contacts.xml"/>
+	<section title="Примеры">
+		<section file="queries.xml"/>
+		<section file="datasources.xml"/>
+	</section>
 </toc>

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<article title="Запросы" xmlns:istra="http://www.istra.com/cms">
+	<p>Запросы представляют собой XML-элементы, связанные с классами, реализующими интерфейс <code>Istra.IQuery</code>, при обработке которых происходит вставка контента, формируемого каждый раз при отображении страницы.</p>
+	<p>Примерами стандартных запросов являются <code>Istra.SessionQuery</code> и <code>Istra.HttpRequestQuery</code>, возвращающие параметры сессии и текущего HTTP-запроса соответственно. Оба запроса могут содержать в своих атрибутах таблицу мэппинга имен, используемых в сессии или HTTP-запросе во внутренние имена, используемые в XSLT-шаблонах. </p>
+	<attention>Если мэппинг задан, выводятся только параметры, заданные в мэппинге, если не задан - выводятся все данные.</attention>
+	<section title="Примеры использования запроса HttpRequestQuery">
+		<section title="Без мэппинга">
+			<querySample>
+				<istra:query type="Istra.HttpRequestQuery,Istra"/>
+			</querySample>
+		</section>
+		<section title="С мэппингом">
+			<querySample>
+				<istra:query type="Istra.HttpRequestQuery,Istra" p="pageName"/>
+			</querySample>
+		</section>
+	</section>
+</article>
