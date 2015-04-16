@@ -16,7 +16,7 @@ namespace Istra {
 			rootDir = def.Attributes["rootDir"];
 			if (rootDir == null || rootDir.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. Root directory name expected.");
 			xsltName = def.Attributes["xsltName"];
-			if (xsltName == null || xsltName.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. XSLT name expected.");
+			// if (xsltName == null || xsltName.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. XSLT name expected.");
 			
 		}
 		
@@ -29,10 +29,15 @@ namespace Istra {
 			string contentPath = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir;
 			AddDirectory(contentPath, contentPath + @"\" + rootDir, doc);
 
-			Dictionary<string, string> trSettings = new Dictionary<string, string>();
-			using (StreamWriter wrt = OpenFileStream()) {
-				XsltProcessor xslt = new XsltProcessor(context);
-				xslt.TransformDocument(doc, @"\" + SiteSettings.Current.XsltDir + @"\" + xsltName, trSettings, wrt);
+			if (xsltName == null || xsltName.Length < 1) {
+				doc.Save(FilePath);
+			}
+			else {
+				Dictionary<string, string> trSettings = new Dictionary<string, string>();
+				using (StreamWriter wrt = OpenFileStream()) {
+					XsltProcessor xslt = new XsltProcessor(context);
+					xslt.TransformDocument(doc, @"\" + SiteSettings.Current.XsltDir + @"\" + xsltName, trSettings, wrt);
+				}
 			}
 			return true;
 		}
