@@ -13,9 +13,10 @@
 		var def = getTypeDefinition(xNd);
 		return def && def.children;
 	}
-	function getTypeAlias(xNd){
-		var def = getTypeDefinition(xNd);
-		return def&&def.alias || xType(xNd);
+	function getTypeAlias(nameOrNode){
+		var tName = typeof(nameOrNode)=="object"?xType(nameOrNode):nameOrNode;
+		var def = typeDefinition&&typeDefinition[tName];
+		return def&&def.alias || xType(nameOrNode);
 	}
 	
 	function xType(xNd, t){if(t){xNd._type = t;} return typeof(xNd)=="object"?xNd._type:"xmlText";}
@@ -25,6 +26,7 @@
 	function getCount(xNd, childType){
 		var res = 0;
 		var coll = xChildren(xNd);
+		if(!coll) return 0;
 		for(var i=0,ch; ch=coll[i],i<coll.length; i++){
 			if(xType(ch)==childType) res++;
 		}
@@ -78,7 +80,8 @@
 				typeof(xNd)=="object"? markup(
 					div({"class":"nodeType"},
 						getTypeAlias(xNd),
-						templates.star(mandatory)
+						templates.star(mandatory),
+						input({type:"button", "class":"btDelNode", value:"Удалить"})
 					),
 					div({"class":"nodeAttributes"},
 						apply(attrs, function(v, k){
@@ -94,12 +97,14 @@
 						apply(xChildren(xNd), function(ch){
 							var cDef = childDefs[xType(ch)];
 							return templates.xNode(ch, cDef&&cDef.mandatory);
-						}),
-						availableChildren?div(
+						})
+					),
+					div({"class":"nodeButtons"},
+						availableChildren?markup(
 							input({type:"button", "class":"btAddNode", value:"Добавить"}),
 							select({"class":"selNodeType"},
 								apply(availableChildren, function(nm){
-									return option({}, nm)
+									return option({value:nm}, getTypeAlias(nm))
 								})
 							)
 						):null
@@ -183,6 +188,23 @@
 			var res = collectData(panel);
 			var xml = serialize(res);
 			if(onsave) onsave(xml);
+		});
+		panel.find(".btAddNode").click(function(){
+			var type = $(this).parent().find(".selNodeType").val();
+			//alert("Adding "+type);
+			var nd = {};
+			xType(nd, type);
+			chPnl = $(this).parent().parent().children(".nodeChildren")[0];
+			//console.log(chPnl);
+			$(chPnl).append(templates.xNode(nd));
+		});
+		panel.find(".btDelNode").click(function(){
+			var pnl = $(this).parent().parent();
+			if(confirm([
+				"Удалить элемент  \"",
+				getTypeAlias(pnl.attr("xType")).toLowerCase(),
+				"\"?"
+			].join(""))) pnl.remove();
 		});
 	}
 	
