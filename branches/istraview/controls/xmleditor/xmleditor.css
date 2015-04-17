@@ -26,6 +26,9 @@
 .xmlEditor .textNode{
 	width: 500px;
 }
+.xmlEditor .star{
+	color:#f00;
+}
 .xmlEditor .error{
 	border: 1px solid #f00;
 	color: #f00;

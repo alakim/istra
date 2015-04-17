@@ -105,6 +105,7 @@
 				_ch:[
 					{_type:"phone", _attr:{type:"mobile"}, _ch:["444-44-44"]},
 					{_type:"phone", _attr:{type:"work"}, _ch:["333-33-33"]},
+					{_type:"phone", _ch:["222-33-33"]},
 					{_type:"description", _ch:["Работник хороший, и, главное, дисциплинированный."]}
 				]
 			};
@@ -113,7 +114,7 @@
 				person:{
 					alias:"Сотрудник",
 					attributes:{
-						fio:{alias:"ФИО"},
+						fio:{alias:"ФИО", mandatory:true},
 						age:{alias:"Возраст"}
 					},
 					children:{
@@ -124,10 +125,10 @@
 				phone:{
 					alias:"Телефон",
 					attributes:{
-						type:{alias:"Тип"}
+						type:{alias:"Тип", mandatory:true}
 					},
 					children:{
-						xmlText:{count:1}
+						xmlText:{count:1, mandatory:true}
 					}
 				},
 				description:{
