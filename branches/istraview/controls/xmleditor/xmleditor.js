@@ -3,7 +3,7 @@
 	var typeDefinition;
 	
 	function getTypeDefinition(xNd){
-		return typeDefinition&&typeDefinition[xNd._type];
+		return typeDefinition&&typeDefinition[xType(xNd)];
 	}
 	function getAttrDefinitions(xNd){
 		var def = getTypeDefinition(xNd);
@@ -13,11 +13,42 @@
 		var def = getTypeDefinition(xNd);
 		return def && def.children;
 	}
+	function getTypeAlias(xNd){
+		var def = getTypeDefinition(xNd);
+		return def&&def.alias || xType(xNd);
+	}
 	
 	function xType(xNd, t){if(t){xNd._type = t;} return typeof(xNd)=="object"?xNd._type:"xmlText";}
 	function xAttributes(xNd, coll){if(coll){xNd._attr = coll;} return xNd._attr;}
 	function xChildren(xNd, coll){if(coll){xNd._ch = coll;} return xNd._ch;}
 	
+	function getCount(xNd, childType){
+		var res = 0;
+		var coll = xChildren(xNd);
+		for(var i=0,ch; ch=coll[i],i<coll.length; i++){
+			if(xType(ch)==childType) res++;
+		}
+		return res;
+	}
+	
+	function getAvailableChildren(xNd){
+		var res = [];
+		var defColl = getTypeDefinition(xNd);
+		if(defColl){
+			for(var nm in defColl.children){
+				var def = defColl.children[nm];
+				if(!def) continue;
+				var count = getCount(xNd, nm);
+				if(def.count instanceof(Array)){
+					if(!def.count[1] || def.count[1]>count) res.push(nm);
+				}
+				else if(count<def.count){
+					res.push(nm);
+				}
+			}
+		}
+		return res.length?res:null;
+	}
 	
 	var templates = {
 		main: function(data){with($H){
@@ -41,11 +72,12 @@
 		xNode: function(xNd, mandatory){with($H){
 			var attrs = xAttributes(xNd),
 				attrDefs = getAttrDefinitions(xNd),
-				childDefs = getChildrenDefinitions(xNd);
+				childDefs = getChildrenDefinitions(xNd),
+				availableChildren = getAvailableChildren(xNd);
 			return div({"class":"xNode", xType:xType(xNd)},
 				typeof(xNd)=="object"? markup(
 					div({"class":"nodeType"},
-						xType(xNd),
+						getTypeAlias(xNd),
 						templates.star(mandatory)
 					),
 					div({"class":"nodeAttributes"},
@@ -62,7 +94,15 @@
 						apply(xChildren(xNd), function(ch){
 							var cDef = childDefs[xType(ch)];
 							return templates.xNode(ch, cDef&&cDef.mandatory);
-						})
+						}),
+						availableChildren?div(
+							input({type:"button", "class":"btAddNode", value:"Добавить"}),
+							select({"class":"selNodeType"},
+								apply(availableChildren, function(nm){
+									return option({}, nm)
+								})
+							)
+						):null
 					)
 				)
 				:typeof(xNd)=="string"?div(
@@ -97,7 +137,7 @@
 			
 			var children = [];
 			$.each($(nd.find(".nodeChildren")[0]).children(), function(i, ch){
-				children.push(buildNode(ch));
+				if($(ch).attr("xType")) children.push(buildNode(ch));
 			});
 			if(children.length) xChildren(res, children);
 			if(xType(res)=="xmlText"){
@@ -106,9 +146,7 @@
 			return res;
 		}
 		
-		var res = buildNode(panel.find(".xNode"));
-		console.log(res);
-		return res;
+		return buildNode(panel.find(".xNode"));
 	}
 	
 	function formatString(str){
@@ -139,19 +177,19 @@
 		return res.join("");
 	}
 	
-	function init(panel, data){
+	function init(panel, data, onsave){
 		panel.html(templates.main(data));
 		panel.find(".btSave").click(function(){
 			var res = collectData(panel);
 			var xml = serialize(res);
-			console.log("Saved: ", xml);
+			if(onsave) onsave(xml);
 		});
 	}
 	
-	$.fn.xmlEditor = function(data, def){
+	$.fn.xmlEditor = function(data, def, onsave){
 		typeDefinition = def;
 		$(this).each(function(i, el){
-			init($(el), data);
+			init($(el), data, onsave);
 		});
 	};
 	
