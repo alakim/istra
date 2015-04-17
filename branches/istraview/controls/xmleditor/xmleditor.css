@@ -1,0 +1,36 @@
+﻿.xmlEditor{
+	border: 1px solid #f00;
+	padding: 5px;
+	margin: 5px;
+}
+
+.xmlEditor .xNode{
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+.xmlEditor .nodeType{
+	font-weight: bold;
+	margin: 12px 0 12px 0;
+}
+.xmlEditor .nodeAttributes{
+	margin: 0 0 0 15px;
+	padding: 0 0 0 5px;
+	border-left: 3px solid #ccc;
+}
+.xmlEditor .nodeChildren{
+	margin: 0 0 0 15px;
+	padding: 0 0 0 5px;
+	border-left: 3px solid #ccc;
+}
+.xmlEditor .textNode{
+	width: 500px;
+}
+.xmlEditor .error{
+	border: 1px solid #f00;
+	color: #f00;
+	background-color: #ffc;
+}
+
+
+

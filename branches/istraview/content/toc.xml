@@ -5,4 +5,5 @@
 		<section file="queries.xml" topLevelOnly="true"/>
 		<section file="datasources.xml" topLevelOnly="true"/>
 	</section>
+	<section file="xmledit.xml"/>
 </toc>

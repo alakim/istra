@@ -23,6 +23,12 @@
 					<xsl:otherwise>
 					</xsl:otherwise>
 				</xsl:choose>
+				<xsl:for-each select="//addScript">
+					<script type="text/javascript" src="{@src}"> </script>
+				</xsl:for-each>
+				<xsl:for-each select="//addCSS">
+					<link rel="stylesheet" type="text/css" href="{@src}"/>
+				</xsl:for-each>
 			</head>
 			<body>
 				<header>
@@ -74,5 +80,8 @@
 		</li>
 	</xsl:template-->
 
+	
+	<xsl:template match="addScript"></xsl:template>
+	<xsl:template match="addCSS"></xsl:template>
 	
 </xsl:stylesheet>

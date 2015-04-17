@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<article title="Редактор XML" xmlns:istra="http://www.istra.com/cms">
+	<addScript src="/controls/xmleditor/xmleditor.js"/>
+	<addCSS src="/controls/xmleditor/xmleditor.css"/>
+	<p>Это страница для тестирования и отладки редактора XML.</p>
+	<TestXmlEditor/>
+</article>
