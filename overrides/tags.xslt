@@ -94,6 +94,56 @@
 		</div>
 	</xsl:template>
 	
-	
+	<xsl:template match="TestXmlEditor">
+		<script type="text/javascript"><![CDATA[
+			var testNode= {
+				_type:"person",
+				_attr:{
+					fio:"Иванов И.И.",
+					age:29
+				},
+				_ch:[
+					{_type:"phone", _attr:{type:"mobile"}, _ch:["444-44-44"]},
+					{_type:"phone", _attr:{type:"work"}, _ch:["333-33-33"]},
+					{_type:"description", _ch:["Работник хороший, и, главное, дисциплинированный."]}
+				]
+			};
+			
+			var testTypeDefinition = {
+				person:{
+					alias:"Сотрудник",
+					attributes:{
+						fio:{alias:"ФИО"},
+						age:{alias:"Возраст"}
+					},
+					children:{
+						phone:{count:[1, 0]},
+						description:{count:1}
+					}
+				},
+				phone:{
+					alias:"Телефон",
+					attributes:{
+						type:{alias:"Тип"}
+					},
+					children:{
+						xmlText:{count:1}
+					}
+				},
+				description:{
+					alias:"Описание",
+					children:{
+						xmlText:{count:1}
+					}
+				}
+			};
+			
+			$(function(){
+				$(".xmlEditor").xmlEditor(testNode, testTypeDefinition);
+			});
+		]]>
+		</script>
+		<div class="xmlEditor"></div>
+	</xsl:template>
 	
 </xsl:stylesheet>
