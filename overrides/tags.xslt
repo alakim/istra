@@ -140,7 +140,9 @@
 			};
 			
 			$(function(){
-				$(".xmlEditor").xmlEditor(testNode, testTypeDefinition);
+				$(".xmlEditor").xmlEditor(testNode, testTypeDefinition, function(xml){
+					console.log(xml);
+				});
 			});
 		]]>
 		</script>
