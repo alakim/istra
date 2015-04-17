@@ -26,6 +26,12 @@
 .xmlEditor .textNode{
 	width: 500px;
 }
+.xmlEditor .nodeButtons{
+	text-align:center;
+}
+.xmlEditor .btDelNode{
+	margin-left:25px;
+}
 .xmlEditor .star{
 	color:#f00;
 }
