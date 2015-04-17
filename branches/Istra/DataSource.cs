@@ -17,7 +17,7 @@ namespace Istra {
 
 		/// <summary>Формирует кэшированный файл данных</summary>
 		public virtual bool Build(HttpContext context) {
-			DateTime time = File.GetCreationTime(FilePath);
+			DateTime time = File.GetLastWriteTime(FilePath);
 			TimeSpan diff = DateTime.Now - time;
 			double sec = diff.TotalSeconds;
 			if (context.Request["clearcache"]==null && sec < SiteSettings.Current.CacheTime)
