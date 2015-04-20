@@ -2,8 +2,9 @@
 	
 	var typeDefinition;
 	
-	function getTypeDefinition(xNd){
-		return typeDefinition&&typeDefinition[xType(xNd)];
+	function getTypeDefinition(typeOrNode){
+		var type = typeof(typeOrNode)=="string"?typeOrNode:xType(typeOrNode);
+		return typeDefinition&&typeDefinition[type];
 	}
 	function getAttrDefinitions(xNd){
 		var def = getTypeDefinition(xNd);
@@ -77,7 +78,11 @@
 				childDefs = getChildrenDefinitions(xNd),
 				availableChildren = getAvailableChildren(xNd);
 			return div({"class":"xNode", xType:xType(xNd)},
-				typeof(xNd)=="object"? markup(
+				(typeof(xNd)=="string" || xType(xNd)=="xmlText")?div(
+					textarea({"class":"textNode"}, xNd.text || xNd),
+					templates.star(mandatory)
+				)
+				:typeof(xNd)=="object"? markup(
 					div({"class":"nodeType"},
 						getTypeAlias(xNd),
 						templates.star(mandatory),
@@ -109,10 +114,6 @@
 							)
 						):null
 					)
-				)
-				:typeof(xNd)=="string"?div(
-					textarea({"class":"textNode"}, xNd),
-					templates.star(mandatory)
 				)
 				:typeof(xNd)=="numeric"?input({type:"text", value:xNd})
 				:div({"class":"error"}, "Unknown node type "+typeof(xNd))
@@ -162,6 +163,7 @@
 			.replace(/\'/g, "&apos;");
 	}
 	function serialize(nd){
+		if(typeof(nd)=="string") return formatString(nd);
 		if(xType(nd)=="xmlText") return formatString(nd.text);
 		var res = [];
 		res.push("<"+xType(nd));
@@ -182,6 +184,22 @@
 		return res.join("");
 	}
 	
+	function createEmptyNode(ndType){
+		if(ndType=="xmlText") return "";
+		var nd = {},
+			def = getTypeDefinition(ndType),
+			chColl = [];
+		xType(nd, ndType);
+		xChildren(nd, chColl);
+		for(var t in def.children){
+			var chDef = def.children[t];
+			if(chDef.mandatory){
+				chColl.push(createEmptyNode(t));
+			}
+		}
+		return nd;
+	}
+	
 	function init(panel, data, onsave){
 		panel.html(templates.main(data));
 		panel.find(".btSave").click(function(){
@@ -191,12 +209,11 @@
 		});
 		panel.find(".btAddNode").click(function(){
 			var type = $(this).parent().find(".selNodeType").val();
-			//alert("Adding "+type);
-			var nd = {};
-			xType(nd, type);
+			var nd = createEmptyNode(type);
 			chPnl = $(this).parent().parent().children(".nodeChildren")[0];
-			//console.log(chPnl);
 			$(chPnl).append(templates.xNode(nd));
+			var nNd = collectData(panel);
+			init(panel, nNd, onsave);
 		});
 		panel.find(".btDelNode").click(function(){
 			var pnl = $(this).parent().parent();
@@ -204,7 +221,12 @@
 				"Удалить элемент  \"",
 				getTypeAlias(pnl.attr("xType")).toLowerCase(),
 				"\"?"
-			].join(""))) pnl.remove();
+			].join(""))){
+				var pp = pnl.parent().parent();
+				pnl.remove();
+				var nNd = collectData(panel);
+				init(panel, nNd, onsave);
+			}
 		});
 	}
 	

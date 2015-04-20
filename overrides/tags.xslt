@@ -136,7 +136,8 @@
 					children:{
 						xmlText:{count:1}
 					}
-				}
+				},
+				xmlText:{alias:"Текст"}
 			};
 			
 			$(function(){
