@@ -12,6 +12,15 @@ namespace Istra {
 	/// <summary>Кэшируемый источник данных</summary>
 	public abstract class DataSource {
 
+		/// <summary>Конструктор</summary>
+		protected DataSource(DataSourceDefinition def) {
+			if (def.Attributes["postprocessor"] != null) {
+				Type t = Type.GetType(def.Attributes["postprocessor"]);
+				ConstructorInfo cInf = t.GetConstructor(new Type[0] {});
+				this.postprocessor = (IPostprocessor)cInf.Invoke(new object[0] {});
+			}
+		}
+
 		/// <summary>Имя файла в кэше</summary>
 		protected string cachedFile;
 
@@ -25,6 +34,16 @@ namespace Istra {
 			
 			ClearCache();
 			return true;
+		}
+
+		/// <summary>Постобработка документа</summary>
+		public void PrepareDocument() {
+			if (postprocessor != null) {
+				XmlDocument xDoc = new XmlDocument();
+				xDoc.Load(FilePath);
+				postprocessor.Process(xDoc);
+				xDoc.Save(FilePath);
+			}
 		}
 
 		public static void RefreshSources(HttpContext context) {
@@ -50,6 +69,8 @@ namespace Istra {
 		protected StreamWriter OpenFileStream() {
 			return new StreamWriter(FilePath);
 		}
+
+		private IPostprocessor postprocessor;
 	}
 
 	/// <summary>Определение источника данных</summary>

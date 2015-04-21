@@ -39,8 +39,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSource.cs" />
+    <Compile Include="DateFormatPostprocessor.cs" />
     <Compile Include="DirectoryDataSource.cs" />
     <Compile Include="HttpRequestQuery.cs" />
+    <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="SessionQuery.cs" />
     <Compile Include="XmlFileDataSource.cs" />

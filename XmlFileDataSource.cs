@@ -8,7 +8,7 @@ namespace Istra {
 	/// <summary>Получает данные из XML-файла</summary>
 	class XmlFileDataSource : DataSource {
 		/// <summary>Конструктор</summary>
-		public XmlFileDataSource(DataSourceDefinition def) {
+		public XmlFileDataSource(DataSourceDefinition def) :base(def) {
 			cachedFile = def.CachedFile;
 			fileName = def.Attributes["fileName"];
 			if (fileName==null || fileName.Length < 1) throw new ApplicationException("XmlFileDataSource construction error. File name expected.");
@@ -28,6 +28,9 @@ namespace Istra {
 				XsltProcessor xslt = new XsltProcessor(context);
 				xslt.TransformDocument(@"\" + SiteSettings.Current.ContentDir + @"\"+fileName, @"\" + SiteSettings.Current.XsltDir + @"\"+xsltName, trSettings, wrt);
 			}
+
+			PrepareDocument();
+
 			return true;
 		}
 
