@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 
 namespace Istra {
 	/// <summary>Настройки сайта</summary>
-	class SiteSettings {
+	public class SiteSettings {
 
 		/// <summary>Возвращает текущие настройки</summary>
 		public static SiteSettings Current {
