@@ -11,7 +11,7 @@ namespace Istra {
 	public class DirectoryDataSource : DataSource {
 		/// <summary>Конструктор</summary>
 		/// <param name="def">данные определения источника</param>
-		public DirectoryDataSource(DataSourceDefinition def) {
+		public DirectoryDataSource(DataSourceDefinition def) :base(def) {
 			cachedFile = def.CachedFile;
 			rootDir = def.Attributes["rootDir"];
 			if (rootDir == null || rootDir.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. Root directory name expected.");
@@ -39,6 +39,7 @@ namespace Istra {
 					xslt.TransformDocument(doc, @"\" + SiteSettings.Current.XsltDir + @"\" + xsltName, trSettings, wrt);
 				}
 			}
+			PrepareDocument();
 			return true;
 		}
 
