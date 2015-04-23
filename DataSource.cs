@@ -7,10 +7,14 @@ using System.Xml;
 using System.Collections.Specialized;
 using System.Reflection;
 using System.Web;
+using System.Threading;
 
 namespace Istra {
 	/// <summary>Кэшируемый источник данных</summary>
 	public abstract class DataSource {
+
+		/// <summary>Мьютекс для блокировки доступа к файлам кэша</summary>
+		private const string mutexName = "IstraDataSourceMutex";
 
 		/// <summary>Конструктор</summary>
 		protected DataSource(DataSourceDefinition def) {
@@ -47,9 +51,17 @@ namespace Istra {
 		}
 
 		public static void RefreshSources(HttpContext context) {
-			foreach (DataSourceDefinition def in SiteSettings.Current.Sources) {
-				DataSource dSrc = def.CreateDataSource();
-				dSrc.Build(context);
+			Mutex mtx;
+			try {
+				mtx = Mutex.OpenExisting(mutexName);
+			}
+			catch (Exception) {
+				mtx = new Mutex(false, mutexName);
+				foreach (DataSourceDefinition def in SiteSettings.Current.Sources) {
+					DataSource dSrc = def.CreateDataSource();
+					dSrc.Build(context);
+				}
+				mtx.Close();
 			}
 		}
 
