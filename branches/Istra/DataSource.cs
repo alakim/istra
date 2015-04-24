@@ -13,8 +13,8 @@ namespace Istra {
 	/// <summary>Кэшируемый источник данных</summary>
 	public abstract class DataSource {
 
-		/// <summary>Мьютекс для блокировки доступа к файлам кэша</summary>
-		private const string mutexName = "IstraDataSourceMutex";
+		/// <summary>Таймаут для ожидания доступа по мьютексу</summary>
+		private const int mutexTimeout = 3000;
 
 		/// <summary>Конструктор</summary>
 		protected DataSource(DataSourceDefinition def) {
@@ -51,17 +51,17 @@ namespace Istra {
 		}
 
 		public static void RefreshSources(HttpContext context) {
-			Mutex mtx;
-			try {
-				mtx = Mutex.OpenExisting(mutexName);
-			}
-			catch (Exception) {
-				mtx = new Mutex(false, mutexName);
-				foreach (DataSourceDefinition def in SiteSettings.Current.Sources) {
-					DataSource dSrc = def.CreateDataSource();
-					dSrc.Build(context);
+			Mutex m = new Mutex();
+			if(m.WaitOne(mutexTimeout, false)){
+				try {
+					foreach (DataSourceDefinition def in SiteSettings.Current.Sources) {
+						DataSource dSrc = def.CreateDataSource();
+						dSrc.Build(context);
+					}
 				}
-				mtx.Close();
+				finally {
+					m.ReleaseMutex();
+				}
 			}
 		}
 
