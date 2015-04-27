@@ -44,6 +44,7 @@
     <Compile Include="HttpRequestQuery.cs" />
     <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="SefHttpHandler.cs" />
     <Compile Include="SessionQuery.cs" />
     <Compile Include="XmlFileDataSource.cs" />
     <Compile Include="SiteSettings.cs" />
