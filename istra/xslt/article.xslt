@@ -107,7 +107,14 @@
 		<li>
 			<xsl:choose>
 				<xsl:when test="@file or @anchor">
-					<a href="?p={$file}#{@anchor}"><xsl:value-of select="@title"/></a>
+					<xsl:choose>
+						<xsl:when test="@noSef='true'">
+							<a href="test2.aspx/?p={$file}#{@anchor}"><xsl:value-of select="@title"/></a>
+						</xsl:when>
+						<xsl:otherwise>
+							<a href="/{$file}.html#{@anchor}"><xsl:value-of select="@title"/></a>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
 				<xsl:otherwise><span class="menuSection"><xsl:value-of select="@title"/></span></xsl:otherwise>
 			</xsl:choose>
