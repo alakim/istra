@@ -42,6 +42,7 @@
     <Compile Include="DateFormatPostprocessor.cs" />
     <Compile Include="DirectoryDataSource.cs" />
     <Compile Include="HttpRequestQuery.cs" />
+    <Compile Include="IPagePreprocessor.cs" />
     <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="SefHttpHandler.cs" />
