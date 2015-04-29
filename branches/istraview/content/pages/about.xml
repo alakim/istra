@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<article title="О системе">
+<article title="О системе" preprocessor="istraview.DemoPagePreprocessor,istraview">
 	<p>CMS Istra предназначена для быстрого создания сайтов на основе технологии XML/XSLT.</p>
 </article>

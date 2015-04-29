@@ -4,6 +4,8 @@ using System.Web;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Reflection;
 
 namespace Istra {
 	/// <summary>Веб-страница</summary>
@@ -46,9 +48,20 @@ namespace Istra {
 			settings["jsFolder"] = "/js";
 			settings["cssFolder"] = "/";
 
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml");
+
+			XmlNode attProprocessor = xmlDoc.DocumentElement.Attributes.GetNamedItem("preprocessor");
+			if (attProprocessor != null) {
+				Type t = Type.GetType(attProprocessor.Value);
+				ConstructorInfo cInf = t.GetConstructor(new Type[0] { });
+				IPagePreprocessor preprocessor = (IPagePreprocessor)cInf.Invoke(new object[0] { });
+				preprocessor.Process(xmlDoc);
+			}
+
 			XsltProcessor xslt = new XsltProcessor(Context);
 			xslt.TransformDocument(
-				@"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml",
+				xmlDoc,
 				@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",
 				settings,
 				tWriter
