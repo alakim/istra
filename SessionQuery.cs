@@ -25,12 +25,13 @@ namespace Istra {
 			xQuery.ParentNode.InsertAfter(sessionRoot, xQuery);
 			xQuery.ParentNode.RemoveChild(xQuery);
 
-			foreach (string key in context.Session.Keys) {
-				if (mapping.Keys.Count == 0)
-					XmlUtility.AddAttribute(doc, sessionRoot, key, GetValue(context, key));
-				else if (mapping.ContainsKey(key))
-					XmlUtility.AddAttribute(doc, sessionRoot, mapping[key], GetValue(context, key));
-
+			if (context.Session != null) {
+				foreach (string key in context.Session.Keys) {
+					if (mapping.Keys.Count == 0)
+						XmlUtility.AddAttribute(doc, sessionRoot, key, GetValue(context, key));
+					else if (mapping.ContainsKey(key))
+						XmlUtility.AddAttribute(doc, sessionRoot, mapping[key], GetValue(context, key));
+				}
 			}
 		}
 

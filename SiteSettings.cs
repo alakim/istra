@@ -17,6 +17,9 @@ namespace Istra {
 			}
 		}
 
+		/// <summary>Таймаут для ожидания доступа по мьютексу</summary>
+		public const int mutexTimeout = 3000;
+
 		/// <summary>Директори приложения</summary>
 		public string RootDir{get{return rootDir;}}
 		/// <summary>Директория для размещения конетента</summary>
