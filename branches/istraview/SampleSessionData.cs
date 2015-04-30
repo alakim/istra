@@ -14,6 +14,8 @@ namespace istraview {
 		public void Apply(XmlDocument doc, XmlElement xQuery, HttpContext context) {
 			xQuery.ParentNode.RemoveChild(xQuery);
 
+			if (context.Session == null) return;
+
 			context.Session["param1"] = "Parameter#1 Value";
 			context.Session["param2"] = "Parameter#2 Value";
 			context.Session["param3"] = "Parameter#3 Value";

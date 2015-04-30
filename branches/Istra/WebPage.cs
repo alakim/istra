@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Reflection;
+using System.Threading;
 
 namespace Istra {
 	/// <summary>Веб-страница</summary>
@@ -48,24 +49,32 @@ namespace Istra {
 			settings["jsFolder"] = "/js";
 			settings["cssFolder"] = "/";
 
-			XmlDocument xmlDoc = new XmlDocument();
-			xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml");
+			Mutex m = new Mutex();
+			if (m.WaitOne(SiteSettings.mutexTimeout, false)) {
+				try {
+					XmlDocument xmlDoc = new XmlDocument();
+					xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml");
 
-			XmlNode attProprocessor = xmlDoc.DocumentElement.Attributes.GetNamedItem("preprocessor");
-			if (attProprocessor != null) {
-				Type t = Type.GetType(attProprocessor.Value);
-				ConstructorInfo cInf = t.GetConstructor(new Type[0] { });
-				IPagePreprocessor preprocessor = (IPagePreprocessor)cInf.Invoke(new object[0] { });
-				preprocessor.Process(xmlDoc);
+					XmlNode attProprocessor = xmlDoc.DocumentElement.Attributes.GetNamedItem("preprocessor");
+					if (attProprocessor != null) {
+						Type t = Type.GetType(attProprocessor.Value);
+						ConstructorInfo cInf = t.GetConstructor(new Type[0] { });
+						IPagePreprocessor preprocessor = (IPagePreprocessor)cInf.Invoke(new object[0] { });
+						preprocessor.Process(xmlDoc);
+					}
+
+					XsltProcessor xslt = new XsltProcessor(Context);
+					xslt.TransformDocument(
+						xmlDoc,
+						@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",
+						settings,
+						tWriter
+					);
+				}
+				finally {
+					m.ReleaseMutex();
+				}
 			}
-
-			XsltProcessor xslt = new XsltProcessor(Context);
-			xslt.TransformDocument(
-				xmlDoc,
-				@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",
-				settings,
-				tWriter
-			);
 		}
 
 	}

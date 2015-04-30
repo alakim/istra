@@ -13,9 +13,6 @@ namespace Istra {
 	/// <summary>Кэшируемый источник данных</summary>
 	public abstract class DataSource {
 
-		/// <summary>Таймаут для ожидания доступа по мьютексу</summary>
-		private const int mutexTimeout = 3000;
-
 		/// <summary>Конструктор</summary>
 		protected DataSource(DataSourceDefinition def) {
 			if (def.Attributes["postprocessor"] != null) {
@@ -52,7 +49,7 @@ namespace Istra {
 
 		public static void RefreshSources(HttpContext context) {
 			Mutex m = new Mutex();
-			if(m.WaitOne(mutexTimeout, false)){
+			if(m.WaitOne(SiteSettings.mutexTimeout, false)){
 				try {
 					foreach (DataSourceDefinition def in SiteSettings.Current.Sources) {
 						DataSource dSrc = def.CreateDataSource();
