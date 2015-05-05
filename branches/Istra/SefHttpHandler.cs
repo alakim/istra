@@ -17,7 +17,7 @@ namespace Istra {
 			string url = context.Request.Path;
 			Match mt = reUrl.Match(url);
 			if (mt.Success) {
-				string newUrl = SefSettings.Current.DefaultPage +"?p="+ mt.Groups[1].Value;
+				string newUrl = SefSettings.Current.DefaultPage + (mt.Groups[1].Value.ToLower()=="default"?string.Empty:("?p="+ mt.Groups[1].Value));
 				context.Server.Transfer(newUrl);
 			}
 		}
