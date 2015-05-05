@@ -28,4 +28,8 @@
 			</querySample>
 		</section>
 	</section>
+	<section title="Протокол ошибок">
+		<istra:query type="Istra.ErrorLogQuery,Istra"/>
+		<errorLogView/>
+	</section>
 </article>

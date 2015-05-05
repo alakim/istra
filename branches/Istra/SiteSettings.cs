@@ -24,6 +24,8 @@ namespace Istra {
 		public string RootDir{get{return rootDir;}}
 		/// <summary>Директория для размещения конетента</summary>
 		public string ContentDir { get { return contentDir; } }
+		/// <summary>Директория для размещения протокола ошибок</summary>
+		public string LogDir { get { return logDir; } }
 		/// <summary>Директория для размещения кэша</summary>
 		public string CacheDir { get { return cacheDir; } }
 		/// <summary>Директория для размещения XSLT-преобразований</summary>
@@ -40,6 +42,7 @@ namespace Istra {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/XsltSettings");
 			rootDir = settings["rootDir"].ToString();
 			contentDir = settings["contentDir"].ToString();
+			logDir = settings["logDir"].ToString();
 			cacheDir = settings["cacheDir"].ToString();
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
@@ -54,6 +57,8 @@ namespace Istra {
 		private string rootDir;
 		/// <summary>Директория для размещения конетента</summary>
 		private string contentDir;
+		/// <summary>Директория для размещения протокола ошибок</summary>
+		private string logDir;
 		/// <summary>Директория для размещения кэша</summary>
 		private string cacheDir;
 		/// <summary>Директория для размещения XSLT-преобразований</summary>

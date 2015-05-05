@@ -52,6 +52,8 @@ namespace Istra {
 			Mutex m = new Mutex();
 			if (m.WaitOne(SiteSettings.mutexTimeout, false)) {
 				try {
+					// int x = 0;
+					// int y = 5 / x;
 					XmlDocument xmlDoc = new XmlDocument();
 					xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml");
 
@@ -70,6 +72,9 @@ namespace Istra {
 						settings,
 						tWriter
 					);
+				}
+				catch (Exception err) {
+					ErrorLog.WriteError(err);
 				}
 				finally {
 					m.ReleaseMutex();
