@@ -10,7 +10,7 @@ using System.Web;
 namespace Istra {
 	/// <summary>Протокол ошибок</summary>
 	/// <remarks>Используется сохранение протокола в директорию (а не в БД) как более универсальное (предполагается, что не всякий проект может использовать БД).</remarks>
-	static class ErrorLog {
+	public static class ErrorLog {
 
 		/// <summary>Сохраняет сообщение об ошибке</summary>
 		/// <param name="err">исключение</param>
@@ -45,6 +45,8 @@ namespace Istra {
 			XmlDocument xProtocol = new XmlDocument();
 			xProtocol.LoadXml("<ErrorLog/>");
 			string logPath = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.LogDir;
+			if (!Directory.Exists(logPath)) return xProtocol;
+
 			AddDirectory(logPath, xProtocol);
 
 			return xProtocol;
