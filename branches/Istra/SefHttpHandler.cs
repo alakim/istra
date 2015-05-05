@@ -17,7 +17,12 @@ namespace Istra {
 			string url = context.Request.Path;
 			Match mt = reUrl.Match(url);
 			if (mt.Success) {
-				string newUrl = SefSettings.Current.DefaultPage + (mt.Groups[1].Value.ToLower()=="default"?string.Empty:("?p="+ mt.Groups[1].Value));
+				string pageId = mt.Groups[1].Value;
+				string loID = pageId.ToLower();
+				if (loID == "default" || loID == "index")
+					pageId = null;
+				string newUrl = SefSettings.Current.DefaultPage + 
+					(pageId==null?string.Empty:("?p="+ pageId));
 				context.Server.Transfer(newUrl);
 			}
 		}
