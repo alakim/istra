@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Collections.Specialized;
+using System.IO;
 
 namespace Istra {
 	/// <summary>Утилита для работы с XML-документами</summary>
@@ -50,6 +51,43 @@ namespace Istra {
 			XmlElement err = doc.CreateElement("error");
 			doc.DocumentElement.AppendChild(err);
 			err.InnerText = message;
+		}
+
+		/// <summary>Форматирует представление даты и времени</summary>
+		/// <param name="dt">временная метка</param>
+		public static string FormatDateTime(DateTime dt) {
+			return FormatDateTime(dt, false);
+		}
+
+		/// <summary>Форматирует представление даты и времени</summary>
+		/// <param name="dt">временная метка</param>
+		/// <param name="dateOnly">выводить только дату</param>
+		public static string FormatDateTime(DateTime dt, bool dateOnly) {
+			StringWriter wrt = new StringWriter();
+			wrt.Write(dt.Year);
+			wrt.Write("-");
+			wrt.Write(dt.Month < 10? "0" + dt.Month : dt.Month.ToString());
+			wrt.Write("-");
+			wrt.Write(dt.Day < 10 ? "0" + dt.Day : dt.Day.ToString());
+			if (!dateOnly) {
+				wrt.Write("T");
+				wrt.Write(dt.Hour < 10 ? "0" + dt.Hour : dt.Hour.ToString());
+				wrt.Write(":");
+				wrt.Write(dt.Minute < 10 ? "0" + dt.Minute : dt.Minute.ToString());
+				wrt.Write(":");
+				wrt.Write(dt.Second < 10 ? "0" + dt.Second : dt.Second.ToString());
+			}
+			return wrt.ToString();
+		}
+
+		/// <summary>Форматирует строку</summary>
+		/// <param name="str">исходная строка</param>
+		public static string FormatString(string str) {
+			return str.Replace("&", "&amp;")
+					.Replace("<", "&lt;")
+					.Replace(">", "&gt;")
+					.Replace("\"", "&quot;")
+					.Replace("\'", "&amp;");
 		}
 
 		/// <summary>Пространство имен для XML-элементов</summary>

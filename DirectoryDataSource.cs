@@ -55,7 +55,7 @@ namespace Istra {
 		/// <param name="basePath">базовый путь</param>
 		/// <param name="dirPath">путь к директории</param>
 		/// <param name="doc">целевой XML-документ</param>
-		/// <param name="root">целевой XML-элемент</param>
+		/// <param name="root">корневой XML-элемент</param>
 		private void AddDirectory(string basePath, string dirPath, XmlDocument doc, XmlElement root) {
 			string dirName = dirPath.Replace(basePath + @"\", string.Empty);
 			XmlElement dir = doc.CreateElement("directory");
