@@ -81,6 +81,29 @@
 		</div>
 	</xsl:template>
 	
+	<xsl:template match="ErrorLog"/>
+	<xsl:template match="errorLogView">
+		<table border="1" cellpadding="3" cellspacing="0">
+			<tr>
+				<th>Время</th>
+				<th>Сообщение</th>
+				<th>Источник</th>
+				<th>Стек вызова</th>
+				<th>Местоположение</th>
+			</tr>
+			<xsl:for-each select="//ErrorLog/error">
+				<xsl:sort select="@date" order="descending"/>
+				<tr>
+					<td><xsl:value-of select="@date"/></td>
+					<td><xsl:value-of select="Message"/></td>
+					<td><xsl:value-of select="Source"/></td>
+					<td><xsl:value-of select="StackTrace"/></td>
+					<td><xsl:value-of select="TargetSite"/></td>
+				</tr>
+			</xsl:for-each>
+		</table>
+	</xsl:template>
+	
 	<xsl:template match="newsSample">
 		<xsl:variable name="newsDoc" select="document('../cache/news.xml')"/>
 		<div class="newsList">
