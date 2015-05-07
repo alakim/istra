@@ -55,7 +55,16 @@ namespace Istra {
 					// int x = 0;
 					// int y = 5 / x;
 					XmlDocument xmlDoc = new XmlDocument();
-					xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + @"\pages\" + pageName + ".xml");
+					try {
+						xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + 
+							@"\pages\" + pageName + ".xml");
+					}
+					catch (Exception err) {
+						ErrorLog.WriteError(err);
+						// xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + 
+						// 	@"\pages\" + SiteSettings.Current.DefaultPage + ".xml");
+						this.Context.Response.Redirect(SefSettings.Current.DefaultPage+"/?p="+SiteSettings.Current.DefaultPage);
+					}
 
 					XmlNode attProprocessor = xmlDoc.DocumentElement.Attributes.GetNamedItem("preprocessor");
 					if (attProprocessor != null) {
