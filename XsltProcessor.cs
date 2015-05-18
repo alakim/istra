@@ -38,6 +38,9 @@ namespace Istra {
 			TransformDocument(xmlDoc, xsltPath, settings, tWriter);
 		}
 
+		/// <summary>Режим выдачи документа без преобразования</summary>
+		public bool RawMode = false;
+
 		/// <summary>Преобразует XML-документ</summary>
 		/// <param name="xmlDoc">исходный документ</param>
 		/// <param name="xsltPath">XSLT-преобразование</param>
@@ -67,12 +70,17 @@ namespace Istra {
 				query.Apply(xmlDoc, xQ, context);
 			}
 
-			XslCompiledTransform xslt = new XslCompiledTransform();
-			xslt.Load(SiteSettings.Current.RootDir + xsltPath, xSettings, new XmlUrlResolver());
+			//XmlWriter xwrt = XmlWriter.Create(tWriter);
+			if (RawMode) {
+				tWriter.Write(xmlDoc.OuterXml);
+			}
+			else {
+				XslCompiledTransform xslt = new XslCompiledTransform();
+				xslt.Load(SiteSettings.Current.RootDir + xsltPath, xSettings, new XmlUrlResolver());
 
-			XsltArgumentList xArg = new XsltArgumentList();
-			XmlWriter xwrt = XmlWriter.Create(tWriter);
-			xslt.Transform(xmlDoc, xArg, tWriter /*xwrt, new UrlResolver()*/);
+				XsltArgumentList xArg = new XsltArgumentList();
+				xslt.Transform(xmlDoc, xArg, tWriter /*xwrt, new UrlResolver()*/);
+			}
 		}
 
 

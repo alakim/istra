@@ -17,6 +17,8 @@ namespace Istra {
 			if (rootDir == null || rootDir.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. Root directory name expected.");
 			xsltName = def.Attributes["xsltName"];
 			// if (xsltName == null || xsltName.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. XSLT name expected.");
+			if (def.Attributes["inContentFolder"] != null && def.Attributes["inContentFolder"].ToLower() == "false")
+				inContentFolder = false;
 			
 		}
 		
@@ -26,7 +28,7 @@ namespace Istra {
 			if (!base.Build(context)) return false;
 
 			XmlDocument doc = new XmlDocument();
-			string contentPath = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir;
+			string contentPath = SiteSettings.Current.RootDir + (inContentFolder?(@"\" + SiteSettings.Current.ContentDir):string.Empty);
 			AddDirectory(contentPath, contentPath + @"\" + rootDir, doc);
 
 			if (xsltName == null || xsltName.Length < 1) {
@@ -89,5 +91,7 @@ namespace Istra {
 
 		private string rootDir;
 		private string xsltName;
+		/// <summary>Корневая директория расположена в директории контента</summary>
+		private bool inContentFolder = true;
 	}
 }
