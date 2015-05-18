@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<toc title="Site #2" root="site2">
+	<link url="/test2.aspx" title="На Главную"/>
+	<section file="about.xml"/>
+</toc>

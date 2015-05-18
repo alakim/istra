@@ -112,7 +112,10 @@
 							<a href="test2.aspx/?p={$file}#{@anchor}"><xsl:value-of select="@title"/></a>
 						</xsl:when>
 						<xsl:otherwise>
-							<a href="/{$file}.html#{@anchor}"><xsl:value-of select="@title"/></a>
+							<xsl:variable name="rootRef">
+								<xsl:if test="//menu/@root"><xsl:value-of select="//menu/@root"/>/</xsl:if>
+							</xsl:variable>
+							<a href="/{$rootRef}{$file}.html#{@anchor}"><xsl:value-of select="@title"/></a>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>

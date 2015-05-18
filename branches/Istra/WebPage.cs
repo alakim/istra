@@ -12,7 +12,14 @@ namespace Istra {
 	/// <summary>Веб-страница</summary>
 	public class WebPage : System.Web.UI.Page {
 
+		/// <summary>Ключ запроса для выдачи документа без преобразования</summary>
+		public static string RawKeyName = "raw";
+
+		private static Regex reFile = new Regex(@"[^\.\/]+\.aspx$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 		protected override void Render(System.Web.UI.HtmlTextWriter writer) {
+			SiteSettings.Key = reFile.Replace(Request.FilePath, string.Empty);
+
 			DataSource.RefreshSources(Context);
 
 			string pageNm = Request["p"];
@@ -75,6 +82,8 @@ namespace Istra {
 					}
 
 					XsltProcessor xslt = new XsltProcessor(Context);
+					xslt.RawMode = Request[RawKeyName] != null;
+
 					xslt.TransformDocument(
 						xmlDoc,
 						@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",

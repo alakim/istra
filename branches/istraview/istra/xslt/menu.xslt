@@ -8,6 +8,7 @@
 
 	<xsl:template match="/toc">
 		<menu>
+			<xsl:if test="@root"><xsl:attribute name="root"><xsl:value-of select="@root"/></xsl:attribute></xsl:if>
 			<xsl:apply-templates/>
 			<xsl:if test="@debug='true'">
 				<xsl:apply-templates mode="debug"/>

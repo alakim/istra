@@ -11,11 +11,14 @@ namespace Istra {
 		/// <summary>Возвращает текущие настройки</summary>
 		public static SiteSettings Current {
 			get {
-				if (instance == null || !instance.readOnce)
-					instance = new SiteSettings();
-				return instance;
+				if (!instances.ContainsKey(Key) || instances[Key] == null)
+					instances[Key] = new SiteSettings();
+				return instances[Key];
 			}
 		}
+
+		/// <summary>Ключ для получения текущих настроек в данной директории</summary>
+		public static string Key = "default";
 
 		/// <summary>Таймаут для ожидания доступа по мьютексу</summary>
 		public const int mutexTimeout = 3000;
@@ -34,8 +37,6 @@ namespace Istra {
 		public int CacheTime { get { return cacheTime; } }
 		/// <summary>Страница по умолчанию</summary>
 		public string DefaultPage { get { return defaultPage; } }
-		/// <summary>Устанавливает загрузку конфигурации один раз при старте приложения</summary>
-		public bool ReadOnce { get { return readOnce; } }
 		/// <summary>Настройки источников данных</summary>
 		public DataSourceDefinition[] Sources { get { return sources; } }
 
@@ -49,10 +50,6 @@ namespace Istra {
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
 			defaultPage = settings["defaultPage"].ToString();
-			if (settings["readOnce"] != null)
-				readOnce = bool.Parse(settings["readOnce"].ToString());
-			else
-				readOnce = true;
 
 			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
 
@@ -73,13 +70,11 @@ namespace Istra {
 		private int cacheTime;
 		/// <summary>Страница по умолчанию</summary>
 		private string defaultPage;
-		/// <summary>Устанавливает загрузку конфигурации один раз при старте приложения</summary>
-		private bool readOnce;
 		/// <summary>Настройки источников данных</summary>
 		private DataSourceDefinition[] sources;
 
 		/// <summary>Текущие настройки</summary>
-		private static SiteSettings instance;
+		private static Dictionary<string, SiteSettings> instances = new Dictionary<string,SiteSettings>();
 
 	}
 }
