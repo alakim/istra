@@ -38,7 +38,7 @@ namespace Istra {
 			}
 
 			string pageNm = context.Request["p"];
-			if (!activePages.Contains(pageNm)) return false;
+			if (activePages.Count>0 && !activePages.Contains(pageNm)) return false;
 
 			DateTime time = File.GetLastWriteTime(FilePath);
 			TimeSpan diff = DateTime.Now - time;
