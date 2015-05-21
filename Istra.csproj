@@ -46,6 +46,7 @@
     <Compile Include="IPagePreprocessor.cs" />
     <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />
+    <Compile Include="IstraManualQuery.cs" />
     <Compile Include="SefHttpHandler.cs" />
     <Compile Include="SessionQuery.cs" />
     <Compile Include="XmlFileDataSource.cs" />
@@ -56,6 +57,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="XmlUtility.cs" />
     <Compile Include="XsltProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="manual.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

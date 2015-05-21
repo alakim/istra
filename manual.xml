@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<manual>
+	<section title="Об архитектуре Istra">
+		<p>Библиотека Istra представляет собой готовый каркас веб-приложения на базе технологии XML/XSLT.</p>
+		<p>Контент сайта формируется в виде отдельных XML-файлов. Для отображения используются XSLT-преобразования.</p>
+	</section>
+	<section title="Веб-страницы">
+		<p>Главная веб-форма сайта, отображающая XML-контент, должна быть наследована от класса <code>Istra.WebPage</code>. Для страницы может быть указан атрибут <code>preprocessor</code>, содержащий имя класса препроцессора, обрабатывающего XML-контент страницы перед XSLT-преобразованием.</p>
+		<list>
+			<caption>Параметры HTTP-запроса:</caption>
+			<li name="p">имя страницы сайта</li>
+			<li name="raw">выдача XML-документа без XSLT-преобразования</li>
+			<li name="clearcache">принудительное обновление всего кэша источников данных</li>
+		</list>
+	</section>
+	<section title="Настройка режима ЧПУ (SEF)" id="sef">
+		<p>Режим ЧПУ (SEF) предназначен для формирования URL страниц сайта, удобных для использования как человеком, так и поисковыми системами.</p>
+		<p>Для включения режима ЧПУ следует указать в конфигурационном файле обработчик HTTP-запросов, использующий класс <code>Istra.SefHttpHandler</code>. Пример:</p>
+		<codesample><![CDATA[
+<configuration>
+  <system.webServer>
+	<handlers>
+		<add name="SefHandler" verb="GET" path="*.html" type="Istra.SefHttpHandler,Istra" />
+	</handlers>
+  </system.webServer>
+</configuration>
+		]]></codesample>
+	</section>
+	<section title="Источники данных" id="dataSources">
+		<p>Источники данных предназначены для оптимизации процесса сбора данных. Источники формируют промежуточные XML-документы, размещаемые в папке кэша. По сути, это некоторый аналог представлений (view) в SQL.</p>
+		<p>Обновление источников происходит при получении запроса на формирование веб-страницы. Периодичность обновления определяется настройками веб-приложения.</p>
+		<attention>Возможно принудительное обновление всех источников путем указания параметра <code>clearcache</code> в HTTP-запросе.</attention>
+		<p>Источники данных реализуются в виде класса, производного от <code>Istra.DataSource</code>.</p>
+		<AvailableSources>
+			<description type="Istra.DirectoryDataSource">
+				<p>Получает данные, расположенные в файлах заданной директории.</p>
+				<list>
+					<caption>Атрибуты:</caption>
+					<li name="rootDir">корневая директория, в которой производится поиск</li>
+					<li name="inContentFolder">задает (true) расположение корневой директории поиска внутри директории контента. По умолчанию - "true".</li>
+				</list>
+			</description>
+			<description type="Istra.XmlFileDataSource">Получает данные из XML-файла</description>
+		</AvailableSources>
+		<section title="Настройка источников">
+			<p>Настройка источников данных производится в файле <file>web.config</file> в секции <code>Istra/DataSources</code>, например:</p>
+			<codesample><![CDATA[
+<DataSources>
+	<source type="Istra.XmlFileDataSource,Istra" cachedFile="menu.xml" fileName="toc.xml" xsltName="menu.xslt"/>
+	<source type="Istra.DirectoryDataSource,Istra" cachedFile="news.xml" rootDir="news" 
+		postprocessor="Istra.DateFormatPostprocessor,Istra" activePages="datasources"/>
+</DataSources>
+
+			]]></codesample>
+			<list>
+				<caption>Общие атрибуты источников:</caption>
+				<li name="type">полное имя класса, реализующего данный источник</li>
+				<li name="cachedFile"> - имя файла кэша</li>
+				<li name="postprocessor">задает тип класса постпроцессора, модифицирующего данные источника перед сохранением файла.</li>
+				<li name="xsltName">имя файла XSLT-преобразования. Если не указан, преобразование не производится.</li>
+				<li name="activePages">список страниц сайта, при обращении к которым происходит обновление источника (с учетом заданного таймаута). Если список не задан, обновление происходит при обращении к любой странице.</li>
+			</list>
+		</section>
+	</section>
+	<section title="Запросы">
+		<p>Запросы предназначены для вставки в документ дополнительных данных в зависимости от параметров HTTP-запроса, сессии, и пр.</p>
+		<p>Описание запроса помещается в XML-код страницы сайта в виде тега <code>istra:query</code>. Пространство имен <code>istra</code> должно иметь URI <code>http://www.istra.com/cms</code>. Для тега должен быть указан атрибут <code>type</code>, содержащий полное имя класса запроса. Остальные атрибуты могут задавать мэппинг имен параметров во внутренние имена запроса.</p>
+		<p>Запросы реализуются в виде классов, поддерживающих интерфейс <code>Istra.IQuery</code>.</p>
+		<AvailableQueries>
+			<description type="Istra.ErrorLogQuery">Возвращает текущий протокол ошибок</description>
+			<description type="Istra.HttpRequestQuery">
+				<p>Возвращает данные текущего HTTP-запроса</p>
+				<p>Атрибуты в XML-описании данного запроса могут задавать мэппинг имен параметров запроса во внутренние имена. Если мэппинг задан, то выводятся только определенные в нем параметры, если не задан - выводятся все параметры запроса.</p>
+			</description>
+			<description type="Istra.IstraManualQuery">Выводит текст руководства по архитектуре Istra</description>
+			<description type="Istra.SessionQuery">
+				<p>Возвращает данные текущей сессии</p>
+				<p>Атрибуты в XML-описании данного запроса могут задавать мэппинг имен параметров сессии во внутренние имена. Если мэппинг задан, то выводятся только определенные в нем параметры, если не задат - выводятся все параметры сессии.</p>
+			</description>
+		</AvailableQueries>
+	</section>
+	<section title="Конфигурация веб-приложения">
+		<p>Для настройки веб-приложения в файл <file>web.config</file> добавляется секция <code>Istra</code>, содержащая следующие разделы:</p>
+		<list>
+			<li name="DataSources">содержит настройки <ref sect="#dataSources">источников данных</ref></li>
+			<li name="XsltSettings">содержит настройки XSLT-преобразования
+				<list>
+					<caption>Используемые ключи</caption>
+					<li name="rootDir">путь к корневой директории приложения в файловой системе веб-сервера</li>
+					<li name="logDir">имя директории для хранения протокола ошибок</li>
+					<li name="contentDir">имя директории для хранения XML-контента</li>
+					<li name="cacheDir">имя директории для размещения кэша источников данных</li>
+					<li name="xsltDir">имя директории, содержащей файлы XSLT-преобразования</li>
+					<li name="jsFolder">имя директории, содержащей файлы клиентских скриптов</li>
+					<li name="cssFolder">имя директории, содержащей файлы таблиц стилей</li>
+					<li name="cacheTime">таймаут обновления источников данных по умолчанию</li>
+					<li name="defaultPage">идентификатор страницы сайта (имя файла без расширения), назначаемой в качестве главной страницы сайта</li>
+				</list>
+			</li>
+			<li name="SEF">содержит настройки режима <ref sect="#sef">ЧПУ</ref>
+				<list>
+					<caption>Используемые ключи</caption>
+					<li name="defaultPage">имя веб-формы сайта, используемой по умолчанию</li>
+				</list>
+			</li>
+		</list>
+	</section>
+</manual>
