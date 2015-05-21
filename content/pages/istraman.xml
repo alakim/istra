@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<article title="Архитектура Istra" xmlns:istra="http://www.istra.com/cms">
+	<istra:query type="Istra.IstraManualQuery,Istra"/>
+</article>
