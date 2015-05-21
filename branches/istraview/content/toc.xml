@@ -6,5 +6,6 @@
 		<section file="datasources.xml" topLevelOnly="true"/>
 	</section>
 	<section file="xmledit.xml"/>
+	<section file="istraman.xml"/>
 	<link url="/site2/" title="Site #2"/>
 </toc>

@@ -79,7 +79,7 @@ nav{background:#fff;}
 }
 .topMenu li{
 	float: left;
-	padding:15px 50px 15px 50px;
+	padding:15px 40px 15px 40px;
 }
 .topMenu li:hover{
 	background-color:#608AC0;

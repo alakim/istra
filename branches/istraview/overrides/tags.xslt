@@ -173,4 +173,38 @@
 		<div class="xmlEditor"></div>
 	</xsl:template>
 	
+	<xsl:template match="IstraManual">
+		<p>Текущая версия сборки: <xsl:value-of select="@version"/></p>
+		<xsl:apply-templates/>
+	</xsl:template>
+	
+	<xsl:template match="AvailableSources">
+		<p>Доступные классы источников данных:</p>
+		<xsl:call-template name="typesList">
+			<xsl:with-param name="list" select="."/>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template match="AvailableQueries">
+		<p>Доступные классы запросов:</p>
+		<xsl:call-template name="typesList">
+			<xsl:with-param name="list" select="."/>
+		</xsl:call-template>
+	</xsl:template>
+	
+	<xsl:template name="typesList">
+		<xsl:param name="list"/>
+		<ol>
+			<xsl:for-each select="$list/type">
+				<xsl:variable name="tName" select="@name"/>
+				<li>
+					<xsl:value-of select="$tName"/>
+					<xsl:if test="ancestor::*/description[@type=$tName]">
+						: <xsl:for-each select="ancestor::*/description[@type=$tName]"><xsl:apply-templates/></xsl:for-each>
+					</xsl:if>
+				</li>
+			</xsl:for-each>
+		</ol>
+	</xsl:template>
+	
 </xsl:stylesheet>
