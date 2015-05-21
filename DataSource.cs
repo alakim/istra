@@ -20,6 +20,11 @@ namespace Istra {
 				ConstructorInfo cInf = t.GetConstructor(new Type[0] {});
 				this.postprocessor = (IPostprocessor)cInf.Invoke(new object[0] {});
 			}
+			string activePagesList = def.Attributes["activePages"];
+			if (activePagesList != null) {
+				string[] pNames = activePagesList.Split(",;".ToCharArray());
+				activePages = new List<string>(pNames);
+			}
 		}
 
 		/// <summary>Имя файла в кэше</summary>
@@ -27,15 +32,26 @@ namespace Istra {
 
 		/// <summary>Формирует кэшированный файл данных</summary>
 		public virtual bool Build(HttpContext context) {
+			if (context.Request["clearcache"] != null) {
+				ClearCache();
+				return true;
+			}
+
+			string pageNm = context.Request["p"];
+			if (!activePages.Contains(pageNm)) return false;
+
 			DateTime time = File.GetLastWriteTime(FilePath);
 			TimeSpan diff = DateTime.Now - time;
 			double sec = diff.TotalSeconds;
-			if (context.Request["clearcache"]==null && sec < SiteSettings.Current.CacheTime)
+			if (sec < SiteSettings.Current.CacheTime)
 				return false;
 			
 			ClearCache();
 			return true;
 		}
+
+		/// <summary>Страницы, на которых активируется источник</summary>
+		protected List<string> activePages = new List<string>();
 
 		/// <summary>Постобработка документа</summary>
 		public void PrepareDocument() {
