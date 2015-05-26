@@ -47,12 +47,15 @@ namespace Istra {
 		private SefSettings() {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/SEF");
 			this.defaultPage = settings["defaultPage"];
+			this.logMissingPages = settings["logMissingPages"] != null && settings["logMissingPages"].ToLower() == "true";
 		}
 
 		/// <summary>Страница по умолчанию</summary>
 		public string DefaultPage { get { return defaultPage; } }
+		public bool LogMissingPages { get { return logMissingPages; } }
 
 		private string defaultPage;
+		private bool logMissingPages = false;
 	}
 
 	/// <summary>Обработчик настроек конфигурации</summary>

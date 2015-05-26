@@ -63,10 +63,20 @@ namespace Istra {
 					// int y = 5 / x;
 					XmlDocument xmlDoc = new XmlDocument();
 					try {
-						xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + 
-							@"\pages\" + pageName + ".xml");
+						string filePath = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + 
+							@"\pages\" + pageName + ".xml";
+						if (File.Exists(filePath))
+							xmlDoc.Load(filePath);
+						else {
+							if (SefSettings.Current.LogMissingPages)
+								ErrorLog.WriteError(new ApplicationException("Missing content file " + pageName + ".xml"));
+							//this.Context.Server.Transfer(SefSettings.Current.DefaultPage + "/?p=" + SiteSettings.Current.DefaultPage);
+							this.Context.Response.Redirect(SefSettings.Current.DefaultPage + "/?p=" + SiteSettings.Current.DefaultPage);
+							return;
+						}
 					}
 					catch (Exception err) {
+						//if(SefSettings.Current.LogMissingPages)
 						ErrorLog.WriteError(err);
 						// xmlDoc.Load(SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir + 
 						// 	@"\pages\" + SiteSettings.Current.DefaultPage + ".xml");
