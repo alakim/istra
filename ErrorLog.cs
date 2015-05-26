@@ -21,9 +21,12 @@ namespace Istra {
 			wrt.WriteLine(@"<?xml version=""1.0"" encoding=""UTF-8""?>");
 			wrt.WriteLine(@"<error date=""{0}"">", XmlUtility.FormatDateTime(date));
 			wrt.WriteLine("<Message>{0}</Message>", XmlUtility.FormatString(err.Message));
-			wrt.WriteLine("<Source>{0}</Source>", XmlUtility.FormatString(err.Source));
-			wrt.WriteLine("<StackTrace>{0}</StackTrace>", XmlUtility.FormatString(err.StackTrace));
-			wrt.WriteLine("<TargetSite>{0}</TargetSite>", XmlUtility.FormatString(err.TargetSite.ToString()));
+			if(err.Source!=null)
+				wrt.WriteLine("<Source>{0}</Source>", XmlUtility.FormatString(err.Source));
+			if(err.StackTrace!=null)
+				wrt.WriteLine("<StackTrace>{0}</StackTrace>", XmlUtility.FormatString(err.StackTrace));
+			if(err.TargetSite!=null)
+				wrt.WriteLine("<TargetSite>{0}</TargetSite>", XmlUtility.FormatString(err.TargetSite.ToString()));
 			wrt.WriteLine("</error>");
 			xError.InnerXml = wrt.ToString();
 
