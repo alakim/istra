@@ -38,6 +38,7 @@
 					<caption>Атрибуты:</caption>
 					<li name="rootDir">корневая директория, в которой производится поиск</li>
 					<li name="inContentFolder">задает (true) расположение корневой директории поиска внутри директории контента. По умолчанию - "true".</li>
+					<li name="filter">(необязательный) регулярное выражение для отбора файлов по имени (регистр символов не учитывается).</li>
 				</list>
 			</description>
 			<description type="Istra.XmlFileDataSource">Получает данные из XML-файла</description>
