@@ -19,6 +19,7 @@ namespace Istra {
 			// if (xsltName == null || xsltName.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. XSLT name expected.");
 			if (def.Attributes["inContentFolder"] != null && def.Attributes["inContentFolder"].ToLower() == "false")
 				inContentFolder = false;
+			if (def.Attributes["filter"] != null) filter = new Regex(def.Attributes["filter"], RegexOptions.IgnoreCase | RegexOptions.Compiled);
 			
 		}
 		
@@ -66,6 +67,7 @@ namespace Istra {
 
 			foreach (string filePath in Directory.GetFiles(dirPath)) {
 				string fileName = filePath.Replace(dirPath + @"\", string.Empty);
+				if (filter != null && !filter.Match(fileName).Success) continue;
 				XmlElement el = doc.CreateElement("file");
 				XmlUtility.AddAttribute(doc, el, "name", fileName);
 				LoadFile(filePath, doc, el);
@@ -93,5 +95,7 @@ namespace Istra {
 		private string xsltName;
 		/// <summary>Корневая директория расположена в директории контента</summary>
 		private bool inContentFolder = true;
+		/// <summary>Регулярное выражение для отбора файлов по имени</summary>
+		private Regex filter = null;
 	}
 }
