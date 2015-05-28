@@ -83,6 +83,8 @@ namespace Istra {
 						this.Context.Response.Redirect(SefSettings.Current.DefaultPage+"/?p="+SiteSettings.Current.DefaultPage);
 					}
 
+					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "pageName", pageName);
+
 					XmlNode attProprocessor = xmlDoc.DocumentElement.Attributes.GetNamedItem("preprocessor");
 					if (attProprocessor != null) {
 						Type t = Type.GetType(attProprocessor.Value);
