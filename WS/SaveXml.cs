@@ -14,6 +14,13 @@ namespace Istra.WS {
 			string docFile = Request["doc"];
 			string content = Request["content"];
 
+
+			if (docFile == null) {
+				writer.Write(@"{""error"":""Не указан файл для сохранения""}");
+			}
+
+			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
+
 			string filePath = Istra.SiteSettings.Current.RootDir + docFile;
 			content = JsonUtility.RestoreXmlMarkup(content);
 

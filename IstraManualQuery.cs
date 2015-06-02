@@ -30,6 +30,7 @@ namespace Istra {
 			AddTypes(thisAsm, manual, "Istra.DataSource", "//AvailableSources", false);
 			AddTypes(thisAsm, manual, "Istra.IQuery", "//AvailableQueries", true);
 			AddTypes(thisAsm, manual, "Istra.IUserSessionManager", "//AvailableSessionManagers", true);
+			AddTypes(thisAsm, manual, "Istra.WS.WebService", "//AvailableWebServices", false);
 
 
 			requestRoot.InnerXml = manual.DocumentElement.InnerXml;
