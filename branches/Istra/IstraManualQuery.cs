@@ -26,23 +26,30 @@ namespace Istra {
 			string xml = rdr.ReadToEnd();
 			XmlDocument manual = new XmlDocument();
 			manual.LoadXml(xml);
-			AddDataSources(thisAsm, manual);
-			AddQueries(thisAsm, manual);
+
+			AddTypes(thisAsm, manual, "Istra.DataSource", "//AvailableSources", false);
+			AddTypes(thisAsm, manual, "Istra.IQuery", "//AvailableQueries", true);
+			AddTypes(thisAsm, manual, "Istra.IUserSessionManager", "//AvailableSessionManagers", true);
+
 
 			requestRoot.InnerXml = manual.DocumentElement.InnerXml;
 
 			XmlUtility.AddAttribute(doc, requestRoot, "version", thisAsm.GetName().Version.ToString());
 		}
 
-		/// <summary>Формирует список доступных источников данных</summary>
+
+		/// <summary>Формирует список доступных классов заданного типа</summary>
 		/// <param name="thisAsm">сборка</param>
 		/// <param name="manual">документ руководства</param>
-		private static void AddDataSources(Assembly thisAsm, XmlDocument manual) {
-			XmlElement elSources = (XmlElement)manual.SelectSingleNode("//AvailableSources");
-			Type tDS = thisAsm.GetType("Istra.DataSource");
+		/// <param name="typeName">имя типа</param>
+		/// <param name="nodePath">путь к узлу документации</param>
+		/// <param name="interfaceMode">проверяет реализацию интерфейск</param>
+		private static void AddTypes(Assembly thisAsm, XmlDocument manual, string typeName, string nodePath, bool interfaceMode) {
+			XmlElement elSources = (XmlElement)manual.SelectSingleNode(nodePath);
+			Type tDS = thisAsm.GetType(typeName);
 			Type[] types = thisAsm.GetTypes();
 			foreach (Type t in types) {
-				if (t.BaseType == tDS) {
+				if((interfaceMode && t.GetInterface(typeName) != null) || (!interfaceMode && t.BaseType == tDS)){
 					XmlElement elDS = manual.CreateElement("type");
 					elSources.AppendChild(elDS);
 					XmlUtility.AddAttribute(manual, elDS, "name", t.Namespace + "." + t.Name);
@@ -50,21 +57,6 @@ namespace Istra {
 			}
 		}
 
-		/// <summary>Формирует список доступных запросов</summary>
-		/// <param name="thisAsm">сборка</param>
-		/// <param name="manual">документ руководства</param>
-		private static void AddQueries(Assembly thisAsm, XmlDocument manual) {
-			XmlElement elSources = (XmlElement)manual.SelectSingleNode("//AvailableQueries");
-			Type tDS = thisAsm.GetType("Istra.IQuery");
-			Type[] types = thisAsm.GetTypes();
-			foreach (Type t in types) {
-				if (t.GetInterface("Istra.IQuery") != null) { 
-					XmlElement elDS = manual.CreateElement("type");
-					elSources.AppendChild(elDS);
-					XmlUtility.AddAttribute(manual, elDS, "name", t.Namespace+"."+t.Name);
-				}
-			}
-		}
 
 
 	}

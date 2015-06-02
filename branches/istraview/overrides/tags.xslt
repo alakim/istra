@@ -192,6 +192,13 @@
 		</xsl:call-template>
 	</xsl:template>
 	
+	<xsl:template match="AvailableSessionManagers">
+		<p>Доступные менеджеры сессий:</p>
+		<xsl:call-template name="typesList">
+			<xsl:with-param name="list" select="."/>
+		</xsl:call-template>
+	</xsl:template>
+	
 	<xsl:template name="typesList">
 		<xsl:param name="list"/>
 		<ol>
