@@ -82,15 +82,53 @@
 	</section>
 	<section id="sessions" title="Управление сессиями">
 		<p>Для управления пользовательскими сессиями создан интерфейс менеджера сессий <code>IUserSessionManager</code>.</p>
-		<p>Класс менеджера сессий выбирается с помощью ключа <code>sessionManager</code> в <ref sect="webConfig">настройках веб-приложения</ref>. Если ключ не задан, то автоматически выбирается класс менеджера <code>EmptySessionManager</code>, который просто формально реализует требуемый интерфейс, но ничего не делает, в результате чего приложение работает в режиме без поддержки пользовательских сессий.</p>
+		<p>Класс менеджера сессий выбирается с помощью ключа <code>sessionManager</code> в <ref sect="#webConfig">настройках веб-приложения</ref>. Если ключ не задан, то автоматически выбирается класс менеджера <code>EmptySessionManager</code>, который просто формально реализует требуемый интерфейс, но ничего не делает, в результате чего приложение работает в режиме без поддержки пользовательских сессий.</p>
 		<AvailableSessionManagers>
 			<description type="Istra.EmptySessionManager">Менеджер по умолчанию. Формально реализует требуемый интерфейс, но ничего не делает.</description>
 			<description type="Istra.SqlSessionManager">
 				<p>Менеджер сессий, хранимых в БД.</p>
-				<p>Настройки конфигурации хранятся в секции <code>Istra/UserSessions</code>. Подробнее см. <ref sect="webConfig">Конфигурация веб-приложения</ref>.</p>
+				<p>Настройки конфигурации хранятся в секции <code>Istra/UserSessions</code>. Подробнее см. <ref sect="#webConfig">Конфигурация веб-приложения</ref>.</p>
 			</description>
 		</AvailableSessionManagers>
 
+	</section>
+	<section title="Веб-службы">
+		<p>В сборке <code>Istra</code> реализованы некоторые стандартные веб-службы, предназначенные для создания веб-приложений с использованием технологии Ajax.</p>
+		<p>Все веб-службы реализованы в виде классов, наследованных от <code>Istra.WS.WebService</code></p>
+		<AvailableWebServices>
+			<description type="Istra.WS.ClearErrorLog">Запускает очистку журнала ошибок.</description>
+			<description type="Istra.WS.DeleteFile">Удаляет файл. Путь к файлу задается в параметре HTTP-запроса <code>file</code> относительно корневой папки приложенрия.</description>
+			<description type="Istra.WS.GetData">
+				<p>Возвращает данные XML-документа, преобразованного в формат JSON.</p>
+				<list>
+					<caption>Параметры HTTP-запроса</caption>
+					<li name="doc">путь к файлу документа относительно корневой папки приложения</li>
+					<li name="query">выражение XPath для выбора узлов документа, включаемых в выходной документ</li>
+				</list>
+			</description>
+			<description type="Istra.WS.GetErrors">Возвращает журнал ошибок.</description>
+			<description type="Istra.WS.GetXml">Возвращает содержимое XML-документа, путь к которому задан в параметре HTTP-запроса <code>doc</code> относительно корневой папки приложения.</description>
+			<description type="Istra.WS.SaveData">
+				<p>Сохраняет данные XML-документа. Перед сохранением производится унификация формата дат, расположенных в атрибутах <code>@data</code>. XML-документ сохраняется в компактном виде без переводов строки и отступов.</p>
+				<list>
+					<caption>Параметры HTTP-запроса</caption>
+					<li name="file">путь к файлу XML-документа относительно корневой папки приложения</li>
+					<li name="xml">XML-код документа со <ref sect="#hiddenMarkup">скрытой разметкой</ref>.</li>
+				</list>
+			</description>
+			<description type="Istra.WS.SaveXml">
+				<p>Сохраняет данные XML-документа. Документ сохраняется с учетом пользовательского форматирования XML-кода (переводы строки, отступы).</p>
+				<list>
+					<caption>Параметры HTTP-запроса</caption>
+					<li name="doc">путь к файлу XML-документа относительно корневой папки приложения</li>
+					<li name="content">XML-код документа со <ref sect="#hiddenMarkup">скрытой разметкой</ref>.</li>
+				</list>
+			</description>
+		</AvailableWebServices>
+		<section id="hiddenMarkup" title="Скрытая XML-разметка">
+			<p>При передаче XML-данных в параметрах HTTP-запроса используется сокрытие XML-разметки чтобы не смущать систему безопасности веб-сервера.</p>
+			<p>Для скрытия XML-разметки производится замена символов '<code>&lt;</code>' и '<code>&gt;</code>' на последовательности '<code>#[#</code>' и '<code>#]#</code>' соответственно.</p>
+		</section>
 	</section>
 	<section id="webConfig" title="Конфигурация веб-приложения">
 		<p>Для настройки веб-приложения в файл <file>web.config</file> добавляется секция <code>Istra</code>, содержащая следующие разделы:</p>
@@ -120,9 +158,9 @@
 			<li name="UserSessions">содержит настройки менеджера <ref sect="#sessions">пользовательских сессий</ref>
 				<list>
 					<caption>Используемые ключи</caption>
-					<li name="manager">имя класса менеджера пользовательских сессий</li>
-					<li name="db">строка подключения к БД</li>
-					<li name="tableName">имя таблицы БД для хранения данных сессий</li>
+					<li name="manager">(обязательный) имя класса менеджера пользовательских сессий</li>
+					<li name="db">строка подключения к БД (если используется SQL-менеджер)</li>
+					<li name="tableName">имя таблицы БД для хранения данных сессий (если используется SQL-менеджер)</li>
 					<li name="timeout">таймаут сессии (сек)</li>
 				</list>
 			</li>

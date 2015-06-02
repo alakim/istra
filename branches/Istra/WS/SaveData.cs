@@ -19,8 +19,9 @@ namespace Istra.WS {
 
 			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
 
-			xml = JsonUtility.RestoreXmlMarkup(xml);
 			string filePath = Istra.SiteSettings.Current.RootDir + docFile;
+			xml = JsonUtility.RestoreXmlMarkup(xml);
+
 			XmlDocument doc = new XmlDocument();
 			doc.LoadXml(xml);
 			XmlUtility.FormatDates(doc.SelectNodes(@"//@date"));
