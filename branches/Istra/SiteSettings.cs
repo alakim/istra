@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
 using System.Collections.Specialized;
+using System.Reflection;
 
 namespace Istra {
 	/// <summary>Настройки сайта</summary>
@@ -39,6 +40,18 @@ namespace Istra {
 		public string DefaultPage { get { return defaultPage; } }
 		/// <summary>Настройки источников данных</summary>
 		public DataSourceDefinition[] Sources { get { return sources; } }
+		/// <summary>Имя класса менеджера сессий</summary>
+		public string SessionManager { get { return sessionManager; } }
+
+		/// <summary>Возвращает экземпляр менеджера сессий</summary>
+		/// <returns></returns>
+		public IUserSessionManager GetSessionManager() {
+			if(SessionManager==null || SessionManager.Length==0)
+				return new EmptySessionManager();
+			Type t = Type.GetType(SessionManager);
+			ConstructorInfo cInf = t.GetConstructor(new Type[0] { });
+			return (IUserSessionManager)cInf.Invoke(new object[0] { });
+		}
 
 		/// <summary>Закрытый конструктор</summary>
 		private SiteSettings() {
@@ -50,10 +63,10 @@ namespace Istra {
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
 			defaultPage = settings["defaultPage"].ToString();
+			if(settings["sessionManager"]!=null)
+				sessionManager = settings["sessionManager"].ToString();
 
 			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
-
-
 		}
 
 		/// <summary>Директори приложения</summary>
@@ -72,6 +85,8 @@ namespace Istra {
 		private string defaultPage;
 		/// <summary>Настройки источников данных</summary>
 		private DataSourceDefinition[] sources;
+		/// <summary>Имя класса менеджера сессий</summary>
+		private string sessionManager = null;
 
 		/// <summary>Текущие настройки</summary>
 		private static Dictionary<string, SiteSettings> instances = new Dictionary<string,SiteSettings>();

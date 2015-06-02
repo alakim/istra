@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Collections.Specialized;
 using System.IO;
@@ -80,6 +81,30 @@ namespace Istra {
 			return wrt.ToString();
 		}
 
+		private static Regex reDate1 = new Regex(@"(\d\d?)[.\-\/](\d\d?)[.\-\/](\d\d\d\d)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		private static Regex reDate2 = new Regex(@"(\d\d\d\d)[.\-\/](\d\d?)[.\-\/](\d\d?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
+		/// <summary>Приводит формат даты к единому стилю</summary>
+		/// <param name="nodes">узлы, содержащие даты</param>
+		public static void FormatDates(XmlNodeList nodes) {
+			foreach (XmlNode nd in nodes) {
+				string date = nd.Value;
+				Match mt = reDate1.Match(date);
+				if (mt.Success) {
+					nd.Value = mt.Groups[3].Value + "-" + mt.Groups[2].Value + "-" + mt.Groups[1].Value;
+				}
+				else {
+					mt = reDate2.Match(date);
+					if (mt.Success) {
+						nd.Value = mt.Groups[1].Value + "-" + mt.Groups[2].Value + "-" + mt.Groups[3].Value;
+					}
+					else {
+
+					}
+				}
+
+			}
+		}
 		/// <summary>Форматирует строку</summary>
 		/// <param name="str">исходная строка</param>
 		public static string FormatString(string str) {

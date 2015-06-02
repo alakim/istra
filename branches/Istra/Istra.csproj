@@ -47,8 +47,34 @@
     <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />
     <Compile Include="IstraManualQuery.cs" />
+    <Compile Include="IUserSessionManager.cs" />
+    <Compile Include="JsonUtility.cs" />
     <Compile Include="SefHttpHandler.cs" />
     <Compile Include="SessionQuery.cs" />
+    <Compile Include="WS\ClearErrorLog.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\DeleteFile.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\GetData.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\GetErrors.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\GetXml.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\SaveData.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\SaveXml.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\WebService.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="XmlFileDataSource.cs" />
     <Compile Include="SiteSettings.cs" />
     <Compile Include="WebPage.cs">
