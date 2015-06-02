@@ -51,6 +51,7 @@
     <Compile Include="JsonUtility.cs" />
     <Compile Include="SefHttpHandler.cs" />
     <Compile Include="SessionQuery.cs" />
+    <Compile Include="SqlSessionManager.cs" />
     <Compile Include="WS\ClearErrorLog.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

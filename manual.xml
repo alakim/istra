@@ -80,7 +80,19 @@
 			</description>
 		</AvailableQueries>
 	</section>
-	<section title="Конфигурация веб-приложения">
+	<section id="sessions" title="Управление сессиями">
+		<p>Для управления пользовательскими сессиями создан интерфейс менеджера сессий <code>IUserSessionManager</code>.</p>
+		<p>Класс менеджера сессий выбирается с помощью ключа <code>sessionManager</code> в <ref sect="webConfig">настройках веб-приложения</ref>. Если ключ не задан, то автоматически выбирается класс менеджера <code>EmptySessionManager</code>, который просто формально реализует требуемый интерфейс, но ничего не делает, в результате чего приложение работает в режиме без поддержки пользовательских сессий.</p>
+		<AvailableSessionManagers>
+			<description type="Istra.EmptySessionManager">Менеджер по умолчанию. Формально реализует требуемый интерфейс, но ничего не делает.</description>
+			<description type="Istra.SqlSessionManager">
+				<p>Менеджер сессий, хранимых в БД.</p>
+				<p>Настройки конфигурации хранятся в секции <code>Istra/UserSessions</code>. Подробнее см. <ref sect="webConfig">Конфигурация веб-приложения</ref>.</p>
+			</description>
+		</AvailableSessionManagers>
+
+	</section>
+	<section id="webConfig" title="Конфигурация веб-приложения">
 		<p>Для настройки веб-приложения в файл <file>web.config</file> добавляется секция <code>Istra</code>, содержащая следующие разделы:</p>
 		<list>
 			<li name="DataSources">содержит настройки <ref sect="#dataSources">источников данных</ref></li>
@@ -103,6 +115,15 @@
 					<caption>Используемые ключи</caption>
 					<li name="defaultPage">Имя веб-формы сайта, используемой по умолчанию.</li>
 					<li name="logMissingPages">Включает (true) режим протоколирования обращений к несуществующим страницам. По умолчанию выключен.</li>
+				</list>
+			</li>
+			<li name="UserSessions">содержит настройки менеджера <ref sect="#sessions">пользовательских сессий</ref>
+				<list>
+					<caption>Используемые ключи</caption>
+					<li name="class">имя класса менеджера пользовательских сессий</li>
+					<li name="db">строка подключения к БД</li>
+					<li name="tableName">имя таблицы БД для хранения данных сессий</li>
+					<li name="timeout">таймаут сессии (сек)</li>
 				</list>
 			</li>
 		</list>
