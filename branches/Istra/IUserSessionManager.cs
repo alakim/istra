@@ -61,7 +61,7 @@ namespace Istra {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/UserSessions");
 			if (settings == null) return;
 
-			if (settings["class"] != null)
+			if (settings["manager"] != null)
 				this.className = settings["class"];
 			if (settings["db"] != null)
 				this.dbConn = settings["db"];
