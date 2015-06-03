@@ -86,7 +86,7 @@ namespace Istra.WS {
 			}
 
 			if (preserveFormatting && processor==null)
-				SaveText(filePath, content);
+				File.WriteAllText(filePath, content);
 			else
 				doc.Save(filePath);
 		}
@@ -103,7 +103,9 @@ namespace Istra.WS {
 		/// <param name="path">путь относительно корневой директории приложения</param>
 		private static string FullPath(string path) {
 			if (path[0] != '/') path = '/' + path;
-			return Istra.SiteSettings.Current.RootDir + path;
+			string fullPath = Istra.SiteSettings.Current.RootDir + path;
+			fullPath = fullPath.Replace('/', '\\');
+			return fullPath;
 		}
 	}
 }
