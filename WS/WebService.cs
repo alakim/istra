@@ -11,10 +11,29 @@ namespace Istra.WS {
 			string sessionID = Request["sessionID"];
 			IUserSessionManager session = SiteSettings.Current.GetSessionManager();
 			if (!session.Check(sessionID)) {
-				writer.Write(@"{""error"":""Authentication required!""}");
+				WriteError("Authentication required!", writer);
 				return false;
 			}
 			return true;
+		}
+
+		/// <summary>Выводит сообщение об ошибке</summary>
+		/// <param name="title">заголовок сообщения</param>
+		/// <param name="err">исключение</param>
+		/// <param name="writer">компонент вывода</param>
+		public void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
+			writer.Write(@"{{""error"":""{0}: \n{1}""}}", title, JsonUtility.PrepareString(err.Message, true));
+		}
+		/// <summary>Выводит сообщение об ошибке</summary>
+		/// <param name="title">заголовок сообщения</param>
+		/// <param name="writer">компонент вывода</param>
+		public void WriteError(string title, System.Web.UI.HtmlTextWriter writer) {
+			writer.Write(@"{{""error"":""{0}""}}", title);
+		}
+
+		/// <summary>Выводит сообщение об успешном завершенни операции</summary>
+		public void WriteSuccess(System.Web.UI.HtmlTextWriter writer) {
+			writer.Write(@"{""success"":true}");
 		}
 	}
 }

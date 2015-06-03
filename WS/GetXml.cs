@@ -12,10 +12,9 @@ namespace Istra.WS {
 			if (!CheckSession(writer)) return;
 
 			string docFile = Request["doc"];
-			string filePath = Istra.SiteSettings.Current.RootDir + docFile;
 
-			string xml = File.ReadAllText(filePath);
-			writer.Write(xml);
+			string content = FileOperationsUtility.GetText(docFile);
+			writer.Write(content);
 		}
 	}
 }

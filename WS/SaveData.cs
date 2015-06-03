@@ -14,20 +14,14 @@ namespace Istra.WS {
 			string xml = Request["xml"];
 
 			if (docFile == null) {
-				writer.Write(@"{""error"":""Не указан файл для сохранения""}");
+				WriteError("Не указан файл для сохранения", writer);
+				return;
 			}
 
 			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
 
-			string filePath = Istra.SiteSettings.Current.RootDir + docFile;
-			xml = JsonUtility.RestoreXmlMarkup(xml);
-
-			XmlDocument doc = new XmlDocument();
-			doc.LoadXml(xml);
-			XmlUtility.FormatDates(doc.SelectNodes(@"//@date"));
-
-			doc.Save(filePath);
-			writer.Write(@"{""success"":true}");
+			FileOperationsUtility.SaveXml(docFile, xml, new DateFormatter());
+			WriteSuccess(writer);
 		}
 	}
 }

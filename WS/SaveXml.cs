@@ -16,38 +16,22 @@ namespace Istra.WS {
 
 
 			if (docFile == null) {
-				writer.Write(@"{""error"":""Не указан файл для сохранения""}");
+				WriteError("Не указан файл для сохранения", writer);
+				return;
 			}
 
 			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
 
-			string filePath = Istra.SiteSettings.Current.RootDir + docFile;
-			content = JsonUtility.RestoreXmlMarkup(content);
 
 			try {
-				XmlDocument doc = new XmlDocument();
-				doc.LoadXml(content);
-			}
-			catch (Exception err) {
-				WriteError("Ошибка синтаксического разбора документа", err, writer);
-				return;
-			}
-
-			try {
-				File.WriteAllText(filePath, content);
-				writer.Write(@"{""success"":true}");
+				FileOperationsUtility.SaveXml(docFile, content);
+				WriteSuccess(writer);
 			}
 			catch (Exception err) {
 				WriteError("Ошибка сохранения документа", err, writer);
 			}
 		}
 
-		/// <summary>Выводит сообщение об ошибке</summary>
-		/// <param name="title">заголовок сообщения</param>
-		/// <param name="err">исключение</param>
-		/// <param name="writer">компонент вывода</param>
-		private static void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
-			writer.Write(@"{{""error"":""{0}: \n{1}""}}", title, JsonUtility.PrepareString(err.Message, true));
-		}
+
 	}
 }
