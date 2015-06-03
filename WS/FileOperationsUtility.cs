@@ -14,9 +14,22 @@ namespace Istra.WS {
 		}
 
 		/// <summary>Удаляет директорию</summary>
-		/// <param name="file">путь к директории относительно корневой директории приложения</param>
+		/// <param name="dir">путь к директории относительно корневой директории приложения</param>
 		public static void DeleteDirectory(string dir) {
 			Directory.Delete(FullPath(dir), true);
+		}
+
+		/// <summary>Создает файл</summary>
+		/// <param name="file">путь к файлу относительно корневой директории приложения</param>
+		public static void CreateFile(string file) {
+			FileStream stm = File.Create(FullPath(file));
+			stm.Close();
+		}
+
+		/// <summary>Создает директорию</summary>
+		/// <param name="dir">путь к директории относительно корневой директории приложения</param>
+		public static void CreateDirectory(string dir) {
+			Directory.CreateDirectory(FullPath(dir));
 		}
 
 		/// <summary>Перемещает или переименовывает файл</summary>

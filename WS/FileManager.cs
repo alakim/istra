@@ -14,7 +14,7 @@ namespace Istra.WS {
 			string operation = Request["oper"];
 			string file = Request["file"];
 			string target = Request["target"];
-
+			string dir = Request["dir"];
 
 			try {
 				switch (operation) {
@@ -22,7 +22,6 @@ namespace Istra.WS {
 						FileOperationsUtility.DeleteFile(file);
 						break;
 					case "delDir":
-						string dir = Request["dir"];
 						FileOperationsUtility.DeleteDirectory(dir);
 						break;
 					case "saveText":
@@ -40,6 +39,12 @@ namespace Istra.WS {
 					case "renameDir":
 					case "moveDir":
 						FileOperationsUtility.Move(file, target, true);
+						break;
+					case "createDir":
+						FileOperationsUtility.CreateDirectory(dir);
+						break;
+					case "createFile":
+						FileOperationsUtility.CreateFile(file);
 						break;
 					default:
 						throw new NotImplementedException("Операция '" + operation + "' не определена");
