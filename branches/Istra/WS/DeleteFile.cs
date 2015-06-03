@@ -20,7 +20,7 @@ namespace Istra.WS {
 				writer.Write(@"{""success"":true}");
 			}
 			catch (Exception err) {
-				writer.Write(@"{{""error"":""{0}""}}", err.Message);
+				WriteError("Ошибка удаления файла", err, writer);
 			}
 		}
 	}

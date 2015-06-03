@@ -13,6 +13,13 @@
 			<li name="clearcache">принудительное обновление всего кэша источников данных</li>
 		</list>
 	</section>
+	<section title="Обработка контента">
+		<p>Для создания обработчиков контента создан интерфейс <code>Istra.IPagePreprocessor</code>.</p>
+		<p>Препроцессор может быть указан в атрибуте <code>preprocessor</code> веб-страницы, или использован при сохранении документа.</p>
+		<AvailablePreprocessors>
+			<description type="Istra.DateFormatter">Выполняет единообразное форматирование всех атрибутов @date</description>
+		</AvailablePreprocessors>
+	</section>
 	<section title="Настройка режима ЧПУ (SEF)" id="sef">
 		<p>Режим ЧПУ (SEF) предназначен для формирования URL страниц сайта, удобных для использования как человеком, так и поисковыми системами.</p>
 		<p>Для включения режима ЧПУ следует указать в конфигурационном файле обработчик HTTP-запросов, использующий класс <code>Istra.SefHttpHandler</code>. Пример:</p>
@@ -122,6 +129,31 @@
 					<caption>Параметры HTTP-запроса</caption>
 					<li name="doc">путь к файлу XML-документа относительно корневой папки приложения</li>
 					<li name="content">XML-код документа со <ref sect="#hiddenMarkup">скрытой разметкой</ref>.</li>
+				</list>
+			</description>
+			<description type="Istra.WS.ListDir">Выводит содержимое директории, заданной параметром HTTP-запроса <code>dir</code> относительно корневой директории приложения.</description>
+			<description type="Istra.WS.FileManager">
+				<p>Выполняет операции над файлами</p>
+				<list>
+					<caption>Параметры HTTP-запроса</caption>
+					<li name="oper">(обязательный) имя операции
+						<list>
+							<caption>Доступные операции</caption>
+							<li name="delFile">удаляет файл</li>
+							<li name="delDir">удаляет директорию</li>
+							<li name="saveText">сохраняет текстовый документ</li>
+							<li name="saveXml">сохраняет XML-документ с проверкой XML-корректности</li>
+							<li name="renameFile">переименование или перемещение файла</li>
+							<li name="moveFile">синоним к <code>renameFile</code></li>
+							<li name="renameDir">переименование или перемещение директории</li>
+							<li name="moveDir">синоним к <code>renameDir</code></li>
+						</list>
+					</li>
+					<li name="file">путь к файлу относительно корневой директории приложения</li>
+					<li name="dir">путь к директории относительно корневой директории приложения для операции <code>delDir</code></li>
+					<li name="text">текстовый контент для операции <code>saveText</code></li>
+					<li name="xml">XML-контент для операции <code>saveXml</code></li>
+					<li name="target">новый путь к файлу или директории относительно корневой директории приложения для операций <code>renameFile</code>, <code>moveFile</code>, <code>renameDir</code>, <code>moveDir</code></li>
 				</list>
 			</description>
 		</AvailableWebServices>

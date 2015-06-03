@@ -58,6 +58,10 @@
     <Compile Include="WS\DeleteFile.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WS\FileManager.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\FileOperationsUtility.cs" />
     <Compile Include="WS\GetData.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -65,6 +69,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WS\GetXml.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\ListDir.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WS\SaveData.cs">
