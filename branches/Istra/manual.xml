@@ -139,6 +139,8 @@
 					<li name="oper">(обязательный) имя операции
 						<list>
 							<caption>Доступные операции</caption>
+							<li name="createFile">создает файл</li>
+							<li name="createDir">создает директорию</li>
 							<li name="delFile">удаляет файл</li>
 							<li name="delDir">удаляет директорию</li>
 							<li name="saveText">сохраняет текстовый документ</li>
@@ -150,7 +152,7 @@
 						</list>
 					</li>
 					<li name="file">путь к файлу относительно корневой директории приложения</li>
-					<li name="dir">путь к директории относительно корневой директории приложения для операции <code>delDir</code></li>
+					<li name="dir">путь к директории относительно корневой директории приложения для операций <code>delDir</code> и <code>createDir</code></li>
 					<li name="text">текстовый контент для операции <code>saveText</code></li>
 					<li name="xml">XML-контент для операции <code>saveXml</code></li>
 					<li name="target">новый путь к файлу или директории относительно корневой директории приложения для операций <code>renameFile</code>, <code>moveFile</code>, <code>renameDir</code>, <code>moveDir</code></li>
