@@ -21,18 +21,18 @@ namespace Istra.WS {
 		/// <param name="title">заголовок сообщения</param>
 		/// <param name="err">исключение</param>
 		/// <param name="writer">компонент вывода</param>
-		public void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
+		public virtual void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
 			writer.Write(@"{{""error"":""{0}: \n{1}""}}", title, JsonUtility.PrepareString(err.Message, true));
 		}
 		/// <summary>Выводит сообщение об ошибке</summary>
 		/// <param name="title">заголовок сообщения</param>
 		/// <param name="writer">компонент вывода</param>
-		public void WriteError(string title, System.Web.UI.HtmlTextWriter writer) {
+		public virtual void WriteError(string title, System.Web.UI.HtmlTextWriter writer) {
 			writer.Write(@"{{""error"":""{0}""}}", title);
 		}
 
 		/// <summary>Выводит сообщение об успешном завершенни операции</summary>
-		public void WriteSuccess(System.Web.UI.HtmlTextWriter writer) {
+		public virtual void WriteSuccess(System.Web.UI.HtmlTextWriter writer) {
 			writer.Write(@"{""success"":true}");
 		}
 	}
