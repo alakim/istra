@@ -80,6 +80,9 @@
     <Compile Include="WS\SaveXml.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WS\UploadForm.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="WS\WebService.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
