@@ -33,10 +33,14 @@ namespace Istra {
 			return wrt.ToString();
 		}
 
+		/// <summary>Подготавливает строку для вставки в JSON</summary>
+		/// <param name="str">исходная строка</param>
 		public static string PrepareString(string str) {
 			return PrepareString(str, false);
 		}
 
+		/// <summary>Подготавливает строку для вставки в JSON</summary>
+		/// <param name="str">исходная строка</param>
 		public static string PrepareString(string str, bool rawValue) {
 			return (rawValue ? string.Empty : "\"") + str.Replace("\\", "\\\\")
 				.Replace("\n", "\\n")
