@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.Web;
 
 namespace Istra.WS {
 	/// <summary>Утилита операций над файлами</summary>
@@ -96,6 +97,14 @@ namespace Istra.WS {
 		public static string GetText(string file) {
 			string filePath = FullPath(file);
 			return File.ReadAllText(filePath);
+		}
+
+		/// <summary>Сохраняет загруженный файл</summary>
+		/// <param name="fileName">имя файла</param>
+		/// <param name="fileDir">директория файла относительно корневой директории приложения</param>
+		/// <param name="uploadedFile">загруженный файл</param>
+		public static void Upload(string fileName, string fileDir, HttpPostedFile uploadedFile) {
+			uploadedFile.SaveAs(FullPath(fileDir+"/"+fileName));
 		}
 
 
