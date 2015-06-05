@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -18,13 +19,12 @@ namespace Istra.WS {
 				if (!CheckSession(null)) return;
 
 				string fileName = Request["fileName"];
-				string filePath = Request["filePath"];
+				string fileDir = Request["filePath"];
 				HttpPostedFile uploadedFile = Request.Files["uploadedFile"];
 
-				// string docFile = Request["doc"];
-				// 
-				// string content = FileOperationsUtility.GetText(docFile);
-				// writer.Write(content);
+				fileName = BuildFileName(fileName, uploadedFile);
+
+				FileOperationsUtility.Upload(fileName, fileDir, uploadedFile);
 
 				WriteSuccess(null);
 
@@ -33,6 +33,25 @@ namespace Istra.WS {
 		protected override void Render(System.Web.UI.HtmlTextWriter writer) {
 			base.Render(writer);
 		}
+
+		/// <summary>Формирует имя файла для сохранения на диск</summary>
+		/// <param name="fileName">имя, заданное пользователем</param>
+		/// <param name="uploadedFile">загруженный файл</param>
+		/// <returns></returns>
+		private string BuildFileName(string fileName, HttpPostedFile uploadedFile) {
+			string[] nameParts = fileName.Split(".".ToCharArray());
+			string[] fileParts = uploadedFile.FileName.Split(".".ToCharArray());
+			string name = string.Empty,
+					ext = string.Empty;
+			if (nameParts.Length < 2) ext = fileParts[fileParts.Length - 1];
+			if (nameParts[0].Length > 0)
+				name = nameParts[0];
+			else
+				name = reCyr.Replace(fileParts[0], "z");
+			return name + "." + ext;
+		}
+
+		Regex reCyr = new Regex(@"[а-я]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
 		/// <summary>Выводит сообщение об ошибке</summary>
 		/// <param name="title">заголовок сообщения</param>
