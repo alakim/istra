@@ -17,6 +17,15 @@ namespace Istra.WS {
 			return true;
 		}
 
+		/// <summary>Возвращает провайдер доступа к данным</summary>
+		public IAccessProvider GetAccessProvider() {
+			IUserSessionManager session = SiteSettings.Current.GetSessionManager();
+			string sessionID = Request["sessionID"];
+			string userID = session.GetUserID(sessionID);
+
+			return SiteSettings.Current.GetAccessProvider(userID);
+		}
+
 		/// <summary>Выводит сообщение об ошибке</summary>
 		/// <param name="title">заголовок сообщения</param>
 		/// <param name="err">исключение</param>

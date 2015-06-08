@@ -26,11 +26,11 @@ namespace Istra.WS {
 						break;
 					case "saveText":
 						string text = Request["text"];
-						FileOperationsUtility.SaveText(file, text);
+						FileOperationsUtility.SaveText(file, text, this);
 						break;
 					case "saveXml":
 						string xml = Request["xml"];
-						FileOperationsUtility.SaveXml(file, xml);
+						FileOperationsUtility.SaveXml(file, xml, this);
 						break;
 					case "renameFile":
 					case "moveFile":

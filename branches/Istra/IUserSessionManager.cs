@@ -23,12 +23,18 @@ namespace Istra {
 		
 		/// <summary>Закрывает сессию</summary>
 		void Close(object sessionID);
+
+		/// <summary>Возвращает идентификатор пользователя</summary>
+		/// <param name="sessionID">идентификатор сессии</param>
+		string GetUserID(string sessionID);
 	}
 
 	/// <summary>Менеджер-заглушка для случая отсутствия поддержки сессий</summary>
 	public class EmptySessionManager : IUserSessionManager {
 		/// <summary>Псевдо-идентификатор сессии</summary>
 		private const string pseudoSessionID = "emptysession";
+		/// <summary>Псевдо-идентификатор пользователя</summary>
+		private const string pseudoUserID = "emptyuser";
 
 		public EmptySessionManager(SessionsSettings settings) {
 		}
@@ -52,6 +58,12 @@ namespace Istra {
 		/// <summary>Закрывает сессию</summary>
 		public void Close(object sessionID) {
 		}
+
+		/// <summary>Возвращает идентификатор пользователя</summary>
+		/// <param name="sessionID">идентификатор сессии</param>
+		public string GetUserID(string sessionID) {
+			return pseudoUserID;
+		}
 	}
 
 		/// <summary>Настройки управления сессиями</summary>
@@ -62,13 +74,15 @@ namespace Istra {
 			if (settings == null) return;
 
 			if (settings["manager"] != null)
-				this.className = settings["class"];
+				this.className = settings["manager"];
 			if (settings["db"] != null)
 				this.dbConn = settings["db"];
 			if (settings["tableName"] != null)
 				this.tableName = settings["tableName"];
 			if (settings["timeout"] != null)
 				this.timeout = Int32.Parse(settings["timeout"]);
+			if (settings["accessProvider"] != null)
+				this.accessProvider = settings["accessProvider"];
 		}
 
 		/// <summary>Возвращает экземпляр менеджера сессий</summary>
@@ -79,6 +93,16 @@ namespace Istra {
 			Type t = Type.GetType(className);
 			ConstructorInfo cInf = t.GetConstructor(new Type[1] {typeof(SessionsSettings)});
 			return (IUserSessionManager)cInf.Invoke(new object[1] {this});
+		}
+
+		/// <summary>Возвращает экземпляр провайдера доступа</summary>
+		/// <param name="userID">идентификатор пользователя</param>
+		public IAccessProvider GetAccessProvider(string userID) {
+			if (accessProvider == null || accessProvider.Length == 0)
+				return new DefaultAccessProvider(userID);
+			Type t = Type.GetType(accessProvider);
+			ConstructorInfo cInf = t.GetConstructor(new Type[1] { typeof(String) });
+			return (IAccessProvider)cInf.Invoke(new object[1] { userID });
 		}
 
 		/// <summary>Строка подключения к БД</summary>
@@ -96,6 +120,8 @@ namespace Istra {
 		private string tableName = null;
 		/// <summary>Таймаут сессии (сек)</summary>
 		private int timeout = 600;
+		/// <summary>Имя класса провайдера доступа</summary>
+		private string accessProvider = null;
 
 	}
 

@@ -43,6 +43,7 @@
     <Compile Include="DirectoryDataSource.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="HttpRequestQuery.cs" />
+    <Compile Include="IAccessProvider.cs" />
     <Compile Include="IPagePreprocessor.cs" />
     <Compile Include="IPostProcessor.cs" />
     <Compile Include="IQuery.cs" />

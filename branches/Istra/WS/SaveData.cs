@@ -20,7 +20,7 @@ namespace Istra.WS {
 
 			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
 
-			FileOperationsUtility.SaveXml(docFile, xml, new DateFormatter());
+			FileOperationsUtility.SaveXml(docFile, xml, this, new DateFormatter());
 			WriteSuccess(writer);
 		}
 	}

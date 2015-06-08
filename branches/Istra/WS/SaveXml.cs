@@ -24,7 +24,7 @@ namespace Istra.WS {
 
 
 			try {
-				FileOperationsUtility.SaveXml(docFile, content);
+				FileOperationsUtility.SaveXml(docFile, content, this);
 				WriteSuccess(writer);
 			}
 			catch (Exception err) {

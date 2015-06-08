@@ -51,8 +51,15 @@ namespace Istra {
 				conn.Open();
 				if (!CheckTable(conn)) return false;
 				CloseOldSessions(conn);
-				Guid sID = new Guid(sessionID);
-				string sssID = (sID).ToString("D");
+				Guid sID;
+				string sssID;
+				try {
+					sID = new Guid(sessionID);
+					sssID = (sID).ToString("D");
+				}
+				catch (Exception err) {
+					throw new ApplicationException("Bad session ID '" + sessionID + "'", err);
+				}
 				SqlCommand cmd = new SqlCommand(string.Format(
 					@"select LastAccess from {0} where id='{{{1}}}'",
 					tableName, sssID
@@ -90,6 +97,30 @@ namespace Istra {
 			using (SqlConnection conn = new SqlConnection(connString)) {
 				conn.Open();
 				Close(sessionID.ToString(), conn);
+			}
+		}
+
+		/// <summary>Возвращает идентификатор пользователя</summary>
+		/// <param name="sessionID">идентификатор сессии</param>
+		public string GetUserID(string sessionID) {
+			using (SqlConnection conn = new SqlConnection(connString)) {
+				conn.Open();
+				Guid sID;
+				string sssID;
+				try {
+					sID = new Guid(sessionID);
+					sssID = (sID).ToString("D");
+				}
+				catch (Exception err) {
+					throw new ApplicationException("Bad session ID '"+sessionID+"'", err);
+				}
+				SqlCommand cmd = new SqlCommand(string.Format(
+					@"select UserID from {0} where id='{{{1}}}'",
+					tableName, sssID
+				), conn);
+				object dt = cmd.ExecuteScalar();
+				if (dt == null || dt == DBNull.Value) return string.Empty;
+				return dt.ToString();
 			}
 		}
 
