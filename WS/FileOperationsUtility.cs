@@ -47,24 +47,27 @@ namespace Istra.WS {
 		/// <summary>Сохраняет текстовый файл</summary>
 		/// <param name="file">путь к файлу относительно корневой директории приложения</param>
 		/// <param name="content">текстовый контент</param>
-		public static void SaveText(string file, string content) {
+		public static void SaveText(string file, string content, WebService page) {
 			string filePath = FullPath(file);
+			IAccessProvider access = page.GetAccessProvider();
+			if (access.GetRights(filePath) != AccessLevel.write) throw new ApplicationException("Доступ к файлу запрещен");
+
 			File.WriteAllText(filePath, content);
 		}
 
 		/// <summary>Сохраняет XML-документ с проверкой корректности и сохранением форматирования</summary>
 		/// <param name="file">путь к файлу относительно корневой директории приложения</param>
 		/// <param name="content">контент в формате XML со скрытой разметкой</param>
-		public static void SaveXml(string file, string content) {
-			SaveXml(file, content, true, null);
+		public static void SaveXml(string file, string content, WebService page) {
+			SaveXml(file, content, page, true, null);
 		}
 
 		/// <summary>Сохраняет XML-документ с проверкой корректности без сохранения форматирования</summary>
 		/// <param name="file">путь к файлу относительно корневой директории приложения</param>
 		/// <param name="content">контент в формате XML со скрытой разметкой</param>
 		/// <param name="processor">выполняет предварительную обработку документа (не сохраняет форматирование)</param>
-		public static void SaveXml(string file, string content, IPagePreprocessor processor) {
-			SaveXml(file, content, false, processor);
+		public static void SaveXml(string file, string content, WebService page, IPagePreprocessor processor) {
+			SaveXml(file, content, page, false, processor);
 		}
 
 		/// <summary>Сохраняет XML-документ с проверкой корректности</summary>
@@ -72,9 +75,12 @@ namespace Istra.WS {
 		/// <param name="content">контент в формате XML со скрытой разметкой</param>
 		/// <param name="preserveFormatting">флаг сохранения форматирования документа</param>
 		/// <param name="processor">выполняет предварительную обработку документа (не сохраняет форматирование)</param>
-		public static void SaveXml(string file, string content, bool preserveFormatting, IPagePreprocessor processor) {
+		public static void SaveXml(string file, string content, WebService page, bool preserveFormatting, IPagePreprocessor processor) {
 			XmlDocument doc;
 			string filePath = FullPath(file);
+			IAccessProvider access = page.GetAccessProvider();
+			if (access.GetRights(filePath) != AccessLevel.write) throw new ApplicationException("Доступ к файлу запрещен");
+
 			content = JsonUtility.RestoreXmlMarkup(content);
 			try {
 				doc = new XmlDocument();

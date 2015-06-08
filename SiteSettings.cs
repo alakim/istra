@@ -47,6 +47,12 @@ namespace Istra {
 			return sessionSettings.GetSessionManager();
 		}
 
+		/// <summary>Возвращает экземпляр провайдера доступа</summary>
+		///<param name="userID">идентификатор пользователя</param>
+		public IAccessProvider GetAccessProvider(string userID) {
+			return sessionSettings.GetAccessProvider(userID);
+		}
+
 		/// <summary>Закрытый конструктор</summary>
 		private SiteSettings() {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/XsltSettings");

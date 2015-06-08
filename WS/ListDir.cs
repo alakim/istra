@@ -17,6 +17,8 @@ namespace Istra.WS {
 			base.Render(writer);
 			if (!CheckSession(writer)) return;
 
+			IAccessProvider access = GetAccessProvider();
+
 			dirPath = Request["dir"];
 			contentPath = Istra.SiteSettings.Current.RootDir + @"\" + dirPath;
 			string sFieldsQuery = Request["fields"];
@@ -32,18 +34,31 @@ namespace Istra.WS {
 				string[] dirs = Directory.GetDirectories(contentPath);
 				string[] files = Directory.GetFiles(contentPath);
 
-				writer.Write(@"{{""dir"":""{0}"",""directories"":[", dirPath);
+				AccessLevel dirLevel = access.GetRights(dirPath);
+
+				writer.Write(@"{{""dir"":""{0}"",""readonly"":{1},""directories"":[", dirPath, dirLevel==AccessLevel.write?"false":"true");
 				bool first = true;
 				foreach (string dir in dirs) {
+					AccessLevel aLevel = access.GetRights(dir);
+					if (aLevel == AccessLevel.none) continue;
+
 					if (first) first = false; else writer.Write(",");
-					writer.Write(@"""{0}""", FormatPath(dir));
+					if(aLevel==AccessLevel.read)
+						writer.Write(@"{{""name"":""{0}"",""readonly"":true}}", FormatPath(dir));
+					else
+						writer.Write(@"""{0}""", FormatPath(dir));
 				}
 				writer.Write(@"],""files"":[");
 				first = true;
 				foreach (string filePath in files) {
+					AccessLevel aLevel = access.GetRights(filePath);
+					if (aLevel == AccessLevel.none) continue;
+
 					if (first) first = false; else writer.Write(",");
 					if (fieldsQuery != null && reXmlFile.Match(filePath).Success)
-						WriteWithFields(fieldsQuery, filePath, writer);
+						WriteWithFields(fieldsQuery, filePath, aLevel, writer);
+					else if (aLevel == AccessLevel.read)
+						writer.Write(@"{{""name"":""{0}"",""readonly"":true}}", FormatPath(filePath));
 					else
 						writer.Write(@"""{0}""", FormatPath(filePath));
 				}
@@ -61,10 +76,10 @@ namespace Istra.WS {
 		/// <param name="fieldsQuery"></param>
 		/// <param name="filePath"></param>
 		/// <param name="writer"></param>
-		private void WriteWithFields(Dictionary<string, string> fieldsQuery, string filePath, System.Web.UI.HtmlTextWriter writer) {
+		private void WriteWithFields(Dictionary<string, string> fieldsQuery, string filePath, AccessLevel aLevel, System.Web.UI.HtmlTextWriter writer) {
 			XmlDocument doc = new XmlDocument();
 			doc.Load(filePath);
-			writer.Write(@"{{""name"":""{0}"",""fields"":{{", FormatPath(filePath));
+			writer.Write(@"{{""name"":""{0}"",""readonly"":{1},""fields"":{{", FormatPath(filePath), aLevel==AccessLevel.read?"true":"false");
 			bool first = true;
 			foreach (string field in fieldsQuery.Keys) {
 				XmlNodeList res = doc.SelectNodes(fieldsQuery[field]);
