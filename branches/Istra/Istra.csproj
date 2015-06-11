@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessDeniedHandler.cs" />
     <Compile Include="DataSource.cs" />
     <Compile Include="DateFormatPostprocessor.cs" />
     <Compile Include="DirectoryDataSource.cs" />
