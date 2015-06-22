@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Istra {
 
-	/// <summary>Выводит текст руководства по архитектуре Istra</summary>
+	/// <summary>Выводит данные об использовании XML-тегов</summary>
 	public class TagUsageQuery : IQuery {
 
 		private static Regex reXmlFile = new Regex(@"\.xml$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
