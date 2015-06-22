@@ -12,8 +12,13 @@ namespace Istra {
 	class SefHttpHandler : IHttpHandler {
 		public bool IsReusable { get { return true; } }
 
-		private static Regex reUrl = new Regex(@"([^/.]+)\.html", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+		// private static Regex reUrl = new Regex(@"^\/(.+)\.html", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
 		public void ProcessRequest(HttpContext context) {
+			Regex reUrl = new Regex(
+				SefSettings.Current.AllowSubCatalogs ? @"^\/(.+)\.html" : @"([^/.]+)\.html", 
+				RegexOptions.IgnoreCase
+			);
 			string url = context.Request.Path;
 			Match mt = reUrl.Match(url);
 			if (mt.Success) {
@@ -48,14 +53,19 @@ namespace Istra {
 			NameValueCollection settings = (NameValueCollection)ConfigurationManager.GetSection("Istra/SEF");
 			this.defaultPage = settings["defaultPage"];
 			this.logMissingPages = settings["logMissingPages"] != null && settings["logMissingPages"].ToLower() == "true";
+			this.allowSubCatalogs = settings["allowSubCatalogs"] != null && settings["allowSubCatalogs"].ToLower() == "true";
 		}
 
 		/// <summary>Страница по умолчанию</summary>
 		public string DefaultPage { get { return defaultPage; } }
+		/// <summary>Протоколировать обращения к не существующим страницам</summary>
 		public bool LogMissingPages { get { return logMissingPages; } }
+		/// <summary>Разрешить использование подкаталогов</summary>
+		public bool AllowSubCatalogs { get { return allowSubCatalogs; } }
 
 		private string defaultPage;
 		private bool logMissingPages = false;
+		private bool allowSubCatalogs = false;
 	}
 
 	/// <summary>Обработчик настроек конфигурации</summary>
