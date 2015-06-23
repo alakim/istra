@@ -30,6 +30,8 @@ namespace Istra {
 		public string ContentDir { get { return contentDir; } }
 		/// <summary>Директория для размещения протокола ошибок</summary>
 		public string LogDir { get { return logDir; } }
+		/// <summary>Включает протоколирование ошибок типа AbortInternal</summary>
+		public bool LogInternalAborts { get { return logInternalAborts; } }
 		/// <summary>Директория для размещения кэша</summary>
 		public string CacheDir { get { return cacheDir; } }
 		/// <summary>Директория для размещения XSLT-преобразований</summary>
@@ -59,6 +61,8 @@ namespace Istra {
 			rootDir = settings["rootDir"].ToString();
 			contentDir = settings["contentDir"].ToString();
 			logDir = settings["logDir"].ToString();
+			if(settings["logInternalAborts"]!=null)
+				logInternalAborts = settings["logInternalAborts"].ToLower()=="true";
 			cacheDir = settings["cacheDir"].ToString();
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
@@ -74,6 +78,8 @@ namespace Istra {
 		private string contentDir;
 		/// <summary>Директория для размещения протокола ошибок</summary>
 		private string logDir;
+		/// <summary>Включает протоколирование ошибок типа AbortInternal</summary>
+		private bool logInternalAborts = false;
 		/// <summary>Директория для размещения кэша</summary>
 		private string cacheDir;
 		/// <summary>Директория для размещения XSLT-преобразований</summary>
