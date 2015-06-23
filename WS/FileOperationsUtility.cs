@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 using System.Xml;
 using System.Web;
@@ -92,10 +93,21 @@ namespace Istra.WS {
 				throw new ApplicationException("Ошибка синтаксического разбора документа", err);
 			}
 
+			CreateFolders(filePath);
+
 			if (preserveFormatting && processor==null)
 				File.WriteAllText(filePath, content);
 			else
 				doc.Save(filePath);
+		}
+
+		private static Regex reFileName = new Regex(@"[^\/\\]+\.[a-z0-9]+$");
+
+		/// <summary>Создает иерархию папок по заданному пути</summary>
+		/// <param name="filePath">путь к файлу</param>
+		public static void CreateFolders(string filePath) {
+			string dirPath = reFileName.Replace(filePath, string.Empty);
+			Directory.CreateDirectory(dirPath);
 		}
 
 		/// <summary>Возвращает содержимое текстового файла</summary>
