@@ -41,6 +41,7 @@ namespace Istra {
 
 		/// <summary>Подготавливает строку для вставки в JSON</summary>
 		/// <param name="str">исходная строка</param>
+		/// <param name="rawValue">предписывает не заключать строковое значение в кавычки</param>
 		public static string PrepareString(string str, bool rawValue) {
 			return (rawValue ? string.Empty : "\"") + str.Replace("\\", "\\\\")
 				.Replace("\n", "\\n")
