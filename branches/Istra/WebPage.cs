@@ -94,7 +94,7 @@ namespace Istra {
 					}
 
 					XsltProcessor xslt = new XsltProcessor(Context);
-					xslt.RawMode = Request[RawKeyName] != null;
+					xslt.RawMode = SiteSettings.Current.AllowRawOutput && (Request[RawKeyName] != null);
 
 					xslt.TransformDocument(
 						xmlDoc,

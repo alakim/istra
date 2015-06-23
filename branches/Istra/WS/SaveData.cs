@@ -18,7 +18,8 @@ namespace Istra.WS {
 				return;
 			}
 
-			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"));
+			docFile = docFile.Replace(@"*", Guid.NewGuid().ToString("N"))
+				.Replace(@"%", DateTime.Now.Year+@"\"+DateTime.Now.Month+@"\");
 
 			FileOperationsUtility.SaveXml(docFile, xml, this, new DateFormatter());
 			WriteSuccess(writer);
