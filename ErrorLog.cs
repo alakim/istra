@@ -15,6 +15,8 @@ namespace Istra {
 		/// <summary>Сохраняет сообщение об ошибке</summary>
 		/// <param name="err">исключение</param>
 		public static void WriteError(Exception err) {
+			if(!SiteSettings.Current.LogInternalAborts && err.TargetSite.ToString() == "Void AbortInternal()") return;
+
 			DateTime date = DateTime.Now;
 			XmlDocument xError = new XmlDocument();
 			StringWriter wrt = new StringWriter();
