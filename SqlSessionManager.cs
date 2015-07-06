@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -123,6 +124,44 @@ namespace Istra {
 				return dt.ToString();
 			}
 		}
+
+
+		/// <summary>Возвращает список открытых сессий</summary>
+		public List<SessionData> GetSessions() {
+			List<SessionData> res = new List<SessionData>();
+			using (SqlConnection conn = new SqlConnection(connString)) {
+				conn.Open();
+				SqlCommand cmd = new SqlCommand(string.Format(
+					@"select * from {0}",
+					tableName
+				), conn);
+				using (SqlDataAdapter adp = new SqlDataAdapter(cmd)) {
+					DataTable dt = new DataTable();
+					adp.Fill(dt);
+
+					foreach (DataRow row in dt.Rows) {
+						SessionData data = new SessionData(
+							(Guid)row["ID"],
+							(Guid)row["UserID"],
+							(string)row["UserName"],
+							(DateTime)row["LastAccess"]
+						);
+						res.Add(data);
+					}
+				}
+			}
+			return res;
+		}
+
+
+		/// <summary>Таймаут пользовательской сессии (сек)</summary>
+		public int SessionTimeout {
+			get {
+				return sessionTimeout;
+			}
+		}
+
+
 
 		/// <summary>Закрывает сессию</summary>
 		private void Close(string sessionID, SqlConnection conn) {
