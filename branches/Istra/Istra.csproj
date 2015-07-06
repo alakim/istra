@@ -58,6 +58,9 @@
     <Compile Include="WS\ClearErrorLog.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WS\CloseSession.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="WS\DeleteFile.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
