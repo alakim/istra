@@ -57,5 +57,21 @@ namespace Istra {
 		public static string RestoreXmlMarkup(string hiddenXml) {
 			return hiddenXml.Replace("#[#", "<").Replace("#]#", ">"); ;
 		}
+
+		/// <summary>Форматирует строку даты</summary>
+		/// <param name="date">дата и время</param>
+		public static string FormatDate(DateTime date) {
+			StringWriter wrt = new StringWriter();
+			wrt.Write(@"{0}.{1}.{2} {3}:{4}:{5}",
+				(date.Day < 10 ? "0" : string.Empty) + date.Day,
+				(date.Month < 10 ? "0" : string.Empty) + date.Month,
+				date.Year,
+				(date.Hour < 10 ? "0" : string.Empty) + date.Hour,
+				(date.Minute < 10 ? "0" : string.Empty) + date.Minute,
+				(date.Second < 10 ? "0" : string.Empty) + date.Second
+			);
+			return wrt.ToString();
+
+		}
 	}
 }

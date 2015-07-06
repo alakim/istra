@@ -27,6 +27,35 @@ namespace Istra {
 		/// <summary>Возвращает идентификатор пользователя</summary>
 		/// <param name="sessionID">идентификатор сессии</param>
 		string GetUserID(string sessionID);
+
+		/// <summary>Возвращает список открытых сессий</summary>
+		List<SessionData> GetSessions();
+
+		/// <summary>Таймаут пользовательской сессии (сек)</summary>
+		int SessionTimeout { get; }
+	}
+
+	/// <summary>Данные пользовательской сессии</summary>
+	public struct SessionData {
+		/// <summary>Конструктор</summary>
+		/// <param name="sessionID">идентификатор сессии</param>
+		/// <param name="userID">идентификатор пользователя</param>
+		/// <param name="userName">имя пользователя</param>
+		/// <param name="lastAccess">время последнего доступа</param>
+		public SessionData(Guid sessionID, Guid userID, string userName, DateTime lastAccess) {
+			SessionID = sessionID;
+			UserID = userID;
+			UserName = userName;
+			LastAccess = lastAccess;
+		}
+		/// <summary>Идентификатор сессии</summary>
+		public Guid SessionID;
+		/// <summary>Идентификатор пользователя</summary>
+		public Guid UserID;
+		/// <summary>Имя пользователя</summary>
+		public string UserName;
+		/// <summary>Время последнего доступа</summary>
+		public DateTime LastAccess;
 	}
 
 	/// <summary>Менеджер-заглушка для случая отсутствия поддержки сессий</summary>
@@ -64,6 +93,20 @@ namespace Istra {
 		public string GetUserID(string sessionID) {
 			return pseudoUserID;
 		}
+
+
+		/// <summary>Возвращает список открытых сессий</summary>
+		public List<SessionData> GetSessions() {
+			return new List<SessionData>();
+		}
+
+		/// <summary>Таймаут пользовательской сессии (сек)</summary>
+		public int SessionTimeout {
+			get {
+				return 0;
+			}
+		}
+
 	}
 
 		/// <summary>Настройки управления сессиями</summary>
