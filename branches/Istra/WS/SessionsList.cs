@@ -20,7 +20,7 @@ namespace Istra.WS {
 					if (first) first = false; else writer.Write(",");
 					writer.Write(
 						@"{{""id"":""{0}"",""userID"":""{1}"",""userName"":""{2}"",""lastAccess"":""{3}""}}",
-						data.SessionID, data.UserID, data.UserName, data.LastAccess
+						data.SessionID, data.UserID, JsonUtility.PrepareString(data.UserName, true), data.LastAccess
 					);
 				}
 				writer.Write("]");
