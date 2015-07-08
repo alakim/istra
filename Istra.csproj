@@ -77,6 +77,9 @@
     <Compile Include="WS\GetXml.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WS\HttpAccessTest.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="WS\ListDir.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
