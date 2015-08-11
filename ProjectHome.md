@@ -1,0 +1,1 @@
+Simple CMS. Stores data in XML documents, and displays it using XSLT transformation.
