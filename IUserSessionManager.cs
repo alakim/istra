@@ -152,7 +152,7 @@ namespace Istra {
 		public string DbConn { get { return dbConn; } }
 		/// <summary>Имя таблицы БД</summary>
 		public string TableName { get { return tableName; } }
-		/// <summary>Таймаут сессии (сек)</summary>
+		/// <summary>Таймаут сессии (сек). Если отрицательный, сессии не закрываются</summary>
 		public int Timeout { get { return timeout; } }
 
 		/// <summary>Имя класса менеджера сессии</summary>
@@ -161,7 +161,7 @@ namespace Istra {
 		private string dbConn = null;
 		/// <summary>Имя таблицы БД</summary>
 		private string tableName = null;
-		/// <summary>Таймаут сессии (сек)</summary>
+		/// <summary>Таймаут сессии (сек). Если отрицательный, сессии не закрываются</summary>
 		private int timeout = 600;
 		/// <summary>Имя класса провайдера доступа</summary>
 		private string accessProvider = null;

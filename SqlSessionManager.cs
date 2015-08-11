@@ -68,7 +68,7 @@ namespace Istra {
 				object dt = cmd.ExecuteScalar();
 				if (dt == null || dt == DBNull.Value) return false;
 				DateTime lastAccess = (DateTime)dt;
-				if (DateTime.Now > lastAccess.AddSeconds(sessionTimeout)) {
+				if (sessionTimeout > 0 && DateTime.Now > lastAccess.AddSeconds(sessionTimeout)) {
 					Close(sessionID, conn);
 					return false;
 				}
@@ -85,6 +85,7 @@ namespace Istra {
 
 		/// <summary>Закрывает старые версии</summary>
 		public void CloseOldSessions(SqlConnection conn) {
+			if (sessionTimeout < 0) return;
 			SqlCommand cmd = new SqlCommand(string.Format(
 				@"DELETE FROM {0} WHERE LastAccess < '{1}'",
 				tableName, DateTime.Now.AddSeconds(-sessionTimeout)
