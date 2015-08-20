@@ -31,13 +31,14 @@ namespace Istra.WS {
 		/// <param name="err">исключение</param>
 		/// <param name="writer">компонент вывода</param>
 		public virtual void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
-			writer.Write(@"{{""error"":""{0}: \n{1}""}}", title, JsonUtility.PrepareString(err.Message, true));
+			string fTitle = JsonUtility.PrepareString(title, true);
+			writer.Write(@"{{""error"":""{0}: \n {1}""}}", fTitle, JsonUtility.PrepareString(err.Message, true));
 		}
 		/// <summary>Выводит сообщение об ошибке</summary>
 		/// <param name="title">заголовок сообщения</param>
 		/// <param name="writer">компонент вывода</param>
 		public virtual void WriteError(string title, System.Web.UI.HtmlTextWriter writer) {
-			writer.Write(@"{{""error"":""{0}""}}", title);
+			writer.Write(@"{{""error"":""{0}""}}", JsonUtility.PrepareString(title, true));
 		}
 
 		/// <summary>Выводит сообщение об успешном завершенни операции</summary>
