@@ -42,7 +42,6 @@
     <Compile Include="DataSource.cs" />
     <Compile Include="DateFormatPostprocessor.cs" />
     <Compile Include="DirectoryDataSource.cs" />
-    <Compile Include="DownloadManager.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="HttpRequestQuery.cs" />
     <Compile Include="IAccessProvider.cs" />
