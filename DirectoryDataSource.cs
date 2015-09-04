@@ -11,7 +11,7 @@ namespace Istra {
 	public class DirectoryDataSource : DataSource {
 		/// <summary>Конструктор</summary>
 		/// <param name="def">данные определения источника</param>
-		public DirectoryDataSource(DataSourceDefinition def) :base(def) {
+		public DirectoryDataSource(DataSourceDefinition def, DataSource parent) :base(def, parent) {
 			cachedFile = def.CachedFile;
 			rootDir = def.Attributes["rootDir"];
 			if (rootDir == null || rootDir.Length < 1) throw new ApplicationException("DirectoryDataSource construction error. Root directory name expected.");

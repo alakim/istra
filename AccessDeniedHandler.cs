@@ -9,7 +9,9 @@ namespace Istra {
 		public bool IsReusable { get { return true; } }
 
 		public void ProcessRequest(HttpContext context) {
-			context.Response.Redirect("/default.aspx", true);
+			//string url = context.Request.Url.AbsoluteUri;
+			//context.Response.Redirect("/default.aspx", true);
+			context.Response.Redirect("/", true);
 		}
 
 	}

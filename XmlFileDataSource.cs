@@ -8,10 +8,12 @@ namespace Istra {
 	/// <summary>Получает данные из XML-файла</summary>
 	class XmlFileDataSource : DataSource {
 		/// <summary>Конструктор</summary>
-		public XmlFileDataSource(DataSourceDefinition def) :base(def) {
+		public XmlFileDataSource(DataSourceDefinition def, DataSource parent) :base(def, parent) {
 			cachedFile = def.CachedFile;
-			fileName = def.Attributes["fileName"];
-			if (fileName==null || fileName.Length < 1) throw new ApplicationException("XmlFileDataSource construction error. File name expected.");
+			if (parent == null) {
+				fileName = def.Attributes["fileName"];
+				if (fileName == null || fileName.Length < 1) throw new ApplicationException("XmlFileDataSource construction error. File name expected.");
+			}
 			xsltName = def.Attributes["xsltName"];
 			if (xsltName==null || xsltName.Length < 1) throw new ApplicationException("XmlFileDataSource construction error. XSLT name expected.");
 		}
@@ -26,10 +28,14 @@ namespace Istra {
 
 			using (StreamWriter wrt = OpenFileStream()) {
 				XsltProcessor xslt = new XsltProcessor(context);
-				xslt.TransformDocument(@"\" + SiteSettings.Current.ContentDir + @"\"+fileName, @"\" + SiteSettings.Current.XsltDir + @"\"+xsltName, trSettings, wrt);
+				string fNm = parent == null ? @"\" + SiteSettings.Current.ContentDir + @"\" + fileName
+					: @"\" + SiteSettings.Current.CacheDir + @"\" + parent.CachedFile;
+				xslt.TransformDocument(fNm, @"\" + SiteSettings.Current.XsltDir + @"\"+xsltName, trSettings, wrt);
 			}
 
 			PrepareDocument();
+
+			BuildDependents(context);
 
 			return true;
 		}
