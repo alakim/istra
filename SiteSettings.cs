@@ -42,6 +42,9 @@ namespace Istra {
 		public int CacheTime { get { return cacheTime; } }
 		/// <summary>Страница по умолчанию</summary>
 		public string DefaultPage { get { return defaultPage; } }
+		/// <summary>Регулярное выражения для распознавания мобильного устройства</summary>
+		public string MobileDetection { get { return mobileDetection; } }
+
 		/// <summary>Настройки источников данных</summary>
 		public DataSourceDefinition[] Sources { get { return sources; } }
 
@@ -71,6 +74,8 @@ namespace Istra {
 			xsltDir = settings["xsltDir"].ToString();
 			cacheTime = Int32.Parse(settings["cacheTime"]);
 			defaultPage = settings["defaultPage"].ToString();
+			if (settings["mobileDetection"]!=null)
+				mobileDetection = settings["mobileDetection"].ToString();
 
 			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
 			sessionSettings = new SessionsSettings();
@@ -94,6 +99,8 @@ namespace Istra {
 		private int cacheTime;
 		/// <summary>Страница по умолчанию</summary>
 		private string defaultPage;
+		/// <summary>Регулярное выражения для распознавания мобильного устройства</summary>
+		private string mobileDetection = null;
 		/// <summary>Настройки источников данных</summary>
 		private DataSourceDefinition[] sources;
 
