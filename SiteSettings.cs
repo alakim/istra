@@ -44,6 +44,8 @@ namespace Istra {
 		public string DefaultPage { get { return defaultPage; } }
 		/// <summary>Регулярное выражения для распознавания мобильного устройства</summary>
 		public string MobileDetection { get { return mobileDetection; } }
+		/// <summary>Препроцессор веб-страницы</summary>
+		public IPagePreprocessor Preprocessor { get { return preprocessor; } }
 
 		/// <summary>Настройки источников данных</summary>
 		public DataSourceDefinition[] Sources { get { return sources; } }
@@ -76,6 +78,11 @@ namespace Istra {
 			defaultPage = settings["defaultPage"].ToString();
 			if (settings["mobileDetection"]!=null)
 				mobileDetection = settings["mobileDetection"].ToString();
+			if (settings["preprocessor"]!=null) {
+				Type t = Type.GetType(settings["preprocessor"].ToString());
+				ConstructorInfo cInf = t.GetConstructor(new Type[0] { });
+				preprocessor = (IPagePreprocessor)cInf.Invoke(new object[0] { });
+			}
 
 			sources = (DataSourceDefinition[])ConfigurationManager.GetSection("Istra/DataSources");
 			sessionSettings = new SessionsSettings();
@@ -101,6 +108,8 @@ namespace Istra {
 		private string defaultPage;
 		/// <summary>Регулярное выражения для распознавания мобильного устройства</summary>
 		private string mobileDetection = null;
+		/// <summary>Препроцессор веб-страницы</summary>
+		private IPagePreprocessor preprocessor = null;
 		/// <summary>Настройки источников данных</summary>
 		private DataSourceDefinition[] sources;
 
