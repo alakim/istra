@@ -23,6 +23,13 @@ namespace Istra {
 		/// <summary>Возвращает значение атрибута или null, если атрибут не задан.</summary>
 		/// <param name="el">XML-элемент</param>
 		/// <param name="name">имя атрибута</param>
+		public static string GetAttribute(XmlNode el, string name) {
+			return GetAttribute((XmlElement)el, name);
+		}
+
+		/// <summary>Возвращает значение атрибута или null, если атрибут не задан.</summary>
+		/// <param name="el">XML-элемент</param>
+		/// <param name="name">имя атрибута</param>
 		public static string GetAttribute(XmlElement el, string name) {
 			XmlNode ndAtt = el.Attributes.GetNamedItem(name);
 			if (ndAtt == null) return null;

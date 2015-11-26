@@ -43,6 +43,7 @@ namespace Istra {
 		/// <param name="str">исходная строка</param>
 		/// <param name="rawValue">предписывает не заключать строковое значение в кавычки</param>
 		public static string PrepareString(string str, bool rawValue) {
+			if (str == null) str = string.Empty;
 			return (rawValue ? string.Empty : "\"") + str.Replace("\\", "\\\\")
 				.Replace("\n", "\\n")
 				.Replace("\r", "\\r")
