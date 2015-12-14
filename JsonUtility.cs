@@ -53,6 +53,19 @@ namespace Istra {
 				+ (rawValue ? string.Empty : "\"");
 		}
 
+		/// <summary>Подготавливает число для JS0N-сериализации</summary>
+		/// <param name="x">исходное число</param>
+		public static string PrepareDecimal(decimal x) {
+			return x.ToString("F").Replace(',','.');
+		}
+
+		/// <summary>Подготавливает число для JS0N-сериализации</summary>
+		/// <param name="x">исходное число</param>
+		public static string PrepareDecimal(decimal? x) {
+			if (x == null) return "0";
+			return PrepareDecimal((decimal)x);
+		}
+
 		/// <summary>Восстанавливает скрытую XML-разметку</summary>
 		/// <param name="hiddenXml">код со скрытой XML-разметкой</param>
 		public static string RestoreXmlMarkup(string hiddenXml) {

@@ -32,7 +32,7 @@ namespace Istra.WS {
 		/// <param name="writer">компонент вывода</param>
 		public virtual void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
 			string fTitle = JsonUtility.PrepareString(title, true);
-			writer.Write(@"{{""error"":""{0}: \n {1}""}}", fTitle, JsonUtility.PrepareString(err.Message, true));
+			writer.Write(@"{{""error"":""{0}: {1}""}}", fTitle, JsonUtility.PrepareString(err.Message, true));
 		}
 		/// <summary>Выводит сообщение об ошибке</summary>
 		/// <param name="title">заголовок сообщения</param>
