@@ -31,6 +31,7 @@ namespace Istra.WS {
 		/// <param name="err">исключение</param>
 		/// <param name="writer">компонент вывода</param>
 		public virtual void WriteError(string title, Exception err, System.Web.UI.HtmlTextWriter writer) {
+			Response.Clear();
 			string fTitle = JsonUtility.PrepareString(title, true);
 			writer.Write(@"{{""error"":""{0}: {1}""}}", fTitle, JsonUtility.PrepareString(err.Message, true));
 		}
@@ -38,6 +39,7 @@ namespace Istra.WS {
 		/// <param name="title">заголовок сообщения</param>
 		/// <param name="writer">компонент вывода</param>
 		public virtual void WriteError(string title, System.Web.UI.HtmlTextWriter writer) {
+			Response.Clear();
 			writer.Write(@"{{""error"":""{0}""}}", JsonUtility.PrepareString(title, true));
 		}
 
