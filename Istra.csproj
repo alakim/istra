@@ -46,6 +46,7 @@
     <Compile Include="ErrorLog.cs" />
     <Compile Include="HttpRequestQuery.cs" />
     <Compile Include="IAccessProvider.cs" />
+    <Compile Include="Json.cs" />
     <Compile Include="ThumbnailPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -113,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manual.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
