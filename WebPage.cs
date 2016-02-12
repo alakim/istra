@@ -119,7 +119,7 @@ namespace Istra {
 					}
 
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "pageName", pageName);
-					if(view!=null)
+					if(view!=null && !view.IsDefaultView)
 						XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "viewID", view.ID.ToString());
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "mobileMode", IsMobileBrowser() ? "true" : "false");
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "userAgent", Request.ServerVariables["HTTP_USER_AGENT"]);
