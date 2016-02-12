@@ -60,6 +60,7 @@
     <Compile Include="SessionQuery.cs" />
     <Compile Include="SqlSessionManager.cs" />
     <Compile Include="TagUsageQuery.cs" />
+    <Compile Include="ViewManager.cs" />
     <Compile Include="WS\ClearErrorLog.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

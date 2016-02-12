@@ -25,7 +25,12 @@ namespace Istra {
 			string pageNm = Request["p"];
 			if (pageNm == null || pageNm.Length < 1) pageNm = SiteSettings.Current.DefaultPage;
 
-			string html = BuildPage(pageNm);
+			string viewID = Request["v"];
+			ViewSettings view = null;
+			if (viewID != null)
+				view = ViewManager.Instance.GetView(Int32.Parse(viewID));
+
+			string html = BuildPage(pageNm, view);
 			writer.Write(html);
 		}
 
@@ -35,10 +40,17 @@ namespace Istra {
 		/// <summary>Формирует HTML-код веб-страницы</summary>
 		/// <param name="pageName">имя веб-страницы</param>
 		public string BuildPage(string pageName) {
+			return BuildPage(pageName, null);
+		}
+
+		/// <summary>Формирует HTML-код веб-страницы</summary>
+		/// <param name="pageName">имя веб-страницы</param>
+		/// <param name="view">настройки представления</param>
+		public string BuildPage(string pageName, ViewSettings view) {
 			StringBuilder sb = new StringBuilder();
 			StringWriter wrt = new StringWriter(sb);
 
-			BuildPage(pageName, wrt);
+			BuildPage(pageName, view, wrt);
 
 			string html = sb.ToString();
 			html = reHeader.Replace(html, "<!DOCTYPE html>\n<html>");
@@ -68,8 +80,9 @@ namespace Istra {
 
 		/// <summary>Формирует HTML-код веб-страницы</summary>
 		/// <param name="pageName">имя веб-страницы</param>
+		/// <param name="view">настройки представления</param>
 		/// <param name="tWriter">компонент вывода данных</param>
-		private void BuildPage(string pageName, TextWriter tWriter) {
+		private void BuildPage(string pageName, ViewSettings view, TextWriter tWriter) {
 			Dictionary<string, string> settings = new Dictionary<string, string>();
 			settings["contentFolder"] = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.ContentDir;
 			settings["cacheFolder"] = SiteSettings.Current.RootDir + @"\" + SiteSettings.Current.CacheDir;
@@ -104,6 +117,8 @@ namespace Istra {
 					}
 
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "pageName", pageName);
+					if(view!=null)
+						XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "viewID", view.ID.ToString());
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "mobileMode", IsMobileBrowser() ? "true" : "false");
 					XmlUtility.AddAttribute(xmlDoc, xmlDoc.DocumentElement, "userAgent", Request.ServerVariables["HTTP_USER_AGENT"]);
 
@@ -121,9 +136,11 @@ namespace Istra {
 					XsltProcessor xslt = new XsltProcessor(Context);
 					xslt.RawMode = SiteSettings.Current.AllowRawOutput && (Request[RawKeyName] != null);
 
+					string xsltDir = view == null ? SiteSettings.Current.XsltDir : view.XsltDir;
+
 					xslt.TransformDocument(
 						xmlDoc,
-						@"\" + SiteSettings.Current.XsltDir + @"\article.xslt",
+						@"\" + xsltDir + @"\article.xslt",
 						settings,
 						tWriter
 					);
