@@ -29,6 +29,8 @@ namespace Istra {
 			ViewSettings view = null;
 			if (viewID != null)
 				view = ViewManager.Instance.GetView(Int32.Parse(viewID));
+			else
+				view = ViewManager.Instance.DefaultView;
 
 			string html = BuildPage(pageNm, view);
 			writer.Write(html);

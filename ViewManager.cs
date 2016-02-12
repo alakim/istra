@@ -35,6 +35,9 @@ namespace Istra {
 			throw new ApplicationException("View #"+id+" does not exist.");
 		}
 
+		/// <summary>Настройки представления по умолчанию</summary>
+		public ViewSettings DefaultView { get { return defaultView; } }
+
 		private static ViewManager instance = null;
 		private List<ViewSettings> settings;
 		private ViewSettings defaultView = null;
