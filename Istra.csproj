@@ -80,6 +80,9 @@
     <Compile Include="WS\GetErrors.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="WS\GetText.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="WS\GetXml.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -90,6 +93,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WS\SaveData.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WS\SaveText.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="WS\SaveXml.cs">
