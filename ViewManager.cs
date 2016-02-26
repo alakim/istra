@@ -11,6 +11,7 @@ namespace Istra {
 		/// <summary>Закрытый конструктор</summary>
 		protected ViewManager() {
 			settings = (List<ViewSettings>)ConfigurationManager.GetSection("Istra/Views");
+			if (settings == null) return;
 			foreach(ViewSettings vs in settings){
 				if (vs.IsDefaultView) {
 					defaultView = vs;
