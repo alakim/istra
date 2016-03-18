@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.IO;
 
 namespace Istra.Json {
@@ -26,10 +27,14 @@ namespace Istra.Json {
 				+ (rawValue ? string.Empty : "\"");
 		}
 
+		/// <summary>Выражение для удаления лишних нулей</summary>
+		private static Regex reNulls = new Regex(@"\.0+$", RegexOptions.Compiled); 
+
 		/// <summary>Выполняет сериализацию числа</summary>
 		/// <param name="d">исходное число</param>
 		public static string Serialize(decimal d) {
-			return d.ToString("F").Replace(',', '.');
+			string ss = d.ToString("F").Replace(',', '.');
+			return reNulls.Replace(ss, string.Empty);
 		}
 
 		/// <summary>Выполняет сериализацию числа</summary>
