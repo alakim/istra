@@ -57,6 +57,18 @@ namespace Istra.Json {
 			return d.ToString();
 		}
 
+		/// <summary>Выполняет сериализацию целого числа</summary>
+		/// <param name="d">исходное число</param>
+		public static string Serialize(short d) {
+			return d.ToString();
+		}
+
+		/// <summary>Выполняет сериализацию целого числа</summary>
+		/// <param name="d">исходное число</param>
+		public static string Serialize(byte? d) {
+			return d.ToString();
+		}
+
 		/// <summary>Выполняет сериализацию логического значения</summary>
 		/// <param name="b">логическое значение</param>
 		public static string Serialize(bool b) {
@@ -99,6 +111,8 @@ namespace Istra.Json {
 			if (o is string) return Serialize((string)o);
 			else if (o is decimal) return Serialize((decimal)o);
 			else if (o is decimal?) return Serialize((decimal?)o);
+			else if (o is byte?) return Serialize((byte?)o);
+			else if (o is short) return Serialize((short)o);
 			else if (o is Int32) return Serialize((Int32)o);
 			else if (o is Int64) return Serialize((Int64)o);
 			else if (o is bool) return Serialize((bool)o);
