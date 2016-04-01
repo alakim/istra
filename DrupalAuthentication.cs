@@ -8,8 +8,17 @@ namespace Istra.Drupal {
 	/// <summary>Утилита для аутентификации пользователей сайтов на базе Drupal</summary>
 	public class DrupalAuthentication {
 
+		/// <summary>Конструктор</summary>
 		public DrupalAuthentication() {
 		}
+
+		/// <summary>Конструктор</summary>
+		/// <param name="shaKey">ключ, обеспечивающий одинаковые значения хэша для одинаковых строк</param>
+		public DrupalAuthentication(string shaKey) {
+			this.shaKey = shaKey;
+		}
+
+#if DEBUG
 
 		/// <summary>Конструктор</summary>
 		/// <param name="randomMode">включает (true) режим генерации случайных строк при кодировании. По умолчанию включен.</param>
@@ -17,8 +26,21 @@ namespace Istra.Drupal {
 			this.randomMode = randomMode;
 		}
 
+		/// <summary>Конструктор</summary>
+		/// <param name="randomMode">включает (true) режим генерации случайных строк при кодировании. По умолчанию включен.</param>
+		/// <param name="fastCoding">режим кодирования без избыточных итераций. По умолчанию выключен.</param>
+		public DrupalAuthentication(bool randomMode, bool fastCoding) {
+			this.randomMode = randomMode;
+			this.fastCoding = fastCoding;
+		}
+#endif
+
+
 		/// <summary>включает (true) режим генерации случайных строк при кодировании. По умолчанию включен.</summary>
 		private bool randomMode = true;
+
+		/// <summary>Режим кодирования без избыточных итераций</summary>
+		private bool fastCoding = false;
 
 		/// <summary>Возвращает хэш заданного пароля</summary>
 		/// <param name="password">пароль</param>
@@ -26,7 +48,6 @@ namespace Istra.Drupal {
 			string hash = user_hash_password(password);
 			return hash;
 		}
-
 		
 		public bool CheckPassword(string password, string hashedPass) {
 			string stored_hash;
@@ -57,6 +78,7 @@ namespace Istra.Drupal {
 		}
 
 #if DEBUG
+		/// <summary>Проверяет алгоритм кодирования в Base64 - чтобы было как в Drupal</summary>
 		public bool Test_base64_encode() { //Тест проходит
 			byte[] bytes = new byte[]{113, 10, 244, 37, 149, 146, 84, 70, 139, 91, 15, 44, 157, 141, 63, 48, 178, 238, 212, 4, 134, 158, 144, 165, 237, 199, 4, 161, 218, 7, 196, 111, 145, 152, 49, 49, 31, 135, 187, 162, 157, 193, 60, 248, 44, 65, 196, 234, 40, 219, 183, 48, 244, 8, 139, 95, 191, 80, 117, 195, 11, 175, 114, 89};
 			string expected = @"ld.xZIdYINoWPx.9RqsDk6fvIHUVS0NdhTA/Vex/2zKYM4HATQsiWqNkwUD9/FgucgxhkED09ypjEJrk9weQN/"; // то, что генерирует Drupal
@@ -73,6 +95,37 @@ namespace Istra.Drupal {
 			return hash1 == hash2;
 		}
 
+		public bool TestSimpleHash() { // Просто проверяем, что стандартные функции хэширования всегда возвращают одинаковые значения при одинаковых артументах
+			string password = "abcdef";
+			string salt = "$S$DDpIJJVIH";
+			
+			HMACSHA512 sha512 = new HMACSHA512();
+			byte[] hash1 = sha512.ComputeHash(Encoding.ASCII.GetBytes(salt + password));
+			byte[] hash2 = sha512.ComputeHash(Encoding.ASCII.GetBytes(salt + password));
+			if (hash1.Length != hash2.Length) return false;
+			for (int i = 0; i < hash1.Length; i++) {
+				if (hash1[i] != hash2[i]) return false;
+			}
+			return true;
+		}
+
+		public bool TestSimpleMyHash() { // Просто проверяем, что имеющаяся функции хэширования всегда возвращают одинаковые значения при одинаковых артументах
+			string password = "abcdef";
+			string salt = "$S$DDpIJJVIH";
+			string codeMethod = "sha512";
+
+			byte[] hash1 = _hash(codeMethod, salt + password);
+			byte[] hash2 = _hash(codeMethod, salt + password);
+
+			if (hash1.Length != hash2.Length) return false;
+			for (int i = 0; i < hash1.Length; i++) {
+				if (hash1[i] != hash2[i]) return false;
+			}
+			return true;
+		}
+
+
+		/* ********** Эти тесты и на Drupal не проходят *******************
 		public bool TestHash() { // На Drupal такое проходит
 			string password = "abcdef";
 			string codeMethod = "sha512";
@@ -111,14 +164,7 @@ namespace Istra.Drupal {
 			}
 			return true;
 		}
-
-		private byte[] ConcatArrays(byte[] x, byte[] y) {
-			byte[] res = new byte[x.Length + y.Length];
-			x.CopyTo(res, 0);
-			y.CopyTo(res, x.Length);
-			return res;
-		}
-
+		
 		public bool TestHash4() { // модификация предыдущего теста
 			byte[] password = Encoding.ASCII.GetBytes("abcdef");
 			byte[] salt = Encoding.ASCII.GetBytes("$S$DDpIJJVIH");
@@ -135,8 +181,17 @@ namespace Istra.Drupal {
 			}
 			return true;
 		}
+		 
+		*************************************** */
 #endif
 
+		 
+		private byte[] ConcatArrays(byte[] x, byte[] y) {
+			byte[] res = new byte[x.Length + y.Length];
+			x.CopyTo(res, 0);
+			y.CopyTo(res, x.Length);
+			return res;
+		}
 
 		private object variable_get(string name) {
 			return variable_get(name, null);
@@ -241,15 +296,19 @@ namespace Istra.Drupal {
 			return _password_base64_encode(hash); // тоже возможное решение, более логичное
 		}
 
+		/// <summary>Ключ, обеспечивающий одинаковые значения хэша для одинаковых строк</summary>
+		private string shaKey = "asdjkfowein4654SLD,EOSOSiwe";
+
 		private byte[] _hash(string algo, string str){
 			byte[] bytes;
+			byte[] bKey = Encoding.ASCII.GetBytes(shaKey);
 			switch(algo){
 				case "md5":
-					HMACMD5 md5 = new HMACMD5();
+					HMACMD5 md5 = new HMACMD5(bKey);
 					bytes = md5.ComputeHash(Encoding.ASCII.GetBytes(str));
 					break;
 				case "sha512":
-					HMACSHA512 sha512 = new HMACSHA512();
+					HMACSHA512 sha512 = new HMACSHA512(bKey);
 					bytes = sha512.ComputeHash(Encoding.ASCII.GetBytes(str));
 					break;
 				default:
@@ -262,27 +321,29 @@ namespace Istra.Drupal {
 		private const int saltLength = 12;
 
 		private string _password_crypt(string algo, string password, string setting) {
-			setting = setting.Substring(0, saltLength); //substr(setting, 0, 12);
+			string header = setting.Substring(0, saltLength); //substr(setting, 0, 12);
 
-			if (setting[0] != '$' || setting[2] != '$') throw new ApplicationException("Bad Password Setting"); //{return false;}
-	
-			int count_log2 = _password_get_count_log2(setting);
+			if (header[0] != '$' || header[2] != '$') throw new ApplicationException("Bad Password Setting"); //{return false;}
+
+			int count_log2 = _password_get_count_log2(header);
 			if (count_log2 < DRUPAL_MIN_HASH_COUNT || count_log2 > DRUPAL_MAX_HASH_COUNT) throw new ApplicationException("Bad Password Count"); //{return FALSE;}
-	
-			string salt = setting.Substring(4, 8); //substr($setting, 4, 8);
+
+			string salt = header.Substring(4, 8); //substr($setting, 4, 8);
 			if (salt.Length != 8) throw new ApplicationException("Bad Salt"); //return FALSE;
-	
-			int count = randomMode? 1 << count_log2 : 1;
 
 			byte[] hash = _hash(algo, salt + password);
-			do {
-				hash = _hash(algo, hashToString(hash) + password);
-			} while (--count>0);
+
+			if (!fastCoding) {
+				int count = randomMode? 1 << count_log2 : 1;
+				do {
+					hash = _hash(algo, hashToString(hash) + password);
+				} while (--count > 0);
+			}
 
 			int len = hash.Length;
 			string b64 = _password_base64_encode(hash, len);
 			//b64 = b64.Substring(0, 85); // заплатка
-			string output =  setting + b64;
+			string output = header + b64;
 
 			double dd = (8 * len) / 6.0;
 			int expected = saltLength + (int)Math.Ceiling(dd);
