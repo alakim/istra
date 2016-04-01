@@ -56,13 +56,86 @@ namespace Istra.Drupal {
 			return (hash!=null && stored_hash == hash);
 		}
 
-
+#if DEBUG
 		public bool Test_base64_encode() { //Тест проходит
 			byte[] bytes = new byte[]{113, 10, 244, 37, 149, 146, 84, 70, 139, 91, 15, 44, 157, 141, 63, 48, 178, 238, 212, 4, 134, 158, 144, 165, 237, 199, 4, 161, 218, 7, 196, 111, 145, 152, 49, 49, 31, 135, 187, 162, 157, 193, 60, 248, 44, 65, 196, 234, 40, 219, 183, 48, 244, 8, 139, 95, 191, 80, 117, 195, 11, 175, 114, 89};
 			string expected = @"ld.xZIdYINoWPx.9RqsDk6fvIHUVS0NdhTA/Vex/2zKYM4HATQsiWqNkwUD9/FgucgxhkED09ypjEJrk9weQN/"; // то, что генерирует Drupal
 			string res = _password_base64_encode(bytes, 64);
 			return res == expected;
 		}
+
+		public bool TestCryptDecrypt() { // На Drupal такое проходит
+			string password = "abcdef";
+			string codeMethod = "sha512";
+			string salt = "$S$DDpIJJVIH";
+			string hash1 = _password_crypt(codeMethod, password, salt);
+			string hash2 = _password_crypt(codeMethod, password, hash1);
+			return hash1 == hash2;
+		}
+
+		public bool TestHash() { // На Drupal такое проходит
+			string password = "abcdef";
+			string codeMethod = "sha512";
+			string salt = "$S$DDpIJJVIH";
+			string hash1 = hashToString(_hash(codeMethod, salt + password));
+			for (int i = 0; i < 5; i++) {
+				hash1 = hashToString(_hash(codeMethod, hash1 + password));
+			}
+			string hash2 = hashToString(_hash(codeMethod, hash1 + password));
+			for (int i = 0; i < 5; i++) {
+				hash2 = hashToString(_hash(codeMethod, hash2 + password));
+			}
+			return hash1 == hash2;
+		}
+
+		public bool TestHash2() { // На Drupal такое проходит
+			string password = "abcdef";
+			string codeMethod = "sha512";
+			string salt = "$S$DDpIJJVIH";
+			string hash1 = hashToString(_hash(codeMethod, salt + password));
+			string hash2 = hashToString(_hash(codeMethod, hash1 + password));
+			return hash1 == hash2;
+		}
+
+		public bool TestHash3() { // модификация предыдущего теста
+			string password = "abcdef";
+			string codeMethod = "sha512";
+			string salt = "$S$DDpIJJVIH";
+			byte[] hash1 = _hash(codeMethod, salt + password);
+			string sHash1 = hashToString(hash1);
+			byte[] hash2 = _hash(codeMethod, sHash1 + password);
+			if (hash1.Length != hash2.Length) return false;
+
+			for (int i = 0; i < hash1.Length; i++) {
+				if (hash1[i] != hash2[i]) return false;
+			}
+			return true;
+		}
+
+		private byte[] ConcatArrays(byte[] x, byte[] y) {
+			byte[] res = new byte[x.Length + y.Length];
+			x.CopyTo(res, 0);
+			y.CopyTo(res, x.Length);
+			return res;
+		}
+
+		public bool TestHash4() { // модификация предыдущего теста
+			byte[] password = Encoding.ASCII.GetBytes("abcdef");
+			byte[] salt = Encoding.ASCII.GetBytes("$S$DDpIJJVIH");
+
+			HMACSHA512 sha512 = new HMACSHA512();
+
+			byte[] hash1 = sha512.ComputeHash(ConcatArrays(salt, password));
+			byte[] hash2 = sha512.ComputeHash(ConcatArrays(hash1, password));
+
+			if (hash1.Length != hash2.Length) return false;
+
+			for (int i = 0; i < hash1.Length; i++) {
+				if (hash1[i] != hash2[i]) return false;
+			}
+			return true;
+		}
+#endif
 
 
 		private object variable_get(string name) {
@@ -77,6 +150,7 @@ namespace Istra.Drupal {
 		private string user_hash_password(string password) {
 			return user_hash_password(password, 0);
 		}
+
 		private string user_hash_password(string password, int count_log2) {
 			if (count_log2==0) {
 				count_log2 = (int)variable_get("password_count_log2", DRUPAL_HASH_COUNT);
@@ -114,9 +188,14 @@ namespace Istra.Drupal {
 		}
 
 		/// <summary>Преобразует массив в строку в кодировке base64</summary>
-		/// <param name="input"></param>
-		/// <param name="count"></param>
-		/// <returns></returns>
+		/// <param name="input">входной массив</param>
+		private string _password_base64_encode(byte[] input) {
+			return _password_base64_encode(input, input.Length);
+		}
+
+		/// <summary>Преобразует массив в строку в кодировке base64</summary>
+		/// <param name="input">входной массив</param>
+		/// <param name="count">размер массива</param>
 		private string _password_base64_encode(byte[] input, int count) {
 			//*********** return Convert.ToBase64String(input, 0, count); // Возможное стандартное решение
 
@@ -158,7 +237,8 @@ namespace Istra.Drupal {
 		// }
 
 		private string hashToString(byte[] hash) {
-			return Encoding.ASCII.GetString(hash);
+			//return Encoding.ASCII.GetString(hash); // - возможное стандартное решение
+			return _password_base64_encode(hash); // тоже возможное решение, более логичное
 		}
 
 		private byte[] _hash(string algo, string str){
