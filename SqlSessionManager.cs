@@ -36,10 +36,15 @@ namespace Istra {
 				if (!CheckTable(conn))
 					BuildTable(conn);
 				Guid sessionID = Guid.NewGuid();
-				SqlCommand cmd = new SqlCommand(string.Format(
-					@"INSERT INTO {4} (ID, UserID, UserName, LastAccess) VALUES ('{{{0}}}', '{{{1}}}', '{2}', '{3}')",
-					sessionID, userID, userName, DateTime.Now, tableName
-				), conn);
+				// SqlCommand cmd = new SqlCommand(string.Format(
+				// 	@"INSERT INTO {4} (ID, UserID, UserName, LastAccess) VALUES ('{{{0}}}', '{{{1}}}', '{2}', '{3}')",
+				// 	sessionID, userID, userName, DateTime.Now, tableName
+				// ), conn);
+				SqlCommand cmd = new SqlCommand(string.Format(@"INSERT INTO {0} (ID, UserID, UserName, LastAccess) VALUES (@id, @usr, @unm, @la)", tableName), conn);
+				cmd.Parameters.Add(new SqlParameter("@id", sessionID));
+				cmd.Parameters.Add(new SqlParameter("@usr", userID));
+				cmd.Parameters.Add(new SqlParameter("@unm", userName));
+				cmd.Parameters.Add(new SqlParameter("@la", DateTime.Now));
 				cmd.ExecuteNonQuery();
 				return sessionID.ToString("N");
 			}
@@ -61,10 +66,12 @@ namespace Istra {
 				catch (Exception err) {
 					throw new ApplicationException("Bad session ID '" + sessionID + "'", err);
 				}
-				SqlCommand cmd = new SqlCommand(string.Format(
-					@"select LastAccess from {0} where id='{{{1}}}'",
-					tableName, sssID
-				), conn);
+				//SqlCommand cmd = new SqlCommand(string.Format(
+				//	@"select LastAccess from {0} where id='{{{1}}}'",
+				//	tableName, sssID
+				//), conn);
+				SqlCommand cmd = new SqlCommand("SELECT LastAccess from "+tableName+" where id=@sid", conn);
+				cmd.Parameters.Add(new SqlParameter("@sid", sssID));
 				object dt = cmd.ExecuteScalar();
 				if (dt == null || dt == DBNull.Value) return false;
 				DateTime lastAccess = (DateTime)dt;
@@ -73,10 +80,13 @@ namespace Istra {
 					return false;
 				}
 				else {
-					SqlCommand cmdProlong = new SqlCommand(string.Format(
-						@"UPDATE {0} SET LastAccess = '{1}' WHERE ID = '{{{2}}}'",
-						tableName, DateTime.Now, sssID
-					), conn);
+					// SqlCommand cmdProlong = new SqlCommand(string.Format(
+					// 	@"UPDATE {0} SET LastAccess = '{1}' WHERE ID = '{{{2}}}'",
+					// 	tableName, DateTime.Now, sssID
+					// ), conn);
+					SqlCommand cmdProlong = new SqlCommand("UPDATE "+tableName+" SET LastAccess = @la WHERE ID = @sid", conn);
+					cmdProlong.Parameters.Add(new SqlParameter("@la", DateTime.Now));
+					cmdProlong.Parameters.Add(new SqlParameter("@sid", sssID));
 					cmdProlong.ExecuteNonQuery();
 				}
 				return true;
@@ -86,10 +96,12 @@ namespace Istra {
 		/// <summary>Закрывает старые версии</summary>
 		public void CloseOldSessions(SqlConnection conn) {
 			if (sessionTimeout < 0) return;
-			SqlCommand cmd = new SqlCommand(string.Format(
-				@"DELETE FROM {0} WHERE LastAccess < '{1}'",
-				tableName, DateTime.Now.AddSeconds(-sessionTimeout)
-			), conn);
+			// SqlCommand cmd = new SqlCommand(string.Format(
+			// 	@"DELETE FROM {0} WHERE LastAccess < '{1}'",
+			// 	tableName, DateTime.Now.AddSeconds(-sessionTimeout)
+			// ), conn);
+			SqlCommand cmd = new SqlCommand("DELETE FROM "+tableName+" WHERE LastAccess < @la", conn);
+			cmd.Parameters.Add(new SqlParameter("@la", DateTime.Now.AddSeconds(-sessionTimeout)));
 			cmd.ExecuteNonQuery();
 		}
 
